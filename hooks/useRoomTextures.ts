@@ -1,22 +1,23 @@
+import * as THREE from "three";
 import { useTexture } from "@react-three/drei";
 import { useLayoutEffect } from "react";
-import * as THREE from "three";
 
 export const useRoomTextures = () => {
   const rawTextures = useTexture({
-    "day-1": "/textures/day-1.webp",
-    "day-2": "/textures/day-2.webp",
-    "day-3": "/textures/day-3.webp",
-    "day-4": "/textures/day-4.webp",
-    "night-1": "/textures/night-1.webp",
-    "night-2": "/textures/night-2.webp",
-    "night-3": "/textures/night-3.webp",
-    "night-4": "/textures/night-4.webp",
+    "day-1": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772539220/texture-day-1_fxxwpr.webp",
+    "day-2": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772375896/texture-day-2_zoo49s.webp",
+    "day-3": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772375896/texture-day-3_yurejc.webp",
+    "day-4": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772375897/texture-day-4_rz9urx.webp",
+    "night-1": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772539220/texture-night-1_czwvr6.webp",
+    "night-2": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772375906/texture-night-2_ostzfa.webp",
+    "night-3": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772375906/texture-night-3_z3pb5l.webp",
+    "night-4": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772375907/texture-night-4_xcwsq3.webp",
   });
+
 
   useLayoutEffect(() => {
     Object.values(rawTextures).forEach((texture) => {
-      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.colorSpace = THREE.NoColorSpace;
       texture.flipY = false;
       texture.minFilter = THREE.LinearFilter;
     });
@@ -41,5 +42,5 @@ export const useRoomTextures = () => {
     },
   };
 
-  return structuredTextures;
+  return { roomTexture:structuredTextures };
 };
