@@ -19,7 +19,7 @@ export default function Experience() {
         <Environment preset="city" />
         <OrbitControls makeDefault />
         <Suspense fallback={null}>
-          <Model />
+          <Model started={start} />
         </Suspense>
       </Canvas>
     </div>
