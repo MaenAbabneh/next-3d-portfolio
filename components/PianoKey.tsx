@@ -2,10 +2,9 @@
 
 import { useRef } from "react";
 import * as THREE from "three";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Howl } from "howler";
-import { useFrame, useThree } from "@react-three/fiber";
+import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 
 const sound = new Howl({
   src: ["/textures/sound/piano-note-c2_1bpm_C.wav"],
@@ -13,22 +12,19 @@ const sound = new Howl({
   volume: 0.5,
 });
 
-gsap.registerPlugin(useGSAP);
 export function PianoKey({
   node,
   index,
   name,
 }: {
-  node: any;
+  node: THREE.Mesh;
   index: number;
   name?: string;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const { camera } = useThree();
   const soundId = useRef<number | null>(null);
-
-  const { contextSafe } = useGSAP({ scope: meshRef });
-  const initialRotationX = useRef(node.rotation.x).current;
+  const initialRotationX = useRef<number>(node.rotation.x);
 
   useFrame(() => {
     if (
@@ -45,7 +41,7 @@ export function PianoKey({
     }
   });
 
-  const handlePress = contextSafe((e: any) => {
+  const handlePress = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
 
     const ROOT_INDEX = 12;
@@ -64,9 +60,9 @@ export function PianoKey({
 
     if (meshRef.current) {
       gsap.killTweensOf(meshRef.current.rotation);
-      meshRef.current.rotation.x = initialRotationX;
+      meshRef.current.rotation.x = initialRotationX.current;
       gsap.to(meshRef.current.rotation, {
-        x: initialRotationX + 0.1,
+        x: initialRotationX.current + 0.1,
         duration: 0.2,
         ease: "back.out(1.8)",
         yoyo: true,
@@ -74,7 +70,7 @@ export function PianoKey({
         overwrite: true,
       });
     }
-  });
+  };
 
   return (
     <mesh
