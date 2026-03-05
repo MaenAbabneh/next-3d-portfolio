@@ -2,10 +2,9 @@
 
 import { useTexture, useVideoTexture } from "@react-three/drei";
 import * as THREE from "three";
-import { useMemo } from "react";
 
 interface RoomAccessoriesProps {
-  nodes: any; // يمكنك تحسين هذا النوع حسب هيكل البيانات الفعلي
+  nodes: any;
 }
 
 export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
@@ -24,15 +23,13 @@ export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
   });
 
   // 3. إعدادات الخامات
-  useMemo(() => {
-    const allTextures = [...Object.values(imageTexture), videoTexture];
+  const allTextures = [...Object.values(imageTexture), videoTexture];
 
-    allTextures.forEach((texture) => {
-      texture.flipY = false; // منع انعكاس الصورة رأسياً
-      texture.minFilter = THREE.LinearFilter;
-      texture.magFilter = THREE.LinearFilter;
-    });
-  }, [videoTexture, imageTexture]);
+  allTextures.forEach((texture) => {
+    texture.flipY = false; // منع انعكاس الصورة رأسياً
+    texture.minFilter = THREE.LinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+  });
 
   return (
     <group>
