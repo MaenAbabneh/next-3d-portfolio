@@ -1,3 +1,5 @@
+"use client";
+
 import * as THREE from "three";
 import { JSX, Suspense, useMemo, useRef } from "react";
 import { useGraph } from "@react-three/fiber";
@@ -17,11 +19,13 @@ type ModelProps = JSX.IntrinsicElements["group"] & { started?: boolean };
 
 export function Model({ started = false, ...props }: ModelProps) {
   const { scene } = useGLTF(
-    "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb"
+    "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb",
   );
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone) as unknown as GLTFResult;
+
   const { resolvedTheme } = useTheme();
+
   const groupRef = useRef<THREE.Group>(null);
 
   const isNight = resolvedTheme === "dark";
@@ -841,5 +845,5 @@ export function Model({ started = false, ...props }: ModelProps) {
 }
 
 useGLTF.preload(
-  "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb"
+  "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb",
 );
