@@ -12,7 +12,8 @@ const ROT_KEY = "__introOriginalRotation";
 const POS_KEY = "__introOriginalPosition";
 
 // --- دوال مساعدة ---
-const isMesh = (obj: any): obj is THREE.Mesh => obj.isMesh;
+const isMesh = (obj: THREE.Object3D): obj is THREE.Mesh =>
+  obj instanceof THREE.Mesh;
 
 const resolveSearchTokens = (shortName: string): string[] => {
   return [`${shortName}${SUFFIX}`, shortName];
@@ -50,7 +51,7 @@ const getGroupSettings = (name: string): HoverSettings => {
 
 export const useHoverAnimation = (
   groupRef: React.RefObject<THREE.Group | null>,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) => {
   const { camera, raycaster, pointer } = useThree();
   const hoverTargets = useRef<THREE.Object3D[]>([]);

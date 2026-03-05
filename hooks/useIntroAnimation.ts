@@ -18,9 +18,9 @@ const INTRO_POS_KEY = "__introOriginalPosition";
 
 // --- دوال مساعدة ---
 const isMeshLike = (
-  obj: THREE.Object3D
+  obj: THREE.Object3D,
 ): obj is THREE.Mesh | THREE.SkinnedMesh => {
-  return (obj as any).isMesh || (obj as any).isSkinnedMesh;
+  return obj instanceof THREE.Mesh || obj instanceof THREE.SkinnedMesh;
 };
 
 const isPianoKey = (name: string) => {
@@ -42,7 +42,7 @@ const getOriginalPosition = (obj: THREE.Object3D) =>
 // --- الـ Hook ---
 export const useIntroAnimation = (
   groupRef: RefObject<THREE.Group | null>,
-  started: boolean
+  started: boolean,
 ) => {
   useGSAP(
     () => {
@@ -65,7 +65,7 @@ export const useIntroAnimation = (
           }
         });
         return matches.filter(
-          (v, i, a) => a.findIndex((t) => t.uuid === v.uuid) === i
+          (v, i, a) => a.findIndex((t) => t.uuid === v.uuid) === i,
         );
       };
 
@@ -110,7 +110,7 @@ export const useIntroAnimation = (
       const addToTl = (
         tl: gsap.core.Timeline,
         objName: string,
-        position: string = "<0.1"
+        position: string = "<0.1",
       ) => {
         const objs = getTargetObjects(objName);
         objs.forEach((obj) => {
@@ -141,7 +141,7 @@ export const useIntroAnimation = (
       // --- المجموعة 3: الإطارات (Frames) ---
       const framesTl = gsap.timeline();
       ["Frame_1", "Frame_2", "Frame_3"].forEach((f) =>
-        addToTl(framesTl, f, "<0.1")
+        addToTl(framesTl, f, "<0.1"),
       );
       masterTl.add(framesTl, 0.1);
 
@@ -156,7 +156,7 @@ export const useIntroAnimation = (
       // --- المجموعة 5: الزهور (Flowers) ---
       const flowersTl = gsap.timeline();
       ["Flower_5", "Flower_4", "Flower_3", "Flower_2", "Flower_1"].forEach(
-        (f) => addToTl(flowersTl, f, "<0.1")
+        (f) => addToTl(flowersTl, f, "<0.1"),
       );
       masterTl.add(flowersTl, 0.2);
 
@@ -174,7 +174,7 @@ export const useIntroAnimation = (
       // --- المجموعة 7: الحروف (Letters) 🔤 ---
       const lettersTl = gsap.timeline();
       const letterNames = objectsWithIntroAnimations.filter((n) =>
-        n.startsWith("Name_Letter_")
+        n.startsWith("Name_Letter_"),
       );
 
       letterNames.forEach((name, i) => {
@@ -184,7 +184,7 @@ export const useIntroAnimation = (
           lettersTl.to(
             obj.scale,
             { x: s.x, y: s.y, z: s.z, duration: 0.4 },
-            i === 0 ? "0" : "<0.03"
+            i === 0 ? "0" : "<0.03",
           );
         });
       });
@@ -194,7 +194,7 @@ export const useIntroAnimation = (
       // --- المجموعة 8: النقاط (Dots) ⚫ ---
       const dotsTl = gsap.timeline();
       const dotNames = objectsWithIntroAnimations.filter((n) =>
-        n.startsWith("Dot_")
+        n.startsWith("Dot_"),
       );
 
       dotNames.forEach((name, i) => {
@@ -204,7 +204,7 @@ export const useIntroAnimation = (
           dotsTl.to(
             obj.scale,
             { x: s.x, y: s.y, z: s.z, duration: 0.4 },
-            i === 0 ? "0" : "<0.05"
+            i === 0 ? "0" : "<0.05",
           );
         });
       });
@@ -217,7 +217,7 @@ export const useIntroAnimation = (
       });
 
       const pianoKeysNames = objectsWithIntroAnimations.filter((n) =>
-        isPianoKey(n)
+        isPianoKey(n),
       );
       const allKeys: THREE.Object3D[] = [];
       pianoKeysNames.forEach((name) => allKeys.push(...getTargetObjects(name)));
@@ -234,6 +234,6 @@ export const useIntroAnimation = (
 
       masterTl.add(pianoTl, 0.1);
     },
-    { dependencies: [started], scope: groupRef }
+    { dependencies: [started], scope: groupRef },
   );
 };

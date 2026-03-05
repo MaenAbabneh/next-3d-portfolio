@@ -1,17 +1,24 @@
 import * as THREE from "three";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { useRoomTextures } from "./useRoomTextures";
 import { vertexShader, fragmentShader } from "../shaders/theme/shader";
 
-export function useRoomMaterials() {
+export type RoomMaterialBundle = {
+  materials: {
+    First: THREE.ShaderMaterial;
+    Second: THREE.ShaderMaterial;
+    Third: THREE.ShaderMaterial;
+    Fourth: THREE.ShaderMaterial;
+  };
+  glass: THREE.MeshPhysicalMaterial;
+  water: THREE.MeshPhysicalMaterial;
+};
+
+export function useRoomMaterials(): RoomMaterialBundle | null {
   const textures = useRoomTextures();
 
-  const materialsRef = useRef<any>(null);
-
-  useMemo(() => {
-    if (materialsRef.current) return;
-
-    if (!textures || Object.keys(textures).length === 0) return;
+  return useMemo(() => {
+    if (!textures || Object.keys(textures).length === 0) return null;
 
     const glass = new THREE.MeshPhysicalMaterial({
       transmission: 1,
@@ -33,8 +40,11 @@ export function useRoomMaterials() {
       depthWrite: false,
     });
 
-    const createCinematicMaterial = (textureSet: number) => {
-      let dayTex, nightTex;
+    const createCinematicMaterial = (
+      textureSet: number,
+    ): THREE.ShaderMaterial => {
+      let dayTex: THREE.Texture | undefined;
+      let nightTex: THREE.Texture | undefined;
 
       if (textureSet === 1) {
         dayTex = textures.roomTexture.First?.day;
@@ -69,10 +79,6 @@ export function useRoomMaterials() {
       Fourth: createCinematicMaterial(4),
     };
 
-    // حفظ المواد في الحارس
-
-    materialsRef.current = { materials: roomMaterials, glass, water };
+    return { materials: roomMaterials, glass, water };
   }, [textures]);
-
-  return materialsRef.current;
 }
