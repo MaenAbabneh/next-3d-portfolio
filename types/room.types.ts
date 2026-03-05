@@ -1,8 +1,7 @@
 import * as THREE from "three";
 import { GLTF } from "three-stdlib";
 
-export 
-type GLTFResult = GLTF & {
+export type GLTFResult = GLTF & {
   nodes: {
     Case_Glass: THREE.Mesh
     Screen_2: THREE.Mesh
@@ -53,11 +52,7 @@ type GLTFResult = GLTF & {
     Seaweed_10_Hover_Third_Raycaster: THREE.Mesh
     Seaweed_11_Hover_Third_Raycaster: THREE.Mesh
     Seaweed_12_Hover_Third_Raycaster: THREE.Mesh
-    About_Button_Third_Raycaster_Pointer_Hover: THREE.Mesh
-    Contact_Button_Third_Raycaster_Pointer_Hover: THREE.Mesh
-    My_Work_Button_Third_Raycaster_Pointer_Hover: THREE.Mesh
     Hanging_Plank_1_Third: THREE.Mesh
-    Hanging_Plank_2_Third: THREE.Mesh
     ['A#1_Third']: THREE.Mesh
     ['A#2_Third']: THREE.Mesh
     A1_Third: THREE.Mesh
@@ -82,8 +77,8 @@ type GLTFResult = GLTF & {
     ['G#2_Third']: THREE.Mesh
     G1_Third: THREE.Mesh
     G2_Third: THREE.Mesh
-    ['Bird-Father-Fourth_Raycaster_Hover']: THREE.Mesh
-    ['Bird-Son-Fourth_Raycaster_Hover']: THREE.Mesh
+    Bird_Father_Fourth_Raycaster_Hover: THREE.Mesh
+    Bird_Son_Fourth_Raycaster_Hover: THREE.Mesh
     Box_1_Hover_Fourth_Raycaster: THREE.Mesh
     Box_2_Hover_Fourth_Raycaster: THREE.Mesh
     Box_3_Hover_Fourth_Raycaster: THREE.Mesh
@@ -97,11 +92,6 @@ type GLTFResult = GLTF & {
     Duck_Son_Fourth_Hover_Raycaster: THREE.Mesh
     Keyboard_Raycaster_Hover_Fourth: THREE.Mesh
     Kitten_Raycaster_Hover_Fourth: THREE.Mesh
-    Pencil_1_Fourth_Hover_Raycaster: THREE.Mesh
-    Pencil_2_Fourth_Hover_Raycaster: THREE.Mesh
-    Pencil_3_Fourth_Hover_Raycaster: THREE.Mesh
-    Pencil_4_Fourth_Hover_Raycaster: THREE.Mesh
-    Pencil_5_Fourth_Hover_Raycaster: THREE.Mesh
     Puppy_Raycaster_Hover_Fourth: THREE.Mesh
     Slipper_1_Fourth_Hover_Raycaster: THREE.Mesh
     Slipper_2_Fourth_Hover_Raycaster: THREE.Mesh
@@ -131,19 +121,29 @@ type GLTFResult = GLTF & {
     X_Fourth_Raycaster_Pointer_Hover: THREE.Mesh
     Cactus_Raycaster_Fourth_Hover: THREE.Mesh
     Calender: THREE.Mesh
-    Flower_1_Fourth_Hover_Raycaster: THREE.Mesh
-    Flower_2_Fourth_Hover_Raycaster: THREE.Mesh
-    Flower_3_Fourth_Hover_Raycaster: THREE.Mesh
     Flower_4_Fourth_Hover_Raycaster: THREE.Mesh
     Flower_5_Fourth_Hover_Raycaster: THREE.Mesh
     Microphone_Hover_Fourth_Raycaster: THREE.Mesh
     Frame_1_Second_Raycaster_Hover: THREE.Mesh
     Frame_2_Second_Raycaster_Hover: THREE.Mesh
     Frame_3_Second_Raycaster_Hover: THREE.Mesh
+    Flower_1_Fourth_Hover_Raycaster: THREE.Mesh
+    Flower_2_Fourth_Hover_Raycaster: THREE.Mesh
+    Flower_3_Fourth_Hover_Raycaster: THREE.Mesh
+    Pencil_1_Fourth_Hover_Raycaster: THREE.Mesh
+    Pencil_2_Fourth_Hover_Raycaster: THREE.Mesh
+    Pencil_3_Fourth_Hover_Raycaster: THREE.Mesh
+    Pencil_4_Fourth_Hover_Raycaster: THREE.Mesh
+    Pencil_5_Fourth_Hover_Raycaster: THREE.Mesh
+    Hanging_Plank_2_Third: THREE.Mesh
+    About_Button_Third: THREE.Mesh
+    Contact_Button_Third: THREE.Mesh
+    My_Work_Button_Third: THREE.Mesh
     First: THREE.Mesh
     Second: THREE.Mesh
     Third: THREE.Mesh
     Fourth: THREE.Mesh
+    PS5_Digital_stand: THREE.Mesh
     Cat_Second: THREE.SkinnedMesh
     root_1: THREE.Bone
     Bone001: THREE.Bone
@@ -167,4 +167,14 @@ type GLTFResult = GLTF & {
     Bone012: THREE.Bone
   }
   materials: {}
+}
+
+export interface HoverSettings {
+  items?: string[];
+  scale: number;
+  duration: number;
+  rotateX?: number;
+  rotateY?: number;
+  moveY?: number;
+  type?: string;
 }
