@@ -2,9 +2,10 @@
 
 import { useTexture, useVideoTexture } from "@react-three/drei";
 import * as THREE from "three";
+import type { GLTFResult } from "@/types/room.types";
 
 interface RoomAccessoriesProps {
-  nodes: any;
+  nodes: GLTFResult["nodes"];
 }
 
 export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
