@@ -3,9 +3,10 @@
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
+import type { GLTFResult } from "@/types/room.types";
 
 interface RoomAccessoriesProps {
-  nodes: any;
+  nodes: GLTFResult["nodes"];
 }
 
 export function Clock({ nodes }: RoomAccessoriesProps) {
