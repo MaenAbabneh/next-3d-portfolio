@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { JSX, Suspense, useMemo } from "react";
+import { JSX, Suspense, useMemo, useRef } from "react";
 import { useGraph } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import { SkeletonUtils } from "three-stdlib";
@@ -7,23 +7,31 @@ import { GLTFResult } from "@/types/room.types";
 import { useTheme } from "next-themes";
 import { useRoomMaterials } from "@/hooks/useRoomMaterials";
 import { useCinematicTransition } from "@/hooks/useCinematicTransition";
+import { useIntroAnimation } from "@/hooks/useIntroAnimation";
+import { useHoverAnimation } from "@/hooks/useHoverAnimation";
 import { RoomAccessories } from "../Accessories/RoomAccessories";
 import { Clock } from "../Accessories/Clock";
 import { Pino } from "../Accessories/Pino";
 
-export function Model(props: JSX.IntrinsicElements["group"]) {
+type ModelProps = JSX.IntrinsicElements["group"] & { started?: boolean };
+
+export function Model({ started = false, ...props }: ModelProps) {
   const { scene } = useGLTF(
-    "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772540495/my-room-3d_km5hxd.glb"
+    "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb"
   );
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone) as unknown as GLTFResult;
   const { resolvedTheme } = useTheme();
+  const groupRef = useRef<THREE.Group>(null);
 
   const isNight = resolvedTheme === "dark";
 
   const roomTexture = useRoomMaterials();
 
   useCinematicTransition(roomTexture, isNight);
+
+  useIntroAnimation(groupRef, started);
+  useHoverAnimation(groupRef, started);
 
   useMemo(() => {
     if (!roomTexture) return;
@@ -60,7 +68,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
   }, [nodes, roomTexture]);
 
   return (
-    <group {...props} dispose={null}>
+    <group ref={groupRef} {...props} dispose={null}>
       <group
         name="root"
         position={[1.152, 0.345, -0.148]}
@@ -109,7 +117,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         name="Water-Mug"
         geometry={nodes["Water-Mug"].geometry}
         material={nodes["Water-Mug"].material}
-        position={[0.019, -0.367, -0.036]}
+        position={[-0.741, 1.273, 0.19]}
       />
       <mesh
         name="Chair_Second_Raycaster_Hover"
@@ -129,91 +137,91 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         name="Dot_1_Raycaster_Hover_Third"
         geometry={nodes.Dot_1_Raycaster_Hover_Third.geometry}
         material={nodes.Dot_1_Raycaster_Hover_Third.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[1.109, 1.27, -1.146]}
       />
       <mesh
         name="Dot_2_Raycaster_Hover_Third"
         geometry={nodes.Dot_2_Raycaster_Hover_Third.geometry}
         material={nodes.Dot_2_Raycaster_Hover_Third.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[1.142, 1.27, -1.148]}
       />
       <mesh
         name="Dot_3_Raycaster_Hover_Third"
         geometry={nodes.Dot_3_Raycaster_Hover_Third.geometry}
         material={nodes.Dot_3_Raycaster_Hover_Third.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[1.176, 1.271, -1.15]}
       />
       <mesh
         name="Name_Letter_1_Third_Raycaster_Hover"
         geometry={nodes.Name_Letter_1_Third_Raycaster_Hover.geometry}
         material={nodes.Name_Letter_1_Third_Raycaster_Hover.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[0.53, 1.264, -1.11]}
       />
       <mesh
         name="Name_Letter_2_Third_Raycaster_Hover"
         geometry={nodes.Name_Letter_2_Third_Raycaster_Hover.geometry}
         material={nodes.Name_Letter_2_Third_Raycaster_Hover.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[0.567, 1.269, -1.112]}
       />
       <mesh
         name="Name_Letter_3_Third_Raycaster_Hover"
         geometry={nodes.Name_Letter_3_Third_Raycaster_Hover.geometry}
         material={nodes.Name_Letter_3_Third_Raycaster_Hover.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[0.62, 1.27, -1.115]}
       />
       <mesh
         name="Name_Letter_4_Third_Raycaster_Hover"
         geometry={nodes.Name_Letter_4_Third_Raycaster_Hover.geometry}
         material={nodes.Name_Letter_4_Third_Raycaster_Hover.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[0.686, 1.271, -1.119]}
       />
       <mesh
         name="Name_Letter_5_Third_Raycaster_Hover"
         geometry={nodes.Name_Letter_5_Third_Raycaster_Hover.geometry}
         material={nodes.Name_Letter_5_Third_Raycaster_Hover.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[0.741, 1.271, -1.123]}
       />
       <mesh
         name="Name_Letter_6_Third_Raycaster_Hover"
         geometry={nodes.Name_Letter_6_Third_Raycaster_Hover.geometry}
         material={nodes.Name_Letter_6_Third_Raycaster_Hover.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[0.792, 1.269, -1.126]}
       />
       <mesh
         name="Name_Letter_7_Third_Raycaster_Hover"
         geometry={nodes.Name_Letter_7_Third_Raycaster_Hover.geometry}
         material={nodes.Name_Letter_7_Third_Raycaster_Hover.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[0.855, 1.271, -1.13]}
       />
       <mesh
         name="Name_Letter_8_Third_Raycaster_Hover"
         geometry={nodes.Name_Letter_8_Third_Raycaster_Hover.geometry}
         material={nodes.Name_Letter_8_Third_Raycaster_Hover.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[0.879, 1.269, -1.132]}
       />
       <mesh
         name="Name_Letter_9_Third_Raycaster_Hover"
         geometry={nodes.Name_Letter_9_Third_Raycaster_Hover.geometry}
         material={nodes.Name_Letter_9_Third_Raycaster_Hover.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[0.914, 1.272, -1.133]}
       />
       <mesh
         name="Name_Letter_10_Third_Raycaster_Hover"
         geometry={nodes.Name_Letter_10_Third_Raycaster_Hover.geometry}
         material={nodes.Name_Letter_10_Third_Raycaster_Hover.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[0.966, 1.271, -1.137]}
       />
       <mesh
         name="Name_Letter_11_Third_Raycaster_Hover"
         geometry={nodes.Name_Letter_11_Third_Raycaster_Hover.geometry}
         material={nodes.Name_Letter_11_Third_Raycaster_Hover.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[1.019, 1.268, -1.14]}
       />
       <mesh
         name="Name_Letter_12_Third_Raycaster_Hover"
         geometry={nodes.Name_Letter_12_Third_Raycaster_Hover.geometry}
         material={nodes.Name_Letter_12_Third_Raycaster_Hover.material}
-        position={[0.076, -0.367, -0.036]}
+        position={[1.053, 1.27, -1.142]}
       />
       <mesh
         name="Rock_1_Third_Raycaster_Hover"
@@ -349,27 +357,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         rotation={[0.299, -0.821, -1.285]}
       />
       <mesh
-        name="About_Button_Third_Raycaster_Pointer_Hover"
-        geometry={nodes.About_Button_Third_Raycaster_Pointer_Hover.geometry}
-        material={nodes.About_Button_Third_Raycaster_Pointer_Hover.material}
-        position={[-1.236, 1.775, 2.027]}
-        rotation={[0, 1.526, -1.506]}
-      />
-      <mesh
-        name="Contact_Button_Third_Raycaster_Pointer_Hover"
-        geometry={nodes.Contact_Button_Third_Raycaster_Pointer_Hover.geometry}
-        material={nodes.Contact_Button_Third_Raycaster_Pointer_Hover.material}
-        position={[-1.236, 1.325, 2.027]}
-        rotation={[0, 1.526, -1.631]}
-      />
-      <mesh
-        name="My_Work_Button_Third_Raycaster_Pointer_Hover"
-        geometry={nodes.My_Work_Button_Third_Raycaster_Pointer_Hover.geometry}
-        material={nodes.My_Work_Button_Third_Raycaster_Pointer_Hover.material}
-        position={[-1.236, 2.223, 2.027]}
-        rotation={[-0.873, 1.506, -0.76]}
-      />
-      <mesh
         name="Hanging_Plank_1_Third"
         geometry={nodes.Hanging_Plank_1_Third.geometry}
         material={nodes.Hanging_Plank_1_Third.material}
@@ -377,23 +364,16 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         rotation={[-1.571, -1.557, -Math.PI]}
       />
       <mesh
-        name="Hanging_Plank_2_Third"
-        geometry={nodes.Hanging_Plank_2_Third.geometry}
-        material={nodes.Hanging_Plank_2_Third.material}
-        position={[-1.272, 2.548, 2.021]}
-        rotation={[0, 1.526, 0]}
-      />
-      <mesh
-        name="Bird-Father-Fourth_Raycaster_Hover"
-        geometry={nodes["Bird-Father-Fourth_Raycaster_Hover"].geometry}
-        material={nodes["Bird-Father-Fourth_Raycaster_Hover"].material}
+        name="Bird_Father_Fourth_Raycaster_Hover"
+        geometry={nodes.Bird_Father_Fourth_Raycaster_Hover.geometry}
+        material={nodes.Bird_Father_Fourth_Raycaster_Hover.material}
         position={[-0.873, 1.344, -0.493]}
         rotation={[Math.PI / 2, 0, -1.671]}
       />
       <mesh
-        name="Bird-Son-Fourth_Raycaster_Hover"
-        geometry={nodes["Bird-Son-Fourth_Raycaster_Hover"].geometry}
-        material={nodes["Bird-Son-Fourth_Raycaster_Hover"].material}
+        name="Bird_Son_Fourth_Raycaster_Hover"
+        geometry={nodes.Bird_Son_Fourth_Raycaster_Hover.geometry}
+        material={nodes.Bird_Son_Fourth_Raycaster_Hover.material}
         position={[-0.885, 1.342, -0.565]}
         rotation={[Math.PI / 2, 0, -1.671]}
       />
@@ -422,7 +402,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         name="Cam_Fourth_Raycaster_Hover"
         geometry={nodes.Cam_Fourth_Raycaster_Hover.geometry}
         material={nodes.Cam_Fourth_Raycaster_Hover.material}
-        position={[-1.001, 1.381, -0.492]}
+        position={[-1.005, 1.342, -0.492]}
         rotation={[0, 1.185, 0]}
       />
       <mesh
@@ -487,36 +467,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         material={nodes.Kitten_Raycaster_Hover_Fourth.material}
         position={[-0.998, 2.036, 1.059]}
         rotation={[Math.PI / 2, 0, -0.296]}
-      />
-      <mesh
-        name="Pencil_1_Fourth_Hover_Raycaster"
-        geometry={nodes.Pencil_1_Fourth_Hover_Raycaster.geometry}
-        material={nodes.Pencil_1_Fourth_Hover_Raycaster.material}
-        position={[-0.837, 1.256, 1.248]}
-      />
-      <mesh
-        name="Pencil_2_Fourth_Hover_Raycaster"
-        geometry={nodes.Pencil_2_Fourth_Hover_Raycaster.geometry}
-        material={nodes.Pencil_2_Fourth_Hover_Raycaster.material}
-        position={[-0.866, 1.256, 1.248]}
-      />
-      <mesh
-        name="Pencil_3_Fourth_Hover_Raycaster"
-        geometry={nodes.Pencil_3_Fourth_Hover_Raycaster.geometry}
-        material={nodes.Pencil_3_Fourth_Hover_Raycaster.material}
-        position={[-0.835, 1.258, 1.211]}
-      />
-      <mesh
-        name="Pencil_4_Fourth_Hover_Raycaster"
-        geometry={nodes.Pencil_4_Fourth_Hover_Raycaster.geometry}
-        material={nodes.Pencil_4_Fourth_Hover_Raycaster.material}
-        position={[-0.873, 1.253, 1.213]}
-      />
-      <mesh
-        name="Pencil_5_Fourth_Hover_Raycaster"
-        geometry={nodes.Pencil_5_Fourth_Hover_Raycaster.geometry}
-        material={nodes.Pencil_5_Fourth_Hover_Raycaster.material}
-        position={[-0.847, 1.256, 1.207]}
       />
       <mesh
         name="Puppy_Raycaster_Hover_Fourth"
@@ -625,7 +575,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         name="Coffee_Mug_Fourth_Raycaster_Hover"
         geometry={nodes.Coffee_Mug_Fourth_Raycaster_Hover.geometry}
         material={nodes.Coffee_Mug_Fourth_Raycaster_Hover.material}
-        position={[-0.521, 1.198, 0.295]}
+        position={[-0.521, 1.201, 0.295]}
       />
       <mesh
         name="Egg_1_Fourth_Hover_Raycaster"
@@ -694,7 +644,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         name="Mug_Fourth_Raycaster_Hover"
         geometry={nodes.Mug_Fourth_Raycaster_Hover.geometry}
         material={nodes.Mug_Fourth_Raycaster_Hover.material}
-        position={[-0.74, 1.199, 0.191]}
+        position={[-0.74, 1.201, 0.191]}
       />
       <mesh
         name="X_Fourth_Raycaster_Pointer_Hover"
@@ -717,26 +667,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         rotation={[Math.PI / 2, 0, -0.236]}
       />
       <mesh
-        name="Flower_1_Fourth_Hover_Raycaster"
-        geometry={nodes.Flower_1_Fourth_Hover_Raycaster.geometry}
-        material={nodes.Flower_1_Fourth_Hover_Raycaster.material}
-        position={[-0.926, 1.213, 0.57]}
-      />
-      <mesh
-        name="Flower_2_Fourth_Hover_Raycaster"
-        geometry={nodes.Flower_2_Fourth_Hover_Raycaster.geometry}
-        material={nodes.Flower_2_Fourth_Hover_Raycaster.material}
-        position={[-0.973, 1.231, 0.577]}
-        rotation={[0.276, -1.257, 0]}
-      />
-      <mesh
-        name="Flower_3_Fourth_Hover_Raycaster"
-        geometry={nodes.Flower_3_Fourth_Hover_Raycaster.geometry}
-        material={nodes.Flower_3_Fourth_Hover_Raycaster.material}
-        position={[-0.981, 1.197, 0.568]}
-        rotation={[-Math.PI, 0.479, -Math.PI]}
-      />
-      <mesh
         name="Flower_4_Fourth_Hover_Raycaster"
         geometry={nodes.Flower_4_Fourth_Hover_Raycaster.geometry}
         material={nodes.Flower_4_Fourth_Hover_Raycaster.material}
@@ -748,7 +678,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         geometry={nodes.Flower_5_Fourth_Hover_Raycaster.geometry}
         material={nodes.Flower_5_Fourth_Hover_Raycaster.material}
         position={[-0.94, 1.737, 1.24]}
-        rotation={[0, -0.886, 0]}
+        rotation={[0, 0.151, 0]}
       />
       <mesh
         name="Microphone_Hover_Fourth_Raycaster"
@@ -779,6 +709,85 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         rotation={[-Math.PI, 0.661, -Math.PI]}
       />
       <mesh
+        name="Flower_1_Fourth_Hover_Raycaster"
+        geometry={nodes.Flower_1_Fourth_Hover_Raycaster.geometry}
+        material={nodes.Flower_1_Fourth_Hover_Raycaster.material}
+        position={[-0.917, 1.23, 0.57]}
+        rotation={[-0.097, -0.139, -0.054]}
+      />
+      <mesh
+        name="Flower_2_Fourth_Hover_Raycaster"
+        geometry={nodes.Flower_2_Fourth_Hover_Raycaster.geometry}
+        material={nodes.Flower_2_Fourth_Hover_Raycaster.material}
+        position={[-0.979, 1.254, 0.579]}
+        rotation={[0.276, -1.257, 0]}
+      />
+      <mesh
+        name="Flower_3_Fourth_Hover_Raycaster"
+        geometry={nodes.Flower_3_Fourth_Hover_Raycaster.geometry}
+        material={nodes.Flower_3_Fourth_Hover_Raycaster.material}
+        position={[-0.99, 1.21, 0.567]}
+        rotation={[-Math.PI, 0.479, -Math.PI]}
+      />
+      <mesh
+        name="Pencil_1_Fourth_Hover_Raycaster"
+        geometry={nodes.Pencil_1_Fourth_Hover_Raycaster.geometry}
+        material={nodes.Pencil_1_Fourth_Hover_Raycaster.material}
+        position={[-0.768, 1.249, 1.225]}
+      />
+      <mesh
+        name="Pencil_2_Fourth_Hover_Raycaster"
+        geometry={nodes.Pencil_2_Fourth_Hover_Raycaster.geometry}
+        material={nodes.Pencil_2_Fourth_Hover_Raycaster.material}
+        position={[-0.819, 1.249, 1.225]}
+      />
+      <mesh
+        name="Pencil_3_Fourth_Hover_Raycaster"
+        geometry={nodes.Pencil_3_Fourth_Hover_Raycaster.geometry}
+        material={nodes.Pencil_3_Fourth_Hover_Raycaster.material}
+        position={[-0.766, 1.252, 1.161]}
+      />
+      <mesh
+        name="Pencil_4_Fourth_Hover_Raycaster"
+        geometry={nodes.Pencil_4_Fourth_Hover_Raycaster.geometry}
+        material={nodes.Pencil_4_Fourth_Hover_Raycaster.material}
+        position={[-0.83, 1.244, 1.166]}
+      />
+      <mesh
+        name="Pencil_5_Fourth_Hover_Raycaster"
+        geometry={nodes.Pencil_5_Fourth_Hover_Raycaster.geometry}
+        material={nodes.Pencil_5_Fourth_Hover_Raycaster.material}
+        position={[-0.787, 1.248, 1.154]}
+      />
+      <mesh
+        name="Hanging_Plank_2_Third"
+        geometry={nodes.Hanging_Plank_2_Third.geometry}
+        material={nodes.Hanging_Plank_2_Third.material}
+        position={[-1.272, 2.548, 2.021]}
+        rotation={[0, 1.526, 0]}
+      />
+      <mesh
+        name="About_Button_Third"
+        geometry={nodes.About_Button_Third.geometry}
+        material={nodes.About_Button_Third.material}
+        position={[-1.236, 1.775, 2.027]}
+        rotation={[0, 1.526, -1.506]}
+      />
+      <mesh
+        name="Contact_Button_Third"
+        geometry={nodes.Contact_Button_Third.geometry}
+        material={nodes.Contact_Button_Third.material}
+        position={[-1.236, 1.325, 2.027]}
+        rotation={[0, 1.526, -1.631]}
+      />
+      <mesh
+        name="My_Work_Button_Third"
+        geometry={nodes.My_Work_Button_Third.geometry}
+        material={nodes.My_Work_Button_Third.material}
+        position={[-1.236, 2.223, 2.027]}
+        rotation={[-0.873, 1.506, -0.76]}
+      />
+      <mesh
         name="First"
         geometry={nodes.First.geometry}
         material={nodes.First.material}
@@ -803,12 +812,21 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         material={nodes.Fourth.material}
         position={[-0.852, 1.163, 1.226]}
       />
+      <mesh
+        name="PS5_Digital_stand"
+        geometry={nodes.PS5_Digital_stand.geometry}
+        material={nodes.PS5_Digital_stand.material}
+        position={[-0.735, 1.184, -0.899]}
+        rotation={[Math.PI / 2, 0, -1.588]}
+      />
 
       <Pino nodes={nodes} />
 
       <Clock nodes={nodes} />
 
-      <RoomAccessories nodes={nodes} />
+      <Suspense fallback={null}>
+        <RoomAccessories nodes={nodes} />
+      </Suspense>
 
       <skinnedMesh
         name="Cat_Second"
@@ -823,5 +841,5 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
 }
 
 useGLTF.preload(
-  "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772540495/my-room-3d_km5hxd.glb"
+  "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb"
 );
