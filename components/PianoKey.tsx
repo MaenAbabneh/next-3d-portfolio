@@ -9,12 +9,20 @@ import { useFrame, useThree } from "@react-three/fiber";
 
 const sound = new Howl({
   src: ["/textures/sound/piano-note-c2_1bpm_C.wav"],
+  preload: true,
   volume: 0.5,
 });
 
 gsap.registerPlugin(useGSAP);
-
-export function PianoKey({ node, index }: { node: any; index: number }) {
+export function PianoKey({
+  node,
+  index,
+  name,
+}: {
+  node: any;
+  index: number;
+  name?: string;
+}) {
   const meshRef = useRef<THREE.Mesh>(null);
   const { camera } = useThree();
   const soundId = useRef<number | null>(null);
@@ -59,8 +67,8 @@ export function PianoKey({ node, index }: { node: any; index: number }) {
       meshRef.current.rotation.x = initialRotationX;
       gsap.to(meshRef.current.rotation, {
         x: initialRotationX + 0.1,
-        duration: 0.15,
-        ease: "power2.out",
+        duration: 0.2,
+        ease: "back.out(1.8)",
         yoyo: true,
         repeat: 1,
         overwrite: true,
@@ -70,6 +78,7 @@ export function PianoKey({ node, index }: { node: any; index: number }) {
 
   return (
     <mesh
+      name={name ?? node?.name}
       ref={meshRef}
       geometry={node.geometry}
       material={node.material}
