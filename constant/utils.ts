@@ -252,7 +252,7 @@ export const HOVER_CONFIG: Record<string, HoverSettings> = {
     duration: 0.3,
   },
   LETTER: {
-    items: ["Name_Letter" , "Dot"],
+    items: ["Name_Letter", "Dot"],
     scale: 1.4,
     duration: 0.3,
   },
