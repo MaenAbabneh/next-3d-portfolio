@@ -4,16 +4,23 @@ import { useLayoutEffect } from "react";
 
 export const useRoomTextures = () => {
   const rawTextures = useTexture({
-    "day-1": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772539220/texture-day-1_fxxwpr.webp",
-    "day-2": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772375896/texture-day-2_zoo49s.webp",
-    "day-3": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772375896/texture-day-3_yurejc.webp",
-    "day-4": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772375897/texture-day-4_rz9urx.webp",
-    "night-1": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772539220/texture-night-1_czwvr6.webp",
-    "night-2": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772375906/texture-night-2_ostzfa.webp",
-    "night-3": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772375906/texture-night-3_z3pb5l.webp",
-    "night-4": "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772375907/texture-night-4_xcwsq3.webp",
+    "day-1":
+      "https://res.cloudinary.com/dsgajdqm0/image/upload/q_auto,f_auto/v1772696782/texture-day-1_tprp4k.png",
+    "day-2":
+      "https://res.cloudinary.com/dsgajdqm0/image/upload/q_auto,f_auto/v1772696783/texture-day-2_ruyhf1.png",
+    "day-3":
+      "https://res.cloudinary.com/dsgajdqm0/image/upload/q_auto,f_auto/v1772700563/texture-day-3_m01m7o.png",
+    "day-4":
+      "https://res.cloudinary.com/dsgajdqm0/image/upload/q_auto,f_auto/v1772696786/texture-day-4_dlthhg.png",
+    "night-1":
+      "https://res.cloudinary.com/dsgajdqm0/image/upload/q_auto,f_auto/v1772696783/texture-night-1_azij12.png",
+    "night-2":
+      "https://res.cloudinary.com/dsgajdqm0/image/upload/q_auto,f_auto/v1772696784/texture-night-2_ohwyie.png",
+    "night-3":
+      "https://res.cloudinary.com/dsgajdqm0/image/upload/q_auto,f_auto/v1772700561/texture-night-3_hknleh.png",
+    "night-4":
+      "https://res.cloudinary.com/dsgajdqm0/image/upload/q_auto,f_auto/v1772696787/texture-night-4_qnfcru.png",
   });
-
 
   useLayoutEffect(() => {
     Object.values(rawTextures).forEach((texture) => {
@@ -42,5 +49,5 @@ export const useRoomTextures = () => {
     },
   };
 
-  return { roomTexture:structuredTextures };
+  return { roomTexture: structuredTextures };
 };
