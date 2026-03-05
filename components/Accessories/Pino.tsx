@@ -12,7 +12,9 @@ export function Pino({ nodes }: { nodes: any }) {
 
         if (!node) return null;
 
-        return <PianoKey key={keyName} node={node} index={index} />;
+        return (
+          <PianoKey key={fullName} node={node} index={index} name={fullName} />
+        );
       })}
     </group>
   );
