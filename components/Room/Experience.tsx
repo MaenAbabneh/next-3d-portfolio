@@ -6,17 +6,29 @@ import { Environment, OrbitControls } from "@react-three/drei";
 import { Suspense } from "react";
 import { Model } from "./Room"; // تأكد من المسار
 
-import { Loader } from "../LoadingScreen";
+import { LoadingScreen } from "../LoadingScreen";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useSound } from "@/components/SoundProvider";
+import { SoundToggle } from "../SoundToggle";
 
 export default function Experience() {
-  const [start, setStart] = useState(false);
+  const [startExperience, setStartExperience] = useState(false);
+  const { setMuted } = useSound();
 
+  const handleStarted = (withSound: boolean) => {
+    setMuted(!withSound);
+
+    // ملاحظة: لا نخفي المكون فوراً لأن الأنيميشن يحتاج وقتاً
+    // لكن GSAP في المكون يتعامل مع إخراج العنصر من الشاشة (y: 200vh)
+    // يمكننا هنا فقط تغيير الحالة للسماح للتجربة بالعمل
+    setStartExperience(true);
+  };
   return (
     <div className="w-full h-screen bg-[#111111]">
-      <Loader started={start} onStarted={() => setStart(true)} />
+      <LoadingScreen onStarted={handleStarted} />
 
-      <div className="absolute top-10 right-14 z-10">
+      <div className="absolute top-10 right-14 z-10 flex gap-4">
+        <SoundToggle />
         <ThemeToggle />
       </div>
 
@@ -24,7 +36,7 @@ export default function Experience() {
         <Environment preset="city" />
         <OrbitControls makeDefault />
         <Suspense fallback={null}>
-          <Model started={start} />
+          <Model started={startExperience} />
         </Suspense>
       </Canvas>
     </div>
