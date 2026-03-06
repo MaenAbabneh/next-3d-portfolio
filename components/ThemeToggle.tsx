@@ -6,13 +6,17 @@ import gsap from "gsap";
 import { useEffect, useState, useRef } from "react";
 import { MoonIcon } from "./Icons/MoonIcon";
 import { SunIcon } from "./Icons/SunIcon";
+import { useRipple } from "@/hooks/animations/useRipple";
 
 export function ThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+
   const containerRef = useRef<HTMLButtonElement>(null);
+  const rippleRef = useRef<HTMLElement>(null);
   const sunRef = useRef<HTMLDivElement>(null);
   const moonRef = useRef<HTMLDivElement>(null);
+
   const hasInitialized = useRef(false);
 
   useEffect(() => {
@@ -20,65 +24,77 @@ export function ThemeToggle() {
     return () => cancelAnimationFrame(id);
   }, []);
 
+  const isDark = resolvedTheme === "dark";
+
+  const { registerClick } = useRipple({
+    containerRef,
+    rippleRef,
+    isDark,
+    colors: {
+      darkBg: "var(--color-base-blue)",
+      lightBg: "var(--color-base-cream)",
+      darkBorder: "var(--color-base-blue-dark)",
+      lightBorder: "var(--color-base-yellow)",
+    },
+  });
+
+  const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    registerClick(e); // 1. نسجل مكان الضغطة للهوك
+    setTheme(isDark ? "light" : "dark"); // 2. نغير الثيم
+  };
+
   useGSAP(() => {
     if (!mounted) return;
 
     const container = containerRef.current;
+    const ripple = rippleRef.current;
     const sun = sunRef.current;
     const moon = moonRef.current;
-    if (!container || !sun || !moon) return;
+
+    if (!container || !sun || !moon || !ripple) return;
 
     const isDark = resolvedTheme === "dark";
 
-    const rootStyles = getComputedStyle(document.documentElement);
-    const cssVar = (name: string) => rootStyles.getPropertyValue(name).trim();
-    const backgroundColor = isDark
-      ? cssVar("--color-base-blue")
-      : cssVar("--color-base-cream");
-    const borderColor = isDark
-      ? cssVar("--color-base-blue-dark")
-      : cssVar("--color-base-yellow");
-
-    const sunState = {
-      y: isDark ? 40 : 0,
-      opacity: isDark ? 0 : 1,
-      scale: isDark ? 0.5 : 1,
-    };
-    const moonState = {
-      y: isDark ? 0 : -40,
-      opacity: isDark ? 1 : 0,
-      scale: isDark ? 1 : 0.5,
-    };
-
     if (!hasInitialized.current) {
-      gsap.set(container, { backgroundColor, borderColor });
-      gsap.set(sun, sunState);
-      gsap.set(moon, moonState);
+      gsap.set(sun, {
+        y: isDark ? 40 : 0,
+        opacity: isDark ? 0 : 1,
+        scale: isDark ? 0.5 : 1,
+      });
+      gsap.set(moon, {
+        y: isDark ? 0 : -40,
+        opacity: isDark ? 1 : 0,
+        scale: isDark ? 1 : 0.5,
+      });
+      gsap.set(ripple, { opacity: 0 }); // إخفاء الدائرة
       hasInitialized.current = true;
       return;
     }
+    const tl = gsap.timeline();
 
-    // 1. تحريك ألوان الزر (الخلفية والحدود) بنعومة
-    gsap.to(container, {
-      backgroundColor,
-      borderColor,
-      duration: 0.5,
-      ease: "power2.inOut",
-    });
+    tl.to(
+      sun,
+      {
+        y: isDark ? 40 : 0,
+        opacity: isDark ? 0 : 1,
+        scale: isDark ? 0.5 : 1,
+        duration: 0.5,
+        ease: "back.out(1.7)",
+      },
+      "<",
+    );
 
-    // 2. تحريك الشمس (خروج/دخول)
-    gsap.to(sun, {
-      ...sunState,
-      duration: 0.5,
-      ease: "back.out(1.7)",
-    });
-
-    // 3. تحريك القمر (دخول/خروج)
-    gsap.to(moon, {
-      ...moonState,
-      duration: 0.5,
-      ease: "back.out(1.7)",
-    });
+    tl.to(
+      moon,
+      {
+        y: isDark ? 0 : -40,
+        opacity: isDark ? 1 : 0,
+        scale: isDark ? 1 : 0.5,
+        duration: 0.5,
+        ease: "back.out(1.7)",
+      },
+      "<",
+    );
   }, [resolvedTheme, mounted]);
 
   if (!mounted) return null;
@@ -86,9 +102,13 @@ export function ThemeToggle() {
   return (
     <button
       ref={containerRef}
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="relative overflow-hidden w-16 h-16 rounded-2xl border-[4px] flex items-center justify-center cursor-pointer shadow-lg"
+      onClick={handleToggle}
+      className="relative overflow-hidden w-16 h-16 bg-base-cream border-base-yellow dark:bg-base-blue dark:border-base-blue-dark rounded-2xl border-4 flex items-center justify-center cursor-pointer shadow-lg"
     >
+      <span
+        ref={rippleRef}
+        className="absolute w-4 h-4 rounded-full pointer-events-none z-0 block"
+      />
       {/* ☀️ حاوية الشمس */}
       <div
         ref={sunRef}
