@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import type { RoomMaterialBundle } from "./useRoomMaterials";
+import type { RoomMaterialBundle } from "../useRoomMaterials";
 
 export function useCinematicTransition(
   materials: RoomMaterialBundle | null,
