@@ -8,9 +8,9 @@ import { SkeletonUtils } from "three-stdlib";
 import { GLTFResult } from "@/types/room.types";
 import { useTheme } from "next-themes";
 import { useRoomMaterials } from "@/hooks/useRoomMaterials";
-import { useCinematicTransition } from "@/hooks/useCinematicTransition";
-import { useIntroAnimation } from "@/hooks/useIntroAnimation";
-import { useHoverAnimation } from "@/hooks/useHoverAnimation";
+import { useCinematicTransition } from "@/hooks/animations/useCinematicTransition";
+import { useIntroAnimation } from "@/hooks/animations/useIntroAnimation";
+import { useHoverAnimation } from "@/hooks/animations/useHoverAnimation";
 import { RoomAccessories } from "../Accessories/RoomAccessories";
 import { Clock } from "../Accessories/Clock";
 import { Pino } from "../Accessories/Pino";
@@ -19,7 +19,7 @@ type ModelProps = JSX.IntrinsicElements["group"] & { started?: boolean };
 
 export function Model({ started = false, ...props }: ModelProps) {
   const { scene } = useGLTF(
-    "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb",
+    "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb"
   );
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone) as unknown as GLTFResult;
@@ -845,5 +845,5 @@ export function Model({ started = false, ...props }: ModelProps) {
 }
 
 useGLTF.preload(
-  "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb",
+  "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb"
 );
