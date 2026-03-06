@@ -13,7 +13,7 @@ export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
 
   const containerRef = useRef<HTMLButtonElement>(null);
-  const rippleRef = useRef<HTMLElement>(null);
+  const rippleRef = useRef<HTMLDivElement>(null);
   const sunRef = useRef<HTMLDivElement>(null);
   const moonRef = useRef<HTMLDivElement>(null);
 
@@ -30,6 +30,7 @@ export function ThemeToggle() {
     containerRef,
     rippleRef,
     isDark,
+    borderWidth: 4, // يجب أن يطابق البوردر في CSS
     colors: {
       darkBg: "var(--color-base-blue)",
       lightBg: "var(--color-base-cream)",
@@ -39,22 +40,20 @@ export function ThemeToggle() {
   });
 
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
-    registerClick(e); // 1. نسجل مكان الضغطة للهوك
-    setTheme(isDark ? "light" : "dark"); // 2. نغير الثيم
+    registerClick(e);
+    setTheme(isDark ? "light" : "dark");
   };
 
+  // GSAP: مسؤول فقط عن حركة الأيقونات (الشمس والقمر)
   useGSAP(() => {
     if (!mounted) return;
 
-    const container = containerRef.current;
-    const ripple = rippleRef.current;
     const sun = sunRef.current;
     const moon = moonRef.current;
 
-    if (!container || !sun || !moon || !ripple) return;
+    if (!sun || !moon) return;
 
-    const isDark = resolvedTheme === "dark";
-
+    // الإعداد الأولي للأيقونات
     if (!hasInitialized.current) {
       gsap.set(sun, {
         y: isDark ? 40 : 0,
@@ -66,23 +65,20 @@ export function ThemeToggle() {
         opacity: isDark ? 1 : 0,
         scale: isDark ? 1 : 0.5,
       });
-      gsap.set(ripple, { opacity: 0 }); // إخفاء الدائرة
       hasInitialized.current = true;
       return;
     }
+
+    // الأنيميشن عند التبديل
     const tl = gsap.timeline();
 
-    tl.to(
-      sun,
-      {
-        y: isDark ? 40 : 0,
-        opacity: isDark ? 0 : 1,
-        scale: isDark ? 0.5 : 1,
-        duration: 0.5,
-        ease: "back.out(1.7)",
-      },
-      "<",
-    );
+    tl.to(sun, {
+      y: isDark ? 40 : 0,
+      opacity: isDark ? 0 : 1,
+      scale: isDark ? 0.5 : 1,
+      duration: 0.5,
+      ease: "back.out(1.7)",
+    });
 
     tl.to(
       moon,
@@ -97,22 +93,23 @@ export function ThemeToggle() {
     );
   }, [resolvedTheme, mounted]);
 
-  if (!mounted) return null;
+  if (!mounted) return <div className="w-16 h-16" />;
 
   return (
     <button
       ref={containerRef}
       onClick={handleToggle}
-      className="relative overflow-hidden w-16 h-16 bg-base-cream border-base-yellow dark:bg-base-blue dark:border-base-blue-dark rounded-2xl border-4 flex items-center justify-center cursor-pointer shadow-lg"
+      className="relative box-border w-16 h-16 rounded-2xl border-4 flex items-center justify-center cursor-pointer shadow-lg bg-base-cream border-base-yellow dark:bg-base-blue dark:border-base-blue-dark"
     >
-      <span
+      <div
         ref={rippleRef}
-        className="absolute w-4 h-4 rounded-full pointer-events-none z-0 block"
+        className="absolute -inset-1 rounded-2xl border-4 z-0 pointer-events-none hidden"
       />
+
       {/* ☀️ حاوية الشمس */}
       <div
         ref={sunRef}
-        className="absolute inset-0 flex items-center justify-center"
+        className="absolute inset-0 flex items-center justify-center z-10"
       >
         <SunIcon className="w-9 h-9 text-base-yellow" />
       </div>
@@ -120,7 +117,7 @@ export function ThemeToggle() {
       {/* 🌙 حاوية القمر */}
       <div
         ref={moonRef}
-        className="absolute inset-0 flex items-center justify-center "
+        className="absolute inset-0 flex items-center justify-center z-10"
       >
         <MoonIcon
           className="w-9 h-9 text-base-blue-dark"
