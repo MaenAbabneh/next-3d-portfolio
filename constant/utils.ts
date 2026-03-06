@@ -262,3 +262,20 @@ export const HOVER_CONFIG: Record<string, HoverSettings> = {
     duration: 0.4,
   },
 };
+
+export const ANIMATION_CONFIG = {
+  duration: {
+    fast: 0.3,
+    normal: 0.5,
+    slow: 0.8,
+  },
+  ease: {
+    elastic: "back.out(1.7)",
+    smooth: "power2.inOut",
+    bounce: "bounce.out",
+  },
+  colors: {
+    darkBg: "var(--color-base-blue)",
+    lightBg: "var(--color-base-cream)",
+  },
+};
