@@ -7,8 +7,11 @@ import { Howl } from "howler";
 import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 
 const sound = new Howl({
-  src: ["/textures/sound/piano-note-c2_1bpm_C.wav"],
+  src: [
+    "https://res.cloudinary.com/dsgajdqm0/video/upload/f_auto/v1772802641/piano-note-c2_zbmvwc.mp3",
+  ],
   preload: true,
+  // html5: true,
   volume: 0.5,
 });
 
