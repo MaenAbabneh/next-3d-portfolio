@@ -1,17 +1,18 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef } from "react";
+import { useRef, RefObject } from "react";
 
 interface UseRippleProps {
-  containerRef: React.RefObject<HTMLElement | null>;
-  rippleRef: React.RefObject<HTMLElement | null>;
-  isDark: boolean; // أو isActive
+  containerRef: RefObject<HTMLElement | null>;
+  rippleRef: RefObject<HTMLElement | null>;
+  isDark: boolean;
   colors: {
     darkBg: string;
     lightBg: string;
     darkBorder: string;
     lightBorder: string;
   };
+  borderWidth?: number; // مهم جداً لتصحيح الإزاحة
 }
 
 export function useRipple({
@@ -19,13 +20,13 @@ export function useRipple({
   rippleRef,
   isDark,
   colors,
+  borderWidth = 4, // نفس حجم البوردر في CSS
 }: UseRippleProps) {
-  // حفظ إحداثيات النقر
   const clickPos = useRef({ x: 0, y: 0 });
   const isClickInteraction = useRef(false);
   const hasInitialized = useRef(false);
 
-  // دالة تُربط بحدث onClick
+  // تسجيل موقع النقر
   const registerClick = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -39,60 +40,77 @@ export function useRipple({
   useGSAP(() => {
     const container = containerRef.current;
     const ripple = rippleRef.current;
+
     if (!container || !ripple) return;
 
-    // تحديد الألوان المستهدفة
     const targetBg = isDark ? colors.darkBg : colors.lightBg;
     const targetBorder = isDark ? colors.darkBorder : colors.lightBorder;
 
-    // 1. الإعداد الأولي (لمنع الانيميشن عند تحميل الصفحة)
+    // 1. الإعداد الأولي (عند فتح الصفحة فقط)
     if (!hasInitialized.current) {
       gsap.set(container, {
         backgroundColor: targetBg,
         borderColor: targetBorder,
       });
-      gsap.set(ripple, { opacity: 0 });
+      gsap.set(ripple, { display: "none" }); // نخفي الـ Ripple
       hasInitialized.current = true;
       return;
     }
 
+    const rect = container.getBoundingClientRect();
+
+    // نحدد نقطة الهدف داخل الكونتينر
+    const clickX = isClickInteraction.current
+      ? clickPos.current.x
+      : rect.width / 2;
+    const clickY = isClickInteraction.current
+      ? clickPos.current.y
+      : rect.height / 2;
+
+    // 🔥 تصحيح الإحداثيات: لأن الـ Ripple أكبر من الزر بـ 4px من كل جهة
+    // يجب أن نضيف قيمة البوردر للإحداثيات لكي تكون الكرة تحت الإصبع تماماً
+    const rippleX = clickX + borderWidth;
+    const rippleY = clickY + borderWidth;
+
+    // حساب ارتفاع الـ Ripple الكلي (لنعرف أين يقع القاع "Bottom")
+    const rippleHeight = rect.height + borderWidth * 2;
+
     const tl = gsap.timeline();
 
-    // تحديد نقطة الانطلاق (مكان النقر أو المنتصف)
-    const startX = isClickInteraction.current
-      ? clickPos.current.x
-      : container.offsetWidth / 2;
-    const startY = isClickInteraction.current
-      ? clickPos.current.y
-      : container.offsetHeight / 2;
-
-    // 2. تجهيز الدائرة
+    // 2. تجهيز الطبقة
     tl.set(ripple, {
-      left: startX,
-      top: startY,
-      xPercent: -50,
-      yPercent: -50,
-      scale: 0,
-      opacity: 1,
-      backgroundColor: targetBg, // الدائرة تأخذ لون الثيم الجديد
+      backgroundColor: targetBg,
+      borderColor: targetBorder,
+      display: "block",
+      zIndex: 0, // خلف الأيقونات
+      // نبدأ من الأسفل (Bottom Center of X)
+      // نستخدم rippleHeight بدلاً من 100% لضمان دقة بكسل مع GSAP
+      clipPath: `circle(10px at ${rippleX}px ${rippleHeight}px)`,
     });
 
-    // 3. تكبير الدائرة
+    // 3. المرحلة الأولى: الصعود لمكان النقر 🚀
     tl.to(ripple, {
-      scale: 45, // رقم كبير لضمان التغطية
-      duration: 0.6,
-      ease: "power2.in",
+      clipPath: `circle(15px at ${rippleX}px ${rippleY}px)`,
+      duration: 0.3,
+      ease: "power2.out",
+    });
+
+    // 4. المرحلة الثانية: التوسع الكامل 💥
+    tl.to(ripple, {
+      clipPath: `circle(150% at ${rippleX}px ${rippleY}px)`,
+      duration: 0.5,
+      ease: "power2.inOut",
       onComplete: () => {
-        // بعد الامتلاء، نثبت لون الخلفية ونخفي الدائرة
-        gsap.set(container, { backgroundColor: targetBg });
-        gsap.set(ripple, { opacity: 0 });
+        // تثبيت الألوان على الزر الأصلي وإخفاء الـ Ripple
+        gsap.set(container, {
+          backgroundColor: targetBg,
+          borderColor: targetBorder,
+        });
+        gsap.set(ripple, { display: "none" });
         isClickInteraction.current = false;
       },
     });
-
-    // 4. تغيير البوردر بالتزامن
-    tl.to(container, { borderColor: targetBorder, duration: 0.3 }, "<0.1");
-  }, [isDark]); // يعيد التشغيل عند تغير الثيم
+  }, [isDark]);
 
   return { registerClick };
 }
