@@ -1,26 +1,38 @@
 @import "tailwindcss";
 
-:root {
+@variant dark (&:where(.dark, .dark *));
+
+@theme{
   --background: #ffffff;
   --foreground: #171717;
-}
+  --font-geist-sans:
+    "Geist Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-geist-mono:
+    "Geist Mono", SF Mono, SF Mono Regular, Consolas, "Liberation Mono", Menlo,
+    Courier, monospace;
 
+  --bg-color-dark-blue: #29529b;
+  --bg-color-blue: #ced4db;
+  --bg-color-yellow: #fab95b;
+  --bg-color-cream: #e8e2db;
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-base-blue-dark: var(--bg-color-dark-blue);
+  --color-base-blue: var(--bg-color-blue);
+  --color-base-yellow: var(--bg-color-yellow);
+  --color-base-cream: var(--bg-color-cream);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans); /* استخدام المتغير هنا أفضل */
 }
+
+
