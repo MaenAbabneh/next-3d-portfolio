@@ -32,10 +32,10 @@ export function ThemeToggle() {
     isDark,
     borderWidth: 4, // يجب أن يطابق البوردر في CSS
     colors: {
-      darkBg: "var(--color-base-blue)",
+      darkBg: "var(--color-base-blue-light)",
       lightBg: "var(--color-base-cream)",
       darkBorder: "var(--color-base-blue-dark)",
-      lightBorder: "var(--color-base-yellow)",
+      lightBorder: "var(--color-base-blue)",
     },
   });
 
@@ -99,7 +99,7 @@ export function ThemeToggle() {
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       ref={containerRef}
       onClick={handleToggle}
-      className="relative box-border w-16 h-16 rounded-2xl border-4 flex items-center justify-center cursor-pointer shadow-lg bg-base-cream border-base-yellow dark:bg-base-blue dark:border-base-blue-dark"
+      className="relative box-border w-16 h-16 rounded-2xl border-4 flex items-center justify-center cursor-pointer shadow-lg bg-base-cream border-base-blue dark:bg-base-blue-light dark:border-base-blue-dark"
     >
       <div
         ref={rippleRef}
@@ -111,7 +111,7 @@ export function ThemeToggle() {
         ref={sunRef}
         className="absolute inset-0 flex items-center justify-center z-10"
       >
-        <TbSunset2Filled className="w-9 h-9 text-base-yellow" />
+        <TbSunset2Filled className="w-9 h-9 text-base-blue dark:text-base-blue-dark" />
       </div>
 
       {/* 🌙 حاوية القمر */}
@@ -119,7 +119,7 @@ export function ThemeToggle() {
         ref={moonRef}
         className="absolute inset-0 flex items-center justify-center z-10"
       >
-        <BsMoonStarsFill className="w-7 h-7 text-base-blue-dark" />
+        <BsMoonStarsFill className="w-7 h-7 text-base-blue dark:text-base-blue-dark" />
       </div>
     </button>
   );

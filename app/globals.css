@@ -12,8 +12,8 @@
     Courier, monospace;
 
   --bg-color-dark-blue: #29529b;
-  --bg-color-blue: #ced4db;
-  --bg-color-yellow: #ffc079;
+  --bg-color-blue-light: #ced4db;
+  --bg-color-blue: #5999E1;
   --bg-color-cream: #e8e2db;
   --bg-color-brwan: #554d4d;
   --bg-color-mist: #e6dede;
@@ -25,8 +25,8 @@
   --font-mono: var(--font-geist-mono);
 
   --color-base-blue-dark: var(--bg-color-dark-blue);
+  --color-base-blue-light: var(--bg-color-blue-light);
   --color-base-blue: var(--bg-color-blue);
-  --color-base-yellow: var(--bg-color-yellow);
   --color-base-cream: var(--bg-color-cream);
   --color-base-brwan: var(--bg-color-brwan);
 }

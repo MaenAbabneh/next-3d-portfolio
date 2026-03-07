@@ -28,10 +28,10 @@ export function SoundToggle() {
     isDark,
     borderWidth: 4,
     colors: {
+      darkBg: "var(--color-base-blue-light)",
       lightBg: "var(--color-base-cream)",
-      lightBorder: "var(--color-base-yellow)",
-      darkBg: "var(--color-base-blue)",
       darkBorder: "var(--color-base-blue-dark)",
+      lightBorder: "var(--color-base-blue)",
     },
   });
 
@@ -94,7 +94,7 @@ export function SoundToggle() {
       aria-label={muted ? "Unmute sound" : "Mute sound"}
       ref={containerRef}
       onClick={handleClick}
-      className="relative box-border w-16 h-16 rounded-2xl border-4 flex items-center justify-center cursor-pointer shadow-lg bg-base-cream border-base-yellow dark:bg-base-blue dark:border-base-blue-dark"
+      className="relative box-border w-16 h-16 rounded-2xl border-4 flex items-center justify-center cursor-pointer shadow-lg bg-base-cream border-base-blue dark:bg-base-blue-light dark:border-base-blue-dark"
     >
       <div
         ref={rippleRef}
@@ -106,7 +106,7 @@ export function SoundToggle() {
         ref={onIconRef}
         className="absolute inset-0 flex items-center justify-center z-10"
       >
-        <BiSolidVolumeFull className="w-8 h-8 text-base-yellow dark:text-base-blue-dark" />
+        <BiSolidVolumeFull className="w-8 h-8 text-base-blue dark:text-base-blue-dark" />
       </div>
 
       {/* Sound OFF */}
@@ -114,7 +114,7 @@ export function SoundToggle() {
         ref={offIconRef}
         className="absolute inset-0 flex items-center justify-center z-10"
       >
-        <BiSolidVolumeMute className="w-8 h-8 text-base-yellow dark:text-base-blue-dark" />
+        <BiSolidVolumeMute className="w-8 h-8 text-base-blue dark:text-base-blue-dark" />
       </div>
     </button>
   );

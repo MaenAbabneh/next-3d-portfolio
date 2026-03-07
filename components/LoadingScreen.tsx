@@ -29,10 +29,9 @@ export const LoadingScreen = ({ onStarted }: LoadingScreenProps) => {
 
     buttonRef.current.classList.add(
       "bg-var(--color-base-cream)",
-      "dark:bg-var(--color-base-blue)", // الخلفية
+      "dark:bg-var(--color-base-blue-light)", // الخلفية
       "text-var(--color-base-brwan)",
-      "dark:text-var(--color-base-mist)", // النص
-      "border-var(--color-base-yellow)",
+      "border-var(--color-base-blue)",
       "dark:border-var(--color-base-blue-dark)", // الإطار
       "border-8",
       "cursor-default",
@@ -70,7 +69,7 @@ export const LoadingScreen = ({ onStarted }: LoadingScreenProps) => {
   return (
     <div
       ref={containerRef}
-      className="w-full h-full fixed inset-0 z-999999 flex flex-col items-center justify-center overflow-hidden bg-base-cream dark:bg-base-blue border-20 border-base-yellow dark:border-base-blue-dark rounded-4xl origin-center"
+      className="w-full h-full fixed inset-0 z-999999 flex flex-col items-center justify-center overflow-hidden bg-base-cream dark:bg-base-blue-light border-20 border-base-blue dark:border-base-blue-dark rounded-4xl origin-center"
     >
       <button
         ref={buttonRef}
@@ -79,7 +78,7 @@ export const LoadingScreen = ({ onStarted }: LoadingScreenProps) => {
         className={`
           relative px-16 py-6 text-4xl md:text-6xl rounded-3xl outline-none
           transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]
-          font-bold font-serif border-12 text-base-brwan border-solid border-base-yellow dark:border-base-blue-dark bg-base-cream dark:bg-base-blue
+          font-bold font-serif border-12 text-base-brwan border-solid border-base-blue dark:border-base-blue-dark bg-base-cream dark:bg-base-blue-light
           shadow-[0px_3px_8px_rgba(0,0,0,0.24)]
           ${!isLoaded ? "cursor-wait " : "cursor-pointer hover:scale-[1.1]"}
         `}
