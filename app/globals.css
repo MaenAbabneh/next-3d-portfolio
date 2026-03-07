@@ -2,7 +2,7 @@
 
 @variant dark (&:where(.dark, .dark *));
 
-@theme{
+@theme {
   --background: #ffffff;
   --foreground: #171717;
   --font-geist-sans:
@@ -13,8 +13,10 @@
 
   --bg-color-dark-blue: #29529b;
   --bg-color-blue: #ced4db;
-  --bg-color-yellow: #fab95b;
+  --bg-color-yellow: #ffc079;
   --bg-color-cream: #e8e2db;
+  --bg-color-brwan: #554d4d;
+  --bg-color-mist: #e6dede;
 }
 @theme inline {
   --color-background: var(--background);
@@ -26,13 +28,11 @@
   --color-base-blue: var(--bg-color-blue);
   --color-base-yellow: var(--bg-color-yellow);
   --color-base-cream: var(--bg-color-cream);
+  --color-base-brwan: var(--bg-color-brwan);
 }
-
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans); /* استخدام المتغير هنا أفضل */
 }
-
-
