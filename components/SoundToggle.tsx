@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRef } from "react";
-import { LuVolume2, LuVolumeX } from "react-icons/lu";
+import { BiSolidVolumeMute, BiSolidVolumeFull } from "react-icons/bi";
 import { useRipple } from "@/hooks/animations/useRipple";
 
 export function SoundToggle() {
@@ -22,7 +22,6 @@ export function SoundToggle() {
 
   const isDark = resolvedTheme === "dark";
 
-  // إعداد Ripple Hook
   const { registerClick } = useRipple({
     containerRef,
     rippleRef,
@@ -63,7 +62,6 @@ export function SoundToggle() {
       hasInitialized.current = true;
       return;
     }
-
     const tl = gsap.timeline();
 
     // إخفاء/إظهار أيقونة الصوت
@@ -89,10 +87,11 @@ export function SoundToggle() {
     );
   }, [muted, mounted]);
 
-  if (!mounted) return <div className="w-16 h-16" />;
+  if (!mounted) return null;
 
   return (
     <button
+      aria-label={muted ? "Unmute sound" : "Mute sound"}
       ref={containerRef}
       onClick={handleClick}
       className="relative box-border w-16 h-16 rounded-2xl border-4 flex items-center justify-center cursor-pointer shadow-lg bg-base-cream border-base-yellow dark:bg-base-blue dark:border-base-blue-dark"
@@ -107,7 +106,7 @@ export function SoundToggle() {
         ref={onIconRef}
         className="absolute inset-0 flex items-center justify-center z-10"
       >
-        <LuVolume2 className="w-8 h-8 text-base-yellow dark:text-base-blue-dark" />
+        <BiSolidVolumeFull className="w-8 h-8 text-base-yellow dark:text-base-blue-dark" />
       </div>
 
       {/* Sound OFF */}
@@ -115,7 +114,7 @@ export function SoundToggle() {
         ref={offIconRef}
         className="absolute inset-0 flex items-center justify-center z-10"
       >
-        <LuVolumeX className="w-8 h-8 text-base-yellow dark:text-base-blue-dark" />
+        <BiSolidVolumeMute className="w-8 h-8 text-base-yellow dark:text-base-blue-dark" />
       </div>
     </button>
   );
