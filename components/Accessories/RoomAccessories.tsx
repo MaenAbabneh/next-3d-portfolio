@@ -9,7 +9,9 @@ interface RoomAccessoriesProps {
 }
 
 export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
-  const videoTexture = useVideoTexture("/textures/video/screen-loop.mp4");
+  const videoTexture = useVideoTexture(
+    "https://res.cloudinary.com/dsgajdqm0/video/upload/v1772888225/screen-loop_w3slvn.mp4",
+  );
 
   // 2. تحميل صور البوسترات
   const imageTexture = useTexture({
