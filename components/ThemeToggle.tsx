@@ -4,8 +4,8 @@ import { useTheme } from "next-themes";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useEffect, useState, useRef } from "react";
-import { MoonIcon } from "./Icons/MoonIcon";
-import { SunIcon } from "./Icons/SunIcon";
+import { BsMoonStarsFill } from "react-icons/bs";
+import { TbSunset2Filled } from "react-icons/tb";
 import { useRipple } from "@/hooks/animations/useRipple";
 
 export function ThemeToggle() {
@@ -44,7 +44,6 @@ export function ThemeToggle() {
     setTheme(isDark ? "light" : "dark");
   };
 
-  // GSAP: مسؤول فقط عن حركة الأيقونات (الشمس والقمر)
   useGSAP(() => {
     if (!mounted) return;
 
@@ -93,10 +92,11 @@ export function ThemeToggle() {
     );
   }, [resolvedTheme, mounted]);
 
-  if (!mounted) return <div className="w-16 h-16" />;
+  if (!mounted) return null;
 
   return (
     <button
+      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       ref={containerRef}
       onClick={handleToggle}
       className="relative box-border w-16 h-16 rounded-2xl border-4 flex items-center justify-center cursor-pointer shadow-lg bg-base-cream border-base-yellow dark:bg-base-blue dark:border-base-blue-dark"
@@ -111,7 +111,7 @@ export function ThemeToggle() {
         ref={sunRef}
         className="absolute inset-0 flex items-center justify-center z-10"
       >
-        <SunIcon className="w-9 h-9 text-base-yellow" />
+        <TbSunset2Filled className="w-9 h-9 text-base-yellow" />
       </div>
 
       {/* 🌙 حاوية القمر */}
@@ -119,10 +119,7 @@ export function ThemeToggle() {
         ref={moonRef}
         className="absolute inset-0 flex items-center justify-center z-10"
       >
-        <MoonIcon
-          className="w-9 h-9 text-base-blue-dark"
-          bodyColor="text-base-blue-dark"
-        />
+        <BsMoonStarsFill className="w-7 h-7 text-base-blue-dark" />
       </div>
     </button>
   );
