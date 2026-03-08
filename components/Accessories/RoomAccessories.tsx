@@ -67,24 +67,6 @@ export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
       >
         <meshBasicMaterial map={imageTexture.Poster} toneMapped={false} />
       </mesh>
-      <mesh
-        name="Frame_1"
-        geometry={nodes.Frame_1.geometry}
-        material={nodes.Frame_1.material}
-        position={[-0.99, 2.417, 0.781]}
-      />
-      <mesh
-        name="Frame_2"
-        geometry={nodes.Frame_2.geometry}
-        material={nodes.Frame_2.material}
-        position={[-0.993, 2.451, 1.251]}
-      />
-      <mesh
-        name="Frame_3"
-        geometry={nodes.Frame_3.geometry}
-        material={nodes.Frame_3.material}
-        position={[-0.99, 2.032, 0.745]}
-      />
     </group>
   );
 }
