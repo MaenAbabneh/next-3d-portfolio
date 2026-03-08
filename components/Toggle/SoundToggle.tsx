@@ -4,14 +4,14 @@ import { useSound } from "@/components/SoundProvider";
 import { useTheme } from "next-themes";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiSolidVolumeMute, BiSolidVolumeFull } from "react-icons/bi";
 import { useRipple } from "@/hooks/animations/useRipple";
 
 export function SoundToggle() {
   const { muted, toggleMuted } = useSound();
   const { resolvedTheme } = useTheme();
-  const mounted = typeof window !== "undefined";
+  const [mounted, setMounted] = useState(false);
 
   // Refs
   const containerRef = useRef<HTMLButtonElement>(null);
@@ -21,6 +21,11 @@ export function SoundToggle() {
   const hasInitialized = useRef(false);
 
   const isDark = resolvedTheme === "dark";
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   const { registerClick } = useRipple({
     containerRef,

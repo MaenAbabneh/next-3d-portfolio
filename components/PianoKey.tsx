@@ -16,7 +16,7 @@ function getPianoSound() {
       "https://res.cloudinary.com/dsgajdqm0/video/upload/f_mp3/v1772802641/piano-note-c2_zbmvwc.mp3",
     ],
     preload: true,
-    html5: true,
+    // html5: true,
     volume: 0.5,
   });
 
