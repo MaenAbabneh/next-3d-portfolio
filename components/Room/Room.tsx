@@ -14,12 +14,14 @@ import { useHoverAnimation } from "@/hooks/animations/useHoverAnimation";
 import { RoomAccessories } from "../Accessories/RoomAccessories";
 import { Clock } from "../Accessories/Clock";
 import { Pino } from "../Accessories/Pino";
+import { PictureFrame } from "../Accessories/PictureFrame";
+import { Menu } from "../Accessories/Menu";
 
 type ModelProps = JSX.IntrinsicElements["group"] & { started?: boolean };
 
 export function Model({ started = false, ...props }: ModelProps) {
   const { scene } = useGLTF(
-    "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb"
+    "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb",
   );
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone) as unknown as GLTFResult;
@@ -692,27 +694,6 @@ export function Model({ started = false, ...props }: ModelProps) {
         rotation={[0, -0.579, 0]}
       />
       <mesh
-        name="Frame_1_Second_Raycaster_Hover"
-        geometry={nodes.Frame_1_Second_Raycaster_Hover.geometry}
-        material={nodes.Frame_1_Second_Raycaster_Hover.material}
-        position={[-0.99, 2.417, 0.781]}
-        rotation={[-Math.PI, 0.661, -Math.PI]}
-      />
-      <mesh
-        name="Frame_2_Second_Raycaster_Hover"
-        geometry={nodes.Frame_2_Second_Raycaster_Hover.geometry}
-        material={nodes.Frame_2_Second_Raycaster_Hover.material}
-        position={[-0.993, 2.451, 1.251]}
-        rotation={[-Math.PI, 0.661, -Math.PI]}
-      />
-      <mesh
-        name="Frame_3_Second_Raycaster_Hover"
-        geometry={nodes.Frame_3_Second_Raycaster_Hover.geometry}
-        material={nodes.Frame_3_Second_Raycaster_Hover.material}
-        position={[-0.99, 2.032, 0.745]}
-        rotation={[-Math.PI, 0.661, -Math.PI]}
-      />
-      <mesh
         name="Flower_1_Fourth_Hover_Raycaster"
         geometry={nodes.Flower_1_Fourth_Hover_Raycaster.geometry}
         material={nodes.Flower_1_Fourth_Hover_Raycaster.material}
@@ -771,27 +752,6 @@ export function Model({ started = false, ...props }: ModelProps) {
         rotation={[0, 1.526, 0]}
       />
       <mesh
-        name="About_Button_Third"
-        geometry={nodes.About_Button_Third.geometry}
-        material={nodes.About_Button_Third.material}
-        position={[-1.236, 1.775, 2.027]}
-        rotation={[0, 1.526, -1.506]}
-      />
-      <mesh
-        name="Contact_Button_Third"
-        geometry={nodes.Contact_Button_Third.geometry}
-        material={nodes.Contact_Button_Third.material}
-        position={[-1.236, 1.325, 2.027]}
-        rotation={[0, 1.526, -1.631]}
-      />
-      <mesh
-        name="My_Work_Button_Third"
-        geometry={nodes.My_Work_Button_Third.geometry}
-        material={nodes.My_Work_Button_Third.material}
-        position={[-1.236, 2.223, 2.027]}
-        rotation={[-0.873, 1.506, -0.76]}
-      />
-      <mesh
         name="First"
         geometry={nodes.First.geometry}
         material={nodes.First.material}
@@ -832,6 +792,12 @@ export function Model({ started = false, ...props }: ModelProps) {
         <RoomAccessories nodes={nodes} />
       </Suspense>
 
+      <Suspense fallback={null}>
+        <PictureFrame nodes={nodes} />
+      </Suspense>
+
+      <Menu nodes={nodes} />
+
       <skinnedMesh
         name="Cat_Second"
         geometry={nodes.Cat_Second.geometry}
@@ -845,5 +811,5 @@ export function Model({ started = false, ...props }: ModelProps) {
 }
 
 useGLTF.preload(
-  "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb"
+  "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb",
 );
