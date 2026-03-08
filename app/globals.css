@@ -36,3 +36,10 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans); /* استخدام المتغير هنا أفضل */
 }
+
+@layer utilities {
+  .contact-logo {
+    @apply block w-10 h-10 md:w-14 md:h-14 ;
+    @apply transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)];
+  }
+}
