@@ -180,21 +180,19 @@ export const useHoverAnimation = (
     if (!enabled || hoverTargets.current.length === 0) return;
 
     raycaster.setFromCamera(pointer, camera);
-    const intersects = raycaster.intersectObjects(hoverTargets.current, false);
+    const intersects = raycaster.intersectObjects(hoverTargets.current, true);
 
     if (intersects.length > 0) {
-      const object = intersects[0].object;
-      if (object !== hoveredObj.current) {
+      const target = intersects[0].object;
+      if (hoveredObj.current !== target) {
         if (hoveredObj.current) animateHover(hoveredObj.current, false);
-        hoveredObj.current = object;
-        animateHover(object, true);
-        document.body.style.cursor = "pointer";
+        animateHover(target, true);
+        hoveredObj.current = target;
       }
     } else {
       if (hoveredObj.current) {
         animateHover(hoveredObj.current, false);
         hoveredObj.current = null;
-        document.body.style.cursor = "auto";
       }
     }
   });

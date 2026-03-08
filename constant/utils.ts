@@ -99,9 +99,6 @@ export const objectsWithIntroAnimations = [
 ];
 
 export const objectsWithHoverAnimations = [
-  "My_Work_Button",
-  "About_Button",
-  "Contact_Button",
   "Boba",
   "GitHub",
   "LinkedIn",
@@ -136,9 +133,6 @@ export const objectsWithHoverAnimations = [
   "Egg_1",
   "Egg_2",
   "Egg_3",
-  "Frame_1",
-  "Frame_2",
-  "Frame_3",
   "Rock_1",
   "Rock_2",
   "Rock_3",
@@ -237,14 +231,14 @@ export const HOVER_CONFIG: Record<string, HoverSettings> = {
   },
   NATURE_BG: {
     items: ["Rock", "Seaweed"],
-    scale: 1.3,
-    duration: 0.3,
+    scale: 1.2,
+    duration: 0.6,
   },
   BOX: {
     items: ["Box"],
     scale: 1.2,
     rotateY: -Math.PI / 10,
-    duration: 0.3,
+    duration: 0.4,
   },
   FRAMES: {
     items: ["Frame"],
