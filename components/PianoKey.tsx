@@ -3,17 +3,25 @@
 import { useRef } from "react";
 import * as THREE from "three";
 import gsap from "gsap";
-import { Howl } from "howler";
+import { Howl, Howler } from "howler";
 import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 
-const sound = new Howl({
-  src: [
-    "https://res.cloudinary.com/dsgajdqm0/video/upload/f_auto/v1772802641/piano-note-c2_zbmvwc.mp3",
-  ],
-  preload: true,
-  // html5: true,
-  volume: 0.5,
-});
+let pianoSound: Howl | null = null;
+
+function getPianoSound() {
+  if (pianoSound) return pianoSound;
+
+  pianoSound = new Howl({
+    src: [
+      "https://res.cloudinary.com/dsgajdqm0/video/upload/f_mp3/v1772802641/piano-note-c2_zbmvwc.mp3",
+    ],
+    preload: true,
+    html5: true,
+    volume: 0.5,
+  });
+
+  return pianoSound;
+}
 
 export function PianoKey({
   node,
@@ -30,9 +38,12 @@ export function PianoKey({
   const initialRotationX = useRef<number>(node.rotation.x);
 
   useFrame(() => {
+    const sound = pianoSound;
+
     if (
       meshRef.current &&
       soundId.current !== null &&
+      sound &&
       sound.playing(soundId.current)
     ) {
       const distance = camera.position.distanceTo(meshRef.current.position);
@@ -46,6 +57,17 @@ export function PianoKey({
 
   const handlePress = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
+
+    // On some browsers (especially on production + mobile), WebAudio starts
+    // suspended unless resumed from a user gesture. The R3F handler may stop
+    // bubbling, so we explicitly resume here.
+    try {
+      void Howler.ctx?.resume();
+    } catch {
+      // ignore
+    }
+
+    const sound = getPianoSound();
 
     const ROOT_INDEX = 12;
     const rate = Math.pow(2, (index - ROOT_INDEX) / 12);
