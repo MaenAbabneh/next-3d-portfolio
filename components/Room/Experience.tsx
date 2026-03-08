@@ -7,9 +7,9 @@ import { Suspense } from "react";
 import { Model } from "./Room"; // تأكد من المسار
 
 import { LoadingScreen } from "../LoadingScreen";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/Toggle/ThemeToggle";
 import { useSound } from "@/components/SoundProvider";
-import { SoundToggle } from "../SoundToggle";
+import { SoundToggle } from "../Toggle/SoundToggle";
 
 export default function Experience() {
   const [startExperience, setStartExperience] = useState(false);
@@ -17,10 +17,6 @@ export default function Experience() {
 
   const handleStarted = (withSound: boolean) => {
     setMuted(!withSound);
-
-    // ملاحظة: لا نخفي المكون فوراً لأن الأنيميشن يحتاج وقتاً
-    // لكن GSAP في المكون يتعامل مع إخراج العنصر من الشاشة (y: 200vh)
-    // يمكننا هنا فقط تغيير الحالة للسماح للتجربة بالعمل
     setStartExperience(true);
   };
   return (
