@@ -69,7 +69,7 @@ export const LoadingScreen = ({ onStarted }: LoadingScreenProps) => {
   return (
     <div
       ref={containerRef}
-      className="w-full h-full fixed inset-0 z-999999 flex flex-col items-center justify-center overflow-hidden bg-base-cream dark:bg-base-blue-light border-20 border-base-blue dark:border-base-blue-dark rounded-4xl origin-center"
+      className="-inset-5 fixed z-999999 flex flex-col items-center justify-center overflow-hidden bg-base-cream dark:bg-base-blue-light border-10 border-base-blue dark:border-base-blue-dark rounded-4xl origin-center"
     >
       <button
         ref={buttonRef}
@@ -92,14 +92,14 @@ export const LoadingScreen = ({ onStarted }: LoadingScreenProps) => {
             e.stopPropagation();
             handleEnter(false);
           }}
-          className="absolute bottom-[15%] left-1/2 -translate-x-1/2 bg-transparent border-none text-base-brwan  text-2xl hover:text-base-brwan/80 cursor-pointer font-serif transition-colors"
+          className="absolute bottom-[18%] left-1/2 -translate-x-1/2 bg-transparent border-none text-base-brwan  text-xl hover:text-base-brwan/80 cursor-pointer font-serif transition-colors"
           aria-label="Enter without Sound"
         >
           Enter without Sound :(
         </button>
       )}
 
-      <div className="absolute bottom-15 text-center text-base-brwan opacity-70 font-mono text-base px-4">
+      <div className="absolute bottom-25 text-center text-base-brwan opacity-90 font-mono text-xl px-4">
         <p className="hidden md:block">
           use left/right click and mouse wheel to navigate!
         </p>
