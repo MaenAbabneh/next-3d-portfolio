@@ -16,6 +16,7 @@ import { Clock } from "../Accessories/Clock";
 import { Pino } from "../Accessories/Pino";
 import { PictureFrame } from "../Accessories/PictureFrame";
 import { Menu } from "../Accessories/Menu";
+import { ComputerFan } from "../Accessories/ComputerFan";
 
 type ModelProps = JSX.IntrinsicElements["group"] & { started?: boolean };
 
@@ -412,41 +413,6 @@ export function Model({ started = false, ...props }: ModelProps) {
         rotation={[0, 1.185, 0]}
       />
       <mesh
-        name="Computer_Fan_1_Fourth_Raycaster"
-        geometry={nodes.Computer_Fan_1_Fourth_Raycaster.geometry}
-        material={nodes.Computer_Fan_1_Fourth_Raycaster.material}
-        position={[-0.621, 0.511, 0.296]}
-        rotation={[Math.PI / 2, 0, 0]}
-      />
-      <mesh
-        name="Computer_Fan_2_Fourth_Raycaster"
-        geometry={nodes.Computer_Fan_2_Fourth_Raycaster.geometry}
-        material={nodes.Computer_Fan_2_Fourth_Raycaster.material}
-        position={[-0.717, 0.511, 0.296]}
-        rotation={[Math.PI / 2, 0, 0]}
-      />
-      <mesh
-        name="Computer_Fan_3_Fourth_Raycaster"
-        geometry={nodes.Computer_Fan_3_Fourth_Raycaster.geometry}
-        material={nodes.Computer_Fan_3_Fourth_Raycaster.material}
-        position={[-0.815, 0.511, 0.296]}
-        rotation={[Math.PI / 2, 0, 0]}
-      />
-      <mesh
-        name="Computer_Fan_4_Fourth_Raycaster"
-        geometry={nodes.Computer_Fan_4_Fourth_Raycaster.geometry}
-        material={nodes.Computer_Fan_4_Fourth_Raycaster.material}
-        position={[-0.987, 0.539, 0.205]}
-        rotation={[0, 0, -Math.PI / 2]}
-      />
-      <mesh
-        name="Computer_Fan_5_Fourth_Raycaster"
-        geometry={nodes.Computer_Fan_5_Fourth_Raycaster.geometry}
-        material={nodes.Computer_Fan_5_Fourth_Raycaster.material}
-        position={[-0.987, 0.635, 0.204]}
-        rotation={[0, 0, -Math.PI / 2]}
-      />
-      <mesh
         name="Duck_Father_Fourth_Hover_Raycaster"
         geometry={nodes.Duck_Father_Fourth_Hover_Raycaster.geometry}
         material={nodes.Duck_Father_Fourth_Hover_Raycaster.material}
@@ -797,6 +763,8 @@ export function Model({ started = false, ...props }: ModelProps) {
       </Suspense>
 
       <Menu nodes={nodes} />
+
+      <ComputerFan nodes={nodes} />
 
       <skinnedMesh
         name="Cat_Second"
