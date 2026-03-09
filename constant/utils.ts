@@ -129,7 +129,6 @@ export const objectsWithHoverAnimations = [
   "Lamp",
   "Slipper_1",
   "Slipper_2",
-  "Fish_Second",
   "Egg_1",
   "Egg_2",
   "Egg_3",
@@ -198,7 +197,7 @@ export const HOVER_CONFIG: Record<string, HoverSettings> = {
     duration: 0.3,
   },
   ANIMALS: {
-    items: ["Evee", "Fish", "Bird", "Duck", "Kitten", "Puppy", "Bear"],
+    items: ["Evee", "Bird", "Duck", "Kitten", "Puppy", "Bear"],
     scale: 1.2,
     duration: 0.4,
   },

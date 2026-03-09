@@ -19,6 +19,7 @@ import { Menu } from "../Accessories/Menu";
 import { ComputerFan } from "../Accessories/ComputerFan";
 import { SocialButtons } from "../Accessories/SocailButton.";
 import { Chair } from "../Accessories/Chair";
+import { Fish } from "../Accessories/Fish";
 
 type ModelProps = JSX.IntrinsicElements["group"];
 
@@ -127,13 +128,6 @@ export function Model(props: ModelProps) {
         geometry={nodes["Water-Mug"].geometry}
         material={nodes["Water-Mug"].material}
         position={[-0.741, 1.273, 0.19]}
-      />
-      <mesh
-        name="Fish_Second_Hover_Raycaster"
-        geometry={nodes.Fish_Second_Hover_Raycaster.geometry}
-        material={nodes.Fish_Second_Hover_Raycaster.material}
-        position={[0.248, 0.853, 1.039]}
-        rotation={[-Math.PI, 0.019, -Math.PI]}
       />
       <mesh
         name="Dot_1_Raycaster_Hover_Third"
@@ -743,6 +737,8 @@ export function Model(props: ModelProps) {
       <SocialButtons nodes={nodes} />
 
       <Chair nodes={nodes} />
+
+      <Fish nodes={nodes} />
 
       <skinnedMesh
         name="Cat_Second"
