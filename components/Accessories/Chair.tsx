@@ -33,7 +33,7 @@ export function Chair({ nodes }: ChairProps) {
   }, [started]);
 
   return (
-    <group ref={groupRef} name="Chair" position={[-0.001, 0, 0.001]}>
+    <group ref={groupRef} name="Chair">
       <mesh
         name="Chair_Second_Raycaster_Hover"
         geometry={nodes.Chair_Second_Raycaster_Hover.geometry}
