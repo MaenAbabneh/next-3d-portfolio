@@ -1,6 +1,6 @@
 "use client";
 
-import { useSound } from "@/components/SoundProvider";
+import { useSoundStore } from "@/store/useSoundStore";
 import { useTheme } from "next-themes";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -9,7 +9,8 @@ import { BiSolidVolumeMute, BiSolidVolumeFull } from "react-icons/bi";
 import { useRipple } from "@/hooks/animations/useRipple";
 
 export function SoundToggle() {
-  const { muted, toggleMuted } = useSound();
+  const muted = useSoundStore((s) => s.muted);
+  const toggleMuted = useSoundStore((s) => s.toggleMuted);
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -45,7 +46,6 @@ export function SoundToggle() {
     toggleMuted();
   };
 
-  // أنيميشن الأيقونات (تبديل بين السماعة والمكتوم)
   useGSAP(() => {
     if (!mounted || !onIconRef.current || !offIconRef.current) return;
 

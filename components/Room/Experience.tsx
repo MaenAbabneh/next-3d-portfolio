@@ -8,12 +8,12 @@ import { Model } from "./Room"; // تأكد من المسار
 
 import { LoadingScreen } from "../LoadingScreen";
 import { ThemeToggle } from "@/components/Toggle/ThemeToggle";
-import { useSound } from "@/components/SoundProvider";
+import { useSoundStore } from "@/store/useSoundStore";
 import { SoundToggle } from "../Toggle/SoundToggle";
 
 export default function Experience() {
   const [startExperience, setStartExperience] = useState(false);
-  const { setMuted } = useSound();
+  const setMuted = useSoundStore((s) => s.setMuted);
 
   const handleStarted = (withSound: boolean) => {
     setMuted(!withSound);
