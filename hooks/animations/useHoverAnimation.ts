@@ -57,6 +57,7 @@ export const useHoverAnimation = (
   const started = useGameStore((s) => s.started);
   const hoverTargets = useRef<THREE.Object3D[]>([]);
   const hoveredObj = useRef<THREE.Object3D | null>(null);
+  const hoveredGroupKey = useRef<string | null>(null);
 
   // 1️⃣ البحث وتخزين العناصر
   useEffect(() => {
@@ -183,14 +184,46 @@ export const useHoverAnimation = (
     raycaster.setFromCamera(pointer, camera);
     const intersects = raycaster.intersectObjects(hoverTargets.current, true);
 
+    const animateGroup = (groupKey: string, isHovering: boolean) => {
+      hoverTargets.current.forEach((obj) => {
+        if (obj.userData?.hoverGroup === groupKey) {
+          animateHover(obj, isHovering);
+        }
+      });
+    };
+
     if (intersects.length > 0) {
       const target = intersects[0].object;
+      const groupKey =
+        (target.userData?.hoverGroup as string | undefined) ?? null;
+
+      // Hovering a grouped set (cup + steam)
+      if (groupKey) {
+        if (hoveredGroupKey.current !== groupKey) {
+          if (hoveredGroupKey.current)
+            animateGroup(hoveredGroupKey.current, false);
+          animateGroup(groupKey, true);
+          hoveredGroupKey.current = groupKey;
+          hoveredObj.current = target;
+        }
+        return;
+      }
+
+      // Default behavior (single object)
       if (hoveredObj.current !== target) {
+        if (hoveredGroupKey.current) {
+          animateGroup(hoveredGroupKey.current, false);
+          hoveredGroupKey.current = null;
+        }
         if (hoveredObj.current) animateHover(hoveredObj.current, false);
         animateHover(target, true);
         hoveredObj.current = target;
       }
     } else {
+      if (hoveredGroupKey.current) {
+        animateGroup(hoveredGroupKey.current, false);
+        hoveredGroupKey.current = null;
+      }
       if (hoveredObj.current) {
         animateHover(hoveredObj.current, false);
         hoveredObj.current = null;

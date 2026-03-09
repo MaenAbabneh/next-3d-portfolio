@@ -18,8 +18,13 @@ export function CoffeCup({ nodes }: CoffeCupProps) {
         name="Coffee_Mug_Fourth_Raycaster_Hover"
         geometry={nodes.Coffee_Mug_Fourth_Raycaster_Hover.geometry}
         material={nodes.Coffee_Mug_Fourth_Raycaster_Hover.material}
+        userData={{ hoverGroup: "CoffeeCup" }}
       />
-      <Steam position={[0, 0.33, -0.01]} scale={[0.2, 0.6, 0.1]} />
+      <Steam
+        position={[0, 0.33, -0.01]}
+        scale={[0.2, 0.6, 0.1]}
+        hoverGroup="CoffeeCup"
+      />
     </group>
   );
 }

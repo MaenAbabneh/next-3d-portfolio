@@ -35,16 +35,20 @@ declare module "@react-three/fiber" {
 }
 
 interface SteamProps {
+  name?: string;
   position?: [number, number, number];
   scale?: [number, number, number];
   color?: string;
   opacity?: number;
+  hoverGroup?: string;
 }
 
 export function Steam({
+  name = "Coffee_Steam",
   position = [0, 0, 0],
   scale = [1, 1, 1],
   color = "#ffffff",
+  hoverGroup,
 }: SteamProps) {
   const materialRef = useRef<THREE.ShaderMaterial | null>(null);
 
@@ -60,7 +64,12 @@ export function Steam({
   });
 
   return (
-    <mesh scale={scale} position={position}>
+    <mesh
+      name={name}
+      scale={scale}
+      position={position}
+      userData={hoverGroup ? { hoverGroup } : undefined}
+    >
       <planeGeometry args={[1, 1, 16, 64]} />
       <steamMaterial
         ref={materialRef}

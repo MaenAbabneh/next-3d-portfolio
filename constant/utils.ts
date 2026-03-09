@@ -176,6 +176,7 @@ export const objectsWithHoverAnimations = [
   "Bear_Father",
   "Bear_Son",
   "Coffee_Mug",
+  "Coffee_Steam",
   "Mouth",
   "Cactus",
   "Microphone",
