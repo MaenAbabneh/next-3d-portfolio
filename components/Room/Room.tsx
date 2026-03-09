@@ -17,6 +17,7 @@ import { Pino } from "../Accessories/Pino";
 import { PictureFrame } from "../Accessories/PictureFrame";
 import { Menu } from "../Accessories/Menu";
 import { ComputerFan } from "../Accessories/ComputerFan";
+import { SocialButtons } from "../Accessories/SocailButton.";
 
 type ModelProps = JSX.IntrinsicElements["group"];
 
@@ -584,13 +585,7 @@ export function Model(props: ModelProps) {
         position={[-0.619, 1.029, 0.855]}
         rotation={[0, 0.341, 0]}
       />
-      <mesh
-        name="GitHub_Fourth_Raycaster_Pointer_Hover"
-        geometry={nodes.GitHub_Fourth_Raycaster_Pointer_Hover.geometry}
-        material={nodes.GitHub_Fourth_Raycaster_Pointer_Hover.material}
-        position={[-0.461, 2.449, -1.094]}
-        rotation={[-1.878, Math.PI / 2, 0]}
-      />
+
       <mesh
         name="Lamp_Fourth_Hover_Raycaster"
         geometry={nodes.Lamp_Fourth_Hover_Raycaster.geometry}
@@ -598,13 +593,7 @@ export function Model(props: ModelProps) {
         position={[0.449, 0.341, -0.849]}
         rotation={[0, -0.235, 0]}
       />
-      <mesh
-        name="LinkedIn_Fourth_Raycaster_Pointer_Hover"
-        geometry={nodes.LinkedIn_Fourth_Raycaster_Pointer_Hover.geometry}
-        material={nodes.LinkedIn_Fourth_Raycaster_Pointer_Hover.material}
-        position={[-0.246, 2.449, -1.091]}
-        rotation={[-1.878, Math.PI / 2, 0]}
-      />
+
       <mesh
         name="Mouth_Raycaster_Hover_Fourth"
         geometry={nodes.Mouth_Raycaster_Hover_Fourth.geometry}
@@ -617,13 +606,6 @@ export function Model(props: ModelProps) {
         geometry={nodes.Mug_Fourth_Raycaster_Hover.geometry}
         material={nodes.Mug_Fourth_Raycaster_Hover.material}
         position={[-0.74, 1.201, 0.191]}
-      />
-      <mesh
-        name="X_Fourth_Raycaster_Pointer_Hover"
-        geometry={nodes.X_Fourth_Raycaster_Pointer_Hover.geometry}
-        material={nodes.X_Fourth_Raycaster_Pointer_Hover.material}
-        position={[-0.023, 2.446, -1.096]}
-        rotation={[-1.878, Math.PI / 2, 0]}
       />
       <mesh
         name="Cactus_Raycaster_Fourth_Hover"
@@ -765,6 +747,8 @@ export function Model(props: ModelProps) {
       <Menu nodes={nodes} />
 
       <ComputerFan nodes={nodes} />
+
+      <SocialButtons nodes={nodes} />
 
       <skinnedMesh
         name="Cat_Second"
