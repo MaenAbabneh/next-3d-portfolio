@@ -18,6 +18,7 @@ import { PictureFrame } from "../Accessories/PictureFrame";
 import { Menu } from "../Accessories/Menu";
 import { ComputerFan } from "../Accessories/ComputerFan";
 import { SocialButtons } from "../Accessories/SocailButton.";
+import { Chair } from "../Accessories/Chair";
 
 type ModelProps = JSX.IntrinsicElements["group"];
 
@@ -126,13 +127,6 @@ export function Model(props: ModelProps) {
         geometry={nodes["Water-Mug"].geometry}
         material={nodes["Water-Mug"].material}
         position={[-0.741, 1.273, 0.19]}
-      />
-      <mesh
-        name="Chair_Second_Raycaster_Hover"
-        geometry={nodes.Chair_Second_Raycaster_Hover.geometry}
-        material={nodes.Chair_Second_Raycaster_Hover.material}
-        position={[0.032, 0.809, -0.05]}
-        rotation={[0, 0.397, 0]}
       />
       <mesh
         name="Fish_Second_Hover_Raycaster"
@@ -585,7 +579,6 @@ export function Model(props: ModelProps) {
         position={[-0.619, 1.029, 0.855]}
         rotation={[0, 0.341, 0]}
       />
-
       <mesh
         name="Lamp_Fourth_Hover_Raycaster"
         geometry={nodes.Lamp_Fourth_Hover_Raycaster.geometry}
@@ -593,7 +586,6 @@ export function Model(props: ModelProps) {
         position={[0.449, 0.341, -0.849]}
         rotation={[0, -0.235, 0]}
       />
-
       <mesh
         name="Mouth_Raycaster_Hover_Fourth"
         geometry={nodes.Mouth_Raycaster_Hover_Fourth.geometry}
@@ -749,6 +741,8 @@ export function Model(props: ModelProps) {
       <ComputerFan nodes={nodes} />
 
       <SocialButtons nodes={nodes} />
+
+      <Chair nodes={nodes} />
 
       <skinnedMesh
         name="Cat_Second"
