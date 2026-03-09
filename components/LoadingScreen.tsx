@@ -1,9 +1,10 @@
 "use client";
 
 import { useProgress } from "@react-three/drei";
+import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
+import { useGameStore } from "@/store/useGameStore";
 
 interface LoadingScreenProps {
   onStarted: (withSound: boolean) => void;
@@ -12,6 +13,8 @@ interface LoadingScreenProps {
 export const LoadingScreen = ({ onStarted }: LoadingScreenProps) => {
   const { progress } = useProgress();
   const isLoaded = progress === 100;
+  const started = useGameStore((s) => s.started);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -65,6 +68,8 @@ export const LoadingScreen = ({ onStarted }: LoadingScreenProps) => {
       );
     })();
   };
+
+  if (started) return null;
 
   return (
     <div

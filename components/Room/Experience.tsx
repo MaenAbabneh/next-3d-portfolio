@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { Suspense } from "react";
@@ -8,16 +7,18 @@ import { Model } from "./Room";
 
 import { LoadingScreen } from "../LoadingScreen";
 import { ThemeToggle } from "@/components/Toggle/ThemeToggle";
+import { useGameStore } from "@/store/useGameStore";
 import { useSoundStore } from "@/store/useSoundStore";
 import { SoundToggle } from "../Toggle/SoundToggle";
 
 export default function Experience() {
-  const [startExperience, setStartExperience] = useState(false);
+  const started = useGameStore((s) => s.started);
+  const setStarted = useGameStore((s) => s.setStarted);
   const setMuted = useSoundStore((s) => s.setMuted);
 
   const handleStarted = (withSound: boolean) => {
     setMuted(!withSound);
-    setStartExperience(true);
+    setStarted(true);
   };
   return (
     <div className="w-full h-screen bg-[#111111]">
@@ -33,7 +34,7 @@ export default function Experience() {
         <OrbitControls
           makeDefault
           enableDamping={true}
-          minDistance={4}
+          minDistance={3}
           maxDistance={13}
           minPolarAngle={0}
           maxPolarAngle={Math.PI / 2 - 0.1}
@@ -43,7 +44,7 @@ export default function Experience() {
           target={[0, 1, 0]}
         />
         <Suspense fallback={null}>
-          <Model started={startExperience} />
+          <Model started={started} />
         </Suspense>
       </Canvas>
     </div>
