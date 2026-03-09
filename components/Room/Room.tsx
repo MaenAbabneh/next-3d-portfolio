@@ -18,9 +18,9 @@ import { PictureFrame } from "../Accessories/PictureFrame";
 import { Menu } from "../Accessories/Menu";
 import { ComputerFan } from "../Accessories/ComputerFan";
 
-type ModelProps = JSX.IntrinsicElements["group"] & { started?: boolean };
+type ModelProps = JSX.IntrinsicElements["group"];
 
-export function Model({ started = false, ...props }: ModelProps) {
+export function Model(props: ModelProps) {
   const { scene } = useGLTF(
     "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb",
   );
@@ -37,8 +37,8 @@ export function Model({ started = false, ...props }: ModelProps) {
 
   useCinematicTransition(roomTexture, isNight);
 
-  useIntroAnimation(groupRef, started);
-  useHoverAnimation(groupRef, started);
+  useIntroAnimation(groupRef);
+  useHoverAnimation(groupRef);
 
   useMemo(() => {
     if (!roomTexture) return;

@@ -6,6 +6,7 @@ import { objectsWithHoverAnimations } from "@/constant/utils";
 import { SUFFIX } from "@/constant/utils";
 import { HoverSettings } from "@/types/room.types";
 import { HOVER_CONFIG } from "@/constant/utils";
+import { useGameStore } from "@/store/useGameStore";
 
 const SCALE_KEY = "__introOriginalScale";
 const ROT_KEY = "__introOriginalRotation";
@@ -51,9 +52,9 @@ const getGroupSettings = (name: string): HoverSettings => {
 
 export const useHoverAnimation = (
   groupRef: React.RefObject<THREE.Group | null>,
-  enabled: boolean = true,
 ) => {
   const { camera, raycaster, pointer } = useThree();
+  const started = useGameStore((s) => s.started);
   const hoverTargets = useRef<THREE.Object3D[]>([]);
   const hoveredObj = useRef<THREE.Object3D | null>(null);
 
@@ -177,7 +178,7 @@ export const useHoverAnimation = (
 
   // 3️⃣ حلقة Raycasting
   useFrame(() => {
-    if (!enabled || hoverTargets.current.length === 0) return;
+    if (!started || hoverTargets.current.length === 0) return;
 
     raycaster.setFromCamera(pointer, camera);
     const intersects = raycaster.intersectObjects(hoverTargets.current, true);

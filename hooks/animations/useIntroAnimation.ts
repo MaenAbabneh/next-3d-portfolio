@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import * as THREE from "three";
 import { objectsWithIntroAnimations, SUFFIX } from "@/constant/utils";
+import { useGameStore } from "@/store/useGameStore";
 
 gsap.registerPlugin(useGSAP);
 
@@ -40,10 +41,8 @@ const getOriginalPosition = (obj: THREE.Object3D) =>
   (obj.userData[INTRO_POS_KEY] as THREE.Vector3) || new THREE.Vector3();
 
 // --- الـ Hook ---
-export const useIntroAnimation = (
-  groupRef: RefObject<THREE.Group | null>,
-  started: boolean,
-) => {
+export const useIntroAnimation = (groupRef: RefObject<THREE.Group | null>) => {
+  const started = useGameStore((s) => s.started);
   useGSAP(
     () => {
       const scene = groupRef.current;

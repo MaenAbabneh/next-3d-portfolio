@@ -12,7 +12,6 @@ import { useSoundStore } from "@/store/useSoundStore";
 import { SoundToggle } from "../Toggle/SoundToggle";
 
 export default function Experience() {
-  const started = useGameStore((s) => s.started);
   const setStarted = useGameStore((s) => s.setStarted);
   const setMuted = useSoundStore((s) => s.setMuted);
 
@@ -44,7 +43,7 @@ export default function Experience() {
           target={[0, 1, 0]}
         />
         <Suspense fallback={null}>
-          <Model started={started} />
+          <Model />
         </Suspense>
       </Canvas>
     </div>
