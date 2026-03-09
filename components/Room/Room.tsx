@@ -20,6 +20,7 @@ import { ComputerFan } from "../Accessories/ComputerFan";
 import { SocialButtons } from "../Accessories/SocailButton.";
 import { Chair } from "../Accessories/Chair";
 import { Fish } from "../Accessories/Fish";
+import { CoffeCup } from "../Accessories/CoffeCup";
 
 type ModelProps = JSX.IntrinsicElements["group"];
 
@@ -533,12 +534,6 @@ export function Model(props: ModelProps) {
         rotation={[-0.114, 0.586, 0.473]}
       />
       <mesh
-        name="Coffee_Mug_Fourth_Raycaster_Hover"
-        geometry={nodes.Coffee_Mug_Fourth_Raycaster_Hover.geometry}
-        material={nodes.Coffee_Mug_Fourth_Raycaster_Hover.material}
-        position={[-0.521, 1.201, 0.295]}
-      />
-      <mesh
         name="Egg_1_Fourth_Hover_Raycaster"
         geometry={nodes.Egg_1_Fourth_Hover_Raycaster.geometry}
         material={nodes.Egg_1_Fourth_Hover_Raycaster.material}
@@ -739,6 +734,8 @@ export function Model(props: ModelProps) {
       <Chair nodes={nodes} />
 
       <Fish nodes={nodes} />
+
+      <CoffeCup nodes={nodes} />
 
       <skinnedMesh
         name="Cat_Second"
