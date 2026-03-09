@@ -7,7 +7,15 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   prettierConfig,
-  // Override default ignores of eslint-config-next.
+  {
+    rules: {
+      "jsx-a11y/alt-text": "error",
+      "jsx-a11y/aria-props": "error",
+      "jsx-a11y/role-has-required-aria-props": "error",
+      "jsx-a11y/click-events-have-key-events": "warn",
+    },
+  },
+
   globalIgnores([
     // Default ignores of eslint-config-next:
     ".next/**",

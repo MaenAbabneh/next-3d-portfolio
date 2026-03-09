@@ -3,7 +3,7 @@
 import { useOverlayStore } from "@/store/useOverlayStore";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import AboutSection from "../Section/AboutSection";
 import ContactSection from "../Section/ContactSection";
 import WorksSection from "../Section/WorksSection";
@@ -36,6 +36,17 @@ export default function Overlay() {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const activeSection: SectionKey = section ?? "about";
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeOverlay();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, closeOverlay]);
 
   useGSAP(() => {
     if (isOpen) {
@@ -89,7 +100,16 @@ export default function Overlay() {
     <div
       ref={containerRef}
       className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 invisible"
-      onClick={closeOverlay} // إغلاق عند الضغط على الخلفية
+      tabIndex={0}
+      onClick={(e) => {
+        // إغلاق عند الضغط على الخلفية فقط
+        if (e.target === e.currentTarget) closeOverlay();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
+          closeOverlay();
+        }
+      }}
     >
       {/* Wrapper للأنيميشن */}
       <div ref={contentRef}>

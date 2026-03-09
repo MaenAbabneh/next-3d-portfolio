@@ -86,18 +86,15 @@ export default function ModalLayout({
         },
       });
     },
-    [closeOverlay],
+    [closeOverlay]
   );
 
   return (
     <div
       className={`relative flex flex-col items-center bg-base-cream dark:bg-base-blue-light  border-8 border-base-blue dark:border-base-blue-dark rounded-[25px] p-6 md:p-8 shadow-2xl ${className}`}
-      onClick={(e) => e.stopPropagation()}
     >
       {/* 1. العنوان (Modal Title) */}
-      <h1
-        className="relative -top-2 px-10 py-2 rounded-full border-4 border-base-blue dark:border-base-blue-dark text-2xl md:text-3xl font-bold text-base-brwan shadow-md mb-6 text-center font-serif "
-      >
+      <h1 className="relative -top-2 px-10 py-2 rounded-full border-4 border-base-blue dark:border-base-blue-dark text-2xl md:text-3xl font-bold text-base-brwan shadow-md mb-6 text-center font-serif ">
         {title}
       </h1>
 

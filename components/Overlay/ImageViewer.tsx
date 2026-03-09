@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { IoClose } from "react-icons/io5";
 import { useImageViewerStore } from "@/store/useImageViewerStore";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -56,6 +56,17 @@ export default function ImageViewer() {
     { dependencies: [isOpen] },
   );
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeImage();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, closeImage]);
+
   return (
     <div
       ref={overlayRef}
@@ -68,7 +79,16 @@ export default function ImageViewer() {
       role="dialog"
       aria-modal="true"
       aria-hidden={!isOpen}
-      onClick={closeImage} // إغلاق عند الضغط في أي مكان
+      tabIndex={0}
+      onClick={(e) => {
+        // إغلاق عند الضغط على الخلفية فقط
+        if (e.target === e.currentTarget) closeImage();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
+          closeImage();
+        }
+      }}
     >
       {/* زر الإغلاق */}
       <button
@@ -86,7 +106,6 @@ export default function ImageViewer() {
         <div
           ref={contentRef}
           className="relative w-[90vw] h-[85vh] will-change-transform"
-          onClick={(e) => e.stopPropagation()} // منع الإغلاق عند الضغط على الصورة
         >
           <Image
             src={activeImage}
