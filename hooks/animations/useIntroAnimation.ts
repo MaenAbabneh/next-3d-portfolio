@@ -8,10 +8,10 @@ import { useGameStore } from "@/store/useGameStore";
 gsap.registerPlugin(useGSAP);
 
 // --- ⚡ إعدادات السرعة ---
-const GLOBAL_SPEED = 0.5; // السرعة العامة (تحكم بها لتسريع/تبطيء المشهد كاملاً)
-const POP_DURATION = 0.5; // سرعة ظهور العنصر
+const GLOBAL_SPEED = 0.7; // السرعة العامة (تحكم بها لتسريع/تبطيء المشهد كاملاً)
+const POP_DURATION = 0.2; // سرعة ظهور العنصر
 const PIANO_JUMP_SPEED = 0.3; // سرعة قفزة البيانو
-const INTRO_START_DELAY = 0.5;
+const INTRO_START_DELAY = 0;
 
 // مفاتيح التخزين
 const INTRO_SCALE_KEY = "__introOriginalScale";
@@ -101,7 +101,7 @@ export const useIntroAnimation = (groupRef: RefObject<THREE.Group | null>) => {
 
       const masterTl = gsap.timeline({
         delay: INTRO_START_DELAY,
-        defaults: { ease: "back.out(1.7)", duration: POP_DURATION },
+        defaults: { ease: "back.out(1.8)", duration: POP_DURATION },
       });
       masterTl.timeScale(GLOBAL_SPEED); // التحكم بالسرعة الكلية من هنا
 
@@ -212,7 +212,7 @@ export const useIntroAnimation = (groupRef: RefObject<THREE.Group | null>) => {
 
       // --- المجموعة 9: البيانو (Piano) 🎹 ---
       const pianoTl = gsap.timeline({
-        defaults: { duration: PIANO_JUMP_SPEED, ease: "back.out(1.7)" },
+        defaults: { duration: PIANO_JUMP_SPEED, ease: "back.out(1.8)" },
       });
 
       const pianoKeysNames = objectsWithIntroAnimations.filter((n) =>
