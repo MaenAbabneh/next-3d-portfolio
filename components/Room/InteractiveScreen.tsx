@@ -48,7 +48,7 @@ export function InteractiveScreen({
 
   const iframeWidth = isMobileView ? 530 : 2340;
   const iframeHeight = isMobileView ? 800 : 1080;
-  const iframeScale = isMobileView ? 0.0145 : 0.0108;
+  const defaultScale = 0.0108;
 
   const handleZoomIn = (e: ZoomClickEvent) => {
     e.stopPropagation();
@@ -70,7 +70,7 @@ export function InteractiveScreen({
       x: screenX + 0.42,
       // eslint-disable-next-line prettier/prettier
       y: (screenY - 0.36) + roomOffsetY,
-      z: screenZ - 0.033,
+      z: screenZ - (isMobile ? 0.036 : 0.033),
       duration: 1.5,
       ease: "power3.inOut",
     });
@@ -80,7 +80,7 @@ export function InteractiveScreen({
         x: screenX,
         // eslint-disable-next-line prettier/prettier
         y: (screenY - 0.36) + roomOffsetY,
-        z: screenZ - 0.033,
+        z: screenZ - (isMobile ? 0.036 : 0.033),
         duration: 1.5,
         ease: "power3.inOut",
       });
@@ -143,7 +143,7 @@ export function InteractiveScreen({
           zIndexRange={[9, 0]}
           position={[screenX, screenY, screenZ]}
           rotation={[0, 1.57, 0]}
-          scale={iframeScale}
+          scale={defaultScale}
           className="transition-opacity duration-1000"
           style={{ opacity: 1 }}
         >
@@ -155,6 +155,7 @@ export function InteractiveScreen({
               position: "relative",
               borderRadius: "12px",
               overflow: "hidden",
+              transform: isMobileView ? "scale(1.35)" : "scale(1)",
             }}
           >
             <iframe
