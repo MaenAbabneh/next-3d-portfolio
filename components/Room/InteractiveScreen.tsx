@@ -7,6 +7,7 @@ import { useRef, useState } from "react";
 import * as THREE from "three";
 import { useGameStore } from "@/store/useGameStore";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import { InteractiveMarker } from "../InteractiveMarker";
 
 type ZoomClickEvent = ThreeEvent<MouseEvent> | React.MouseEvent<HTMLElement>;
 
@@ -115,6 +116,13 @@ export function InteractiveScreen({
       <meshStandardMaterial
         emissive={new THREE.Color("white")}
         toneMapped={false}
+      />
+      <InteractiveMarker
+        title="DESKTOP"
+        position={[-0.88, 2.02, -0.25]}
+        rotation={[0, 1.57, 0]}
+        visible={started && !isZoomed}
+        onClick={handleZoomIn}
       />
 
       {started && (

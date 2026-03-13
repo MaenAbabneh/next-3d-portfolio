@@ -2,7 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
-import { Suspense } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { Model } from "./Room";
 
 import { LoadingScreen } from "../LoadingScreen";
@@ -11,16 +11,29 @@ import { useGameStore } from "@/store/useGameStore";
 import { useSoundStore } from "@/store/useSoundStore";
 import { SoundToggle } from "../Toggle/SoundToggle";
 
+// استيراد النوع الخاص بـ OrbitControls لتجنب أخطاء التايب سكريبت
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+
 export default function Experience() {
   const setStarted = useGameStore((s) => s.setStarted);
   const setMuted = useSoundStore((s) => s.setMuted);
   const isScreenZoomed = useGameStore((s) => s.isScreenZoomed);
   const isCameraUnlocked = useGameStore((s) => s.isCameraUnlocked);
 
+  const controlsRef = useRef<OrbitControlsImpl>(null);
+
   const handleStarted = (withSound: boolean) => {
     setMuted(!withSound);
     setStarted(true);
   };
+
+  useEffect(() => {
+    if (controlsRef.current) {
+      controlsRef.current.target.set(0, 1, 0);
+      controlsRef.current.update();
+    }
+  }, []);
+
   return (
     <div className="w-full h-screen bg-[#111111]">
       <LoadingScreen onStarted={handleStarted} />
@@ -39,7 +52,9 @@ export default function Experience() {
       <Canvas camera={{ position: [5, 4, 5], fov: 45 }}>
         <Environment preset="city" />
         <OrbitControls
+          ref={controlsRef}
           makeDefault
+          enablePan={false}
           enableDamping={true}
           minDistance={isCameraUnlocked ? 0.3 : 3}
           maxDistance={13}
@@ -49,7 +64,6 @@ export default function Experience() {
           maxAzimuthAngle={isCameraUnlocked ? Infinity : Math.PI / 2}
           enableRotate={!isCameraUnlocked}
           enableZoom={!isCameraUnlocked}
-          target={[0, 1, 0]}
         />
         <Suspense fallback={null}>
           <Model />
