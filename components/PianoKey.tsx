@@ -49,10 +49,9 @@ export function PianoKey({
     }
   });
 
-  // 🌟 1. فصلنا منطق العزف في دالة مستقلة لتعمل مع الماوس والكيبورد
   const playNote = useCallback(() => {
     try {
-      void Howler.ctx?.resume(); // لضمان عمل الصوت في المتصفحات
+      void Howler.ctx?.resume();
     } catch {}
 
     const sound = getPianoSound();
@@ -84,16 +83,14 @@ export function PianoKey({
 
   const handlePress = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    playNote(); // تشغيل عبر الماوس
+    playNote();
   };
 
-  // 🌟 2. السحر هنا: الاستماع لأوامر الكيبورد التي ستأتي من الملف الرئيسي
   useEffect(() => {
     type PlayPianoKeyDetail = { index: number };
 
     const handleCustomEvent = (event: Event) => {
       const customEvent = event as CustomEvent<PlayPianoKeyDetail>;
-      // إذا كان الرقم المرسل يطابق رقم هذا الزر، اعزف!
       if (customEvent.detail?.index === index) {
         playNote();
       }
