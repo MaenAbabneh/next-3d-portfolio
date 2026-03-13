@@ -45,7 +45,6 @@ export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
       texture.flipY = false;
       texture.minFilter = THREE.LinearFilter;
       texture.magFilter = THREE.LinearFilter;
-      texture.colorSpace = THREE.SRGBColorSpace;
     });
   }, [posterTexture, videoTexture]);
 

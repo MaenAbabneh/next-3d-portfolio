@@ -63,13 +63,17 @@ export default function Experience() {
           fov: isMobile ? 55 : 45,
         }}
         dpr={dpr}
+        gl={{
+          antialias: true,
+          powerPreference: "high-performance",
+        }}
       >
         <PerformanceMonitor
           onDecline={() => setDpr(1)}
           onIncline={() => setDpr(1.5)}
         />
 
-        <Environment preset="city" />
+        <Environment preset="city" resolution={256} frames={1} />
         <OrbitControls
           ref={controlsRef}
           makeDefault

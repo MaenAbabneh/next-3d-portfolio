@@ -68,8 +68,7 @@ export function InteractiveScreen({
 
     gsap.to(camera.position, {
       x: screenX + 0.42,
-      // eslint-disable-next-line prettier/prettier
-      y: (screenY - 0.36) + roomOffsetY,
+      y: screenY - 0.36 + roomOffsetY,
       z: screenZ - (isMobile ? 0.036 : 0.033),
       duration: 1.5,
       ease: "power3.inOut",
@@ -78,8 +77,7 @@ export function InteractiveScreen({
     if (controls) {
       gsap.to(controls.target, {
         x: screenX,
-        // eslint-disable-next-line prettier/prettier
-        y: (screenY - 0.36) + roomOffsetY,
+        y: screenY - 0.36 + roomOffsetY,
         z: screenZ - (isMobile ? 0.036 : 0.033),
         duration: 1.5,
         ease: "power3.inOut",
@@ -158,34 +156,35 @@ export function InteractiveScreen({
               transform: isMobileView ? "scale(1.35)" : "scale(1)",
             }}
           >
-            <iframe
-              src={url}
-              title="Interactive Portfolio"
-              style={{ width: "100%", height: "100%", border: "none" }}
-            />
-
             {isZoomed && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleZoomOut();
-                }}
-                style={{
-                  position: "absolute",
-                  bottom: "20px",
-                  right: "20px",
-                  padding: "15px 30px",
-                  fontSize: "24px",
-                  backgroundColor: "rgba(255,50,50,0.9)",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  pointerEvents: "auto",
-                }}
-              >
-                Exit
-              </button>
+              <>
+                <iframe
+                  src={url}
+                  title="Interactive Portfolio"
+                  style={{ width: "100%", height: "100%", border: "none" }}
+                />
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleZoomOut();
+                  }}
+                  style={{
+                    position: "absolute",
+                    bottom: "20px",
+                    right: "20px",
+                    padding: "15px 30px",
+                    fontSize: "24px",
+                    backgroundColor: "rgba(255,50,50,0.9)",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    pointerEvents: "auto",
+                  }}
+                >
+                  Exit
+                </button>
+              </>
             )}
 
             {!isZoomed && (
