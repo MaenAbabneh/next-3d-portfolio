@@ -1,8 +1,13 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { Environment, OrbitControls } from "@react-three/drei";
-import { Suspense, useEffect, useRef } from "react";
+import {
+  Bvh,
+  Environment,
+  OrbitControls,
+  PerformanceMonitor,
+} from "@react-three/drei";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Model } from "./Room";
 
 import { LoadingScreen } from "../LoadingScreen";
@@ -18,9 +23,11 @@ export default function Experience() {
   const setMuted = useSoundStore((s) => s.setMuted);
   const isScreenZoomed = useGameStore((s) => s.isScreenZoomed);
   const isCameraUnlocked = useGameStore((s) => s.isCameraUnlocked);
+  const [dpr, setDpr] = useState(1.5);
+
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   const controlsRef = useRef<OrbitControlsImpl>(null);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   const handleStarted = (withSound: boolean) => {
     setMuted(!withSound);
@@ -29,7 +36,7 @@ export default function Experience() {
 
   useEffect(() => {
     if (controlsRef.current) {
-      controlsRef.current.target.set(0, 1, 0);
+      controlsRef.current.target.set(0, 2, 0);
       controlsRef.current.update();
     }
   }, []);
@@ -51,11 +58,16 @@ export default function Experience() {
 
       <Canvas
         camera={{
-          position: isMobile ? [5, 5, 8] : [5, 4, 5],
+          position: isMobile ? [9, 6, 9] : [6, 4, 6],
           fov: isMobile ? 55 : 45,
         }}
-        dpr={[1, 1.5]}
+        dpr={dpr}
       >
+        <PerformanceMonitor
+          onDecline={() => setDpr(1)}
+          onIncline={() => setDpr(1.5)}
+        />
+
         <Environment preset="city" />
         <OrbitControls
           ref={controlsRef}
@@ -63,7 +75,7 @@ export default function Experience() {
           enablePan={false}
           enableDamping={true}
           minDistance={isCameraUnlocked ? 0.3 : 3}
-          maxDistance={13}
+          maxDistance={isMobile ? 15 : 13}
           minPolarAngle={isCameraUnlocked ? 0 : 0}
           maxPolarAngle={isCameraUnlocked ? Math.PI : Math.PI / 2 - 0.1}
           minAzimuthAngle={isCameraUnlocked ? -Infinity : -Math.PI / 38}
@@ -71,9 +83,11 @@ export default function Experience() {
           enableRotate={!isCameraUnlocked}
           enableZoom={!isCameraUnlocked}
         />
-        <Suspense fallback={null}>
-          <Model />
-        </Suspense>
+        <Bvh firstHitOnly>
+          <Suspense fallback={null}>
+            <Model />
+          </Suspense>
+        </Bvh>
       </Canvas>
     </div>
   );

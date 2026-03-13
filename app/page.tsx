@@ -8,7 +8,7 @@ import Overlay from "@/components/Overlay/Overlay";
 const Experience = dynamic(() => import("@/components/Room/Experience"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-screen bg-[#111111] text-white flex items-center justify-center">
+    <div className="w-full h-screen bg-base-cream dark:bg-base-blue-light text-base-brwan flex items-center justify-center">
       Loading 3D...
     </div>
   ),
