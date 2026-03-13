@@ -9,6 +9,7 @@ import {
 } from "@react-three/drei";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Model } from "./Room";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 import { LoadingScreen } from "../LoadingScreen";
 import { ThemeToggle } from "@/components/Toggle/ThemeToggle";
@@ -25,7 +26,7 @@ export default function Experience() {
   const isCameraUnlocked = useGameStore((s) => s.isCameraUnlocked);
   const [dpr, setDpr] = useState(1.5);
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const isMobile = useIsMobile();
 
   const controlsRef = useRef<OrbitControlsImpl>(null);
 

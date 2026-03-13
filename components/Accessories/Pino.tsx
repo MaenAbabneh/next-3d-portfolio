@@ -3,6 +3,7 @@
 import { PianoKey } from "../PianoKey";
 import { KEYS, SUFFIX } from "@/constant/utils";
 import * as THREE from "three";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import type { GLTFResult } from "@/types/room.types";
 import { useEffect, useRef } from "react";
 import { useGameStore } from "@/store/useGameStore";
@@ -75,8 +76,10 @@ export function Pino({ nodes }: PinoProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isPianoZoomed]);
 
+  const isMobile = useIsMobile();
+
   const pianoX = 0.95;
-  const pianoY = 0.3;
+  const pianoY = isMobile ? 0.1 : -1.2;
   const pianoZ = -1.2;
 
   const handleZoomIn = () => {
@@ -151,7 +154,7 @@ export function Pino({ nodes }: PinoProps) {
       />
 
       {isPianoZoomed && (
-        <Html center position={[0.96, 1.6, -0.87]}>
+        <Html center position={[0.96, isMobile ? 2 : 1.6, -0.87]}>
           <div
             style={{
               display: "flex",
@@ -160,23 +163,31 @@ export function Pino({ nodes }: PinoProps) {
               gap: "15px",
             }}
           >
-            <div
-              style={{
-                background: "rgba(0,0,0,0.8)",
-                color: "white",
-                padding: "10px 20px",
-                borderRadius: "8px",
-                fontFamily: "monospace",
-                fontSize: "14px",
-                textAlign: "center",
-                whiteSpace: "nowrap",
-                border: "1px solid white",
-              }}
-            >
-              {/* تحديث النص ليوضح أن الكيبورد بالكامل متاح */}
-              🎹 Use <span style={{ color: "#ffcc00" }}>A-L</span> &{" "}
-              <span style={{ color: "#ffcc00" }}>Z-N</span> to play
-            </div>
+            {!isMobile && (
+              <div
+                style={{
+                  background: "rgba(0,0,0,0.8)",
+                  color: "white",
+                  padding: "10px 20px",
+                  borderRadius: "8px",
+                  fontFamily: "monospace",
+                  fontSize: "14px",
+                  textAlign: "center",
+                  whiteSpace: "nowrap",
+                  border: "1px solid white",
+                }}
+              >
+                🎹 Use{" "}
+                <span className="flex md:block" style={{ color: "#ffcc00" }}>
+                  A-L
+                </span>{" "}
+                &{" "}
+                <span className="flex md:block" style={{ color: "#ffcc00" }}>
+                  Z-N
+                </span>{" "}
+                to play
+              </div>
+            )}
             <button
               onClick={handleZoomOut}
               style={{

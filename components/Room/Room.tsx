@@ -79,7 +79,7 @@ export function Model(props: ModelProps) {
   }, [nodes, roomTexture]);
 
   return (
-    <group ref={groupRef} {...props} dispose={null}>
+    <group ref={groupRef} position={[0, -1.5, 0]} {...props} dispose={null}>
       <group
         name="root"
         position={[1.152, 0.345, -0.148]}

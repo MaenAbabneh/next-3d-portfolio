@@ -1,13 +1,14 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { Html } from "@react-three/drei";
 import { useThree, type ThreeEvent } from "@react-three/fiber";
 import gsap from "gsap";
-import { useRef, useState } from "react";
 import * as THREE from "three";
 import { useGameStore } from "@/store/useGameStore";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { InteractiveMarker } from "../InteractiveMarker";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 type ZoomClickEvent = ThreeEvent<MouseEvent> | React.MouseEvent<HTMLElement>;
 
@@ -36,10 +37,18 @@ export function InteractiveScreen({
   const originalCameraPosRef = useRef<THREE.Vector3 | null>(null);
   const originalTargetRef = useRef<THREE.Vector3 | null>(null);
 
-  // إحداثيات الشاشة (كما ضبطتها أنت)
+  const isMobile = useIsMobile();
+
   const screenX = -0.9;
   const screenY = 2.016;
-  const screenZ = -0.2546;
+  const screenZ = isMobile ? -0.2546 : -0.2546;
+  const roomOffsetY = -1.5;
+
+  const isMobileView = isMobile && isZoomed;
+
+  const iframeWidth = isMobileView ? 530 : 2340;
+  const iframeHeight = isMobileView ? 800 : 1080;
+  const iframeScale = isMobileView ? 0.0145 : 0.0108;
 
   const handleZoomIn = (e: ZoomClickEvent) => {
     e.stopPropagation();
@@ -59,7 +68,8 @@ export function InteractiveScreen({
 
     gsap.to(camera.position, {
       x: screenX + 0.42,
-      y: screenY - 0.36,
+      // eslint-disable-next-line prettier/prettier
+      y: (screenY - 0.36) + roomOffsetY,
       z: screenZ - 0.033,
       duration: 1.5,
       ease: "power3.inOut",
@@ -68,7 +78,8 @@ export function InteractiveScreen({
     if (controls) {
       gsap.to(controls.target, {
         x: screenX,
-        y: screenY - 0.36,
+        // eslint-disable-next-line prettier/prettier
+        y: (screenY - 0.36) + roomOffsetY,
         z: screenZ - 0.033,
         duration: 1.5,
         ease: "power3.inOut",
@@ -132,14 +143,14 @@ export function InteractiveScreen({
           zIndexRange={[9, 0]}
           position={[screenX, screenY, screenZ]}
           rotation={[0, 1.57, 0]}
-          scale={0.0108}
+          scale={iframeScale}
           className="transition-opacity duration-1000"
           style={{ opacity: 1 }}
         >
           <div
             style={{
-              width: "2340px",
-              height: "1080px",
+              width: iframeWidth,
+              height: iframeHeight,
               background: "#000",
               position: "relative",
               borderRadius: "12px",
@@ -172,7 +183,7 @@ export function InteractiveScreen({
                   pointerEvents: "auto",
                 }}
               >
-                Exit Screen
+                Exit
               </button>
             )}
 
