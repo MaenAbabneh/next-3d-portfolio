@@ -11,7 +11,6 @@ import { useGameStore } from "@/store/useGameStore";
 import { useSoundStore } from "@/store/useSoundStore";
 import { SoundToggle } from "../Toggle/SoundToggle";
 
-// استيراد النوع الخاص بـ OrbitControls لتجنب أخطاء التايب سكريبت
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 export default function Experience() {
@@ -49,7 +48,7 @@ export default function Experience() {
         <ThemeToggle />
       </div>
 
-      <Canvas camera={{ position: [5, 4, 5], fov: 45 }}>
+      <Canvas camera={{ position: [5, 4, 5], fov: 45 }} dpr={[1, 1.5]}>
         <Environment preset="city" />
         <OrbitControls
           ref={controlsRef}
