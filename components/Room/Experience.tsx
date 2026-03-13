@@ -20,6 +20,7 @@ export default function Experience() {
   const isCameraUnlocked = useGameStore((s) => s.isCameraUnlocked);
 
   const controlsRef = useRef<OrbitControlsImpl>(null);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   const handleStarted = (withSound: boolean) => {
     setMuted(!withSound);
@@ -48,7 +49,13 @@ export default function Experience() {
         <ThemeToggle />
       </div>
 
-      <Canvas camera={{ position: [5, 4, 5], fov: 45 }} dpr={[1, 1.5]}>
+      <Canvas
+        camera={{
+          position: isMobile ? [5, 5, 8] : [5, 4, 5],
+          fov: isMobile ? 55 : 45,
+        }}
+        dpr={[1, 1.5]}
+      >
         <Environment preset="city" />
         <OrbitControls
           ref={controlsRef}
