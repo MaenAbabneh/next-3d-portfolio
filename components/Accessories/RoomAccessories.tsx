@@ -7,7 +7,7 @@ import { useGameStore } from "@/store/useGameStore";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
-import { InteractiveScreen } from "@/components/Room/InteractiveScreen";
+import { InteractiveScreen } from "@/components/Accessories/InteractiveScreen";
 
 interface RoomAccessoriesProps {
   nodes: GLTFResult["nodes"];

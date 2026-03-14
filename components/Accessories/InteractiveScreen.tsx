@@ -137,7 +137,7 @@ export function InteractiveScreen({
       {started && (
         <Html
           transform
-          occlude="blending"
+          occlude={true}
           zIndexRange={[9, 0]}
           position={[screenX, screenY, screenZ]}
           rotation={[0, 1.57, 0]}
