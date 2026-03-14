@@ -14,6 +14,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { useGameStore } from "@/store/useGameStore";
 
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import { ResponsiveInitialCamera } from "../ResponsiveInitialCamera";
 
 export default function Experience() {
   const isCameraUnlocked = useGameStore((s) => s.isCameraUnlocked);
@@ -35,7 +36,6 @@ export default function Experience() {
       <Canvas
         camera={{
           position: isMobile ? [9, 6, 9] : [6, 4, 6],
-          fov: isMobile ? 55 : 45,
         }}
         dpr={dpr}
         gl={{
@@ -43,6 +43,7 @@ export default function Experience() {
           powerPreference: "high-performance",
         }}
       >
+        <ResponsiveInitialCamera />
         <PerformanceMonitor
           onDecline={() => setDpr(1)}
           onIncline={() => setDpr(1.5)}
@@ -54,6 +55,7 @@ export default function Experience() {
           makeDefault
           enablePan={false}
           enableDamping={true}
+          dampingFactor={0.05}
           minDistance={isCameraUnlocked ? 0.3 : 3}
           maxDistance={isMobile ? 15 : 13}
           minPolarAngle={isCameraUnlocked ? 0 : 0}
