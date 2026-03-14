@@ -39,12 +39,20 @@ export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
   });
 
   useEffect(() => {
-    const textures = [posterTexture, videoTexture];
+    const textures: THREE.Texture[] = [posterTexture, videoTexture];
 
     textures.forEach((texture) => {
-      texture.flipY = false;
+      texture.flipY = texture === videoTexture ? false : true;
+
+      if (texture === posterTexture) {
+        texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(1, -1);
+        texture.offset.set(0, 1);
+      }
+
       texture.minFilter = THREE.LinearFilter;
       texture.magFilter = THREE.LinearFilter;
+      texture.needsUpdate = true;
     });
   }, [posterTexture, videoTexture]);
 
