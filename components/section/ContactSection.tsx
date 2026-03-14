@@ -11,17 +11,18 @@ import {
 export default function ContactSection() {
   return (
     <div className="flex flex-col items-center justify-center text-center p-4 w-full h-full">
-      <h2 className="text-xl md:text-2xl font-bold mb-10 text-base-brwan">
-        {"If you like engineering, music, games, and food, let's connect!"}
+      <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-8 md:mb-12 text-base-brwan leading-relaxed">
+        If you like engineering, music, <br />
+        {"games, and food, let's connect!"}
       </h2>
 
-      <div className="flex gap-16 items-center justify-center text-base-blue dark:text-base-blue-dark ">
+      <div className="flex flex-wrap gap-6 sm:gap-10 md:gap-16 items-center justify-center text-base-blue dark:text-base-blue-dark">
         {/* Email */}
         <Link
           href="mailto:maenababneh@outlook.com"
           className="group inline-flex items-center justify-center hover:text-base-yellow transition-colors duration-300"
         >
-          <PiMailboxFill className="contact-logo group-hover:-rotate-12" />
+          <PiMailboxFill className="contact-logo group-hover:-rotate-12 transition-transform duration-300" />
         </Link>
 
         {/* GitHub */}
@@ -31,7 +32,7 @@ export default function ContactSection() {
           rel="noopener noreferrer"
           className="group inline-flex items-center justify-center hover:text-base-yellow transition-colors duration-300"
         >
-          <PiGithubLogoFill className="contact-logo group-hover:rotate-12" />
+          <PiGithubLogoFill className="contact-logo group-hover:rotate-12 transition-transform duration-300" />
         </Link>
 
         {/* LinkedIn */}
@@ -41,7 +42,7 @@ export default function ContactSection() {
           rel="noopener noreferrer"
           className="group inline-flex items-center justify-center hover:text-base-yellow transition-colors duration-300"
         >
-          <PiLinkedinLogoFill className="contact-logo group-hover:-rotate-12" />
+          <PiLinkedinLogoFill className="contact-logo group-hover:-rotate-12 transition-transform duration-300" />
         </Link>
 
         {/* Instagram */}
@@ -51,7 +52,7 @@ export default function ContactSection() {
           rel="noopener noreferrer"
           className="group inline-flex items-center justify-center hover:text-base-yellow transition-colors duration-300"
         >
-          <PiInstagramLogoFill className="contact-logo group-hover:rotate-12" />
+          <PiInstagramLogoFill className="contact-logo group-hover:rotate-12 transition-transform duration-300" />
         </Link>
       </div>
     </div>
