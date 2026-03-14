@@ -5,7 +5,7 @@ import { KEYS, SUFFIX } from "@/constant/utils";
 import * as THREE from "three";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import type { GLTFResult } from "@/types/room.types";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useGameStore } from "@/store/useGameStore";
 import { useThree } from "@react-three/fiber";
 import gsap from "gsap";
@@ -77,7 +77,6 @@ export function Pino({ nodes }: PinoProps) {
   }, [isPianoZoomed]);
 
   const isMobile = useIsMobile();
-
   const pianoX = 0.95;
   const pianoY = isMobile ? 0.1 : -1.2;
   const pianoZ = -1.2;
@@ -90,9 +89,19 @@ export function Pino({ nodes }: PinoProps) {
     setIsPianoZoomed(true);
     setIsCameraUnlocked(true);
 
+    const aspect = window.innerWidth / window.innerHeight;
+
+    let distanceY = 1;
+    if (aspect < 0.6) {
+      distanceY = 1.5; // موبايل بالطول: نرفع الكاميرا أكثر
+    } else if (aspect < 1) {
+      distanceY = 1; // تابلت بالطول
+    } else if (aspect < 1.4) {
+      distanceY = 0.8; // تابلت بالعرض
+    }
     gsap.to(camera.position, {
       x: pianoX,
-      y: pianoY + 1.8,
+      y: distanceY,
       z: pianoZ + 0.5,
       duration: 1.5,
       ease: "power3.inOut",
@@ -112,7 +121,7 @@ export function Pino({ nodes }: PinoProps) {
     }
   };
 
-  const handleZoomOut = () => {
+  const handleZoomOut = useCallback(() => {
     setIsPianoZoomed(false);
 
     if (originalCameraPosRef.current && controls && originalTargetRef.current) {
@@ -140,7 +149,13 @@ export function Pino({ nodes }: PinoProps) {
         },
       });
     }
-  };
+  }, [camera, controls, setIsPianoZoomed, setIsCameraUnlocked]);
+
+  useEffect(() => {
+    if (!isPianoZoomed && originalCameraPosRef.current) {
+      handleZoomOut();
+    }
+  }, [handleZoomOut, isPianoZoomed]);
 
   return (
     <group ref={pianoGroupRef}>
@@ -152,59 +167,24 @@ export function Pino({ nodes }: PinoProps) {
         }
         onClick={handleZoomIn}
       />
-
-      {isPianoZoomed && (
-        <Html center position={[0.96, isMobile ? 2 : 1.6, -0.87]}>
+      {isPianoZoomed && !isMobile && (
+        <Html center position={[0.96, 1.6, -0.87]}>
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "15px",
+              background: "rgba(0,0,0,0.8)",
+              color: "white",
+              padding: "10px 20px",
+              borderRadius: "8px",
+              fontFamily: "monospace",
+              fontSize: "14px",
+              textAlign: "center",
+              whiteSpace: "nowrap",
+              border: "1px solid white",
+              pointerEvents: "none",
             }}
           >
-            {!isMobile && (
-              <div
-                style={{
-                  background: "rgba(0,0,0,0.8)",
-                  color: "white",
-                  padding: "10px 20px",
-                  borderRadius: "8px",
-                  fontFamily: "monospace",
-                  fontSize: "14px",
-                  textAlign: "center",
-                  whiteSpace: "nowrap",
-                  border: "1px solid white",
-                }}
-              >
-                🎹 Use{" "}
-                <span className="flex md:block" style={{ color: "#ffcc00" }}>
-                  A-L
-                </span>{" "}
-                &{" "}
-                <span className="flex md:block" style={{ color: "#ffcc00" }}>
-                  Z-N
-                </span>{" "}
-                to play
-              </div>
-            )}
-            <button
-              onClick={handleZoomOut}
-              style={{
-                padding: "8px 18px",
-                fontSize: "14px",
-                fontWeight: "bold",
-                backgroundColor: "white",
-                color: "black",
-                border: "none",
-                borderRadius: "20px",
-                cursor: "pointer",
-                pointerEvents: "auto",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
-              }}
-            >
-              Stop Playing
-            </button>
+            🎹 Use <span style={{ color: "#ffcc00" }}>A-L</span> &{" "}
+            <span style={{ color: "#ffcc00" }}>Z-N</span> to play
           </div>
         </Html>
       )}
