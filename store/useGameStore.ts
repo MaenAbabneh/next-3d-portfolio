@@ -2,10 +2,12 @@ import { create } from "zustand";
 
 interface GameState {
   started: boolean;
+  introDone: boolean;
   isScreenZoomed: boolean;
   isCameraUnlocked: boolean;
   isPianoZoomed: boolean;
   setStarted: (value: boolean) => void;
+  setIntroDone: (value: boolean) => void;
   setIsScreenZoomed: (isZoomed: boolean) => void;
   setIsCameraUnlocked: (unlocked: boolean) => void;
   setIsPianoZoomed: (isZoomed: boolean) => void;
@@ -13,10 +15,12 @@ interface GameState {
 
 export const useGameStore = create<GameState>((set) => ({
   started: false,
+  introDone: false,
   isScreenZoomed: false,
   isCameraUnlocked: false,
   isPianoZoomed: false,
   setStarted: (value) => set({ started: value }),
+  setIntroDone: (value) => set({ introDone: value }),
   setIsScreenZoomed: (isZoomed) => set({ isScreenZoomed: isZoomed }),
   setIsCameraUnlocked: (unlocked) => set({ isCameraUnlocked: unlocked }),
   setIsPianoZoomed: (isZoomed) => set({ isPianoZoomed: isZoomed }),

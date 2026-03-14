@@ -12,6 +12,8 @@ const SCALE_KEY = "__introOriginalScale";
 const ROT_KEY = "__introOriginalRotation";
 const POS_KEY = "__introOriginalPosition";
 
+const RAYCAST_THROTTLE_MS = 80;
+
 // --- دوال مساعدة ---
 const isMesh = (obj: THREE.Object3D): obj is THREE.Mesh =>
   obj instanceof THREE.Mesh;
@@ -55,36 +57,47 @@ export const useHoverAnimation = (
 ) => {
   const { camera, raycaster, pointer } = useThree();
   const started = useGameStore((s) => s.started);
+  const introDone = useGameStore((s) => s.introDone);
   const hoverTargets = useRef<THREE.Object3D[]>([]);
   const hoveredObj = useRef<THREE.Object3D | null>(null);
   const hoveredGroupKey = useRef<string | null>(null);
+  const lastRaycastAt = useRef<number>(0);
 
   // 1️⃣ البحث وتخزين العناصر
   useEffect(() => {
     const scene = groupRef.current;
     if (!scene) return;
+    const defs = objectsWithHoverAnimations.map((name) => ({
+      name,
+      tokens: resolveSearchTokens(name),
+    }));
+
+    const foundByName = new Set<string>();
     const foundObjects: THREE.Object3D[] = [];
 
-    objectsWithHoverAnimations.forEach((name) => {
-      const tokens = resolveSearchTokens(name);
-      let found: THREE.Object3D | undefined;
+    scene.traverse((child) => {
+      if (foundByName.size === defs.length) return;
+      if (!isMesh(child)) return;
 
-      scene.traverse((child) => {
-        if (found || !isMesh(child)) return;
-        for (const token of tokens) {
-          if (child.name.includes(token)) {
-            found = child;
-            if (!child.userData[SCALE_KEY])
-              child.userData[SCALE_KEY] = child.scale.clone();
-            if (!child.userData[ROT_KEY])
-              child.userData[ROT_KEY] = child.rotation.clone();
-            if (!child.userData[POS_KEY])
-              child.userData[POS_KEY] = child.position.clone();
-            break;
-          }
+      for (const def of defs) {
+        if (foundByName.has(def.name)) continue;
+
+        for (const token of def.tokens) {
+          if (!child.name.includes(token)) continue;
+
+          foundByName.add(def.name);
+
+          if (!child.userData[SCALE_KEY])
+            child.userData[SCALE_KEY] = child.scale.clone();
+          if (!child.userData[ROT_KEY])
+            child.userData[ROT_KEY] = child.rotation.clone();
+          if (!child.userData[POS_KEY])
+            child.userData[POS_KEY] = child.position.clone();
+
+          foundObjects.push(child);
+          break;
         }
-      });
-      if (found) foundObjects.push(found);
+      }
     });
 
     hoverTargets.current = foundObjects;
@@ -179,7 +192,11 @@ export const useHoverAnimation = (
 
   // 3️⃣ حلقة Raycasting
   useFrame(() => {
-    if (!started || hoverTargets.current.length === 0) return;
+    if (!started || !introDone || hoverTargets.current.length === 0) return;
+
+    const now = performance.now();
+    if (now - lastRaycastAt.current < RAYCAST_THROTTLE_MS) return;
+    lastRaycastAt.current = now;
 
     raycaster.setFromCamera(pointer, camera);
     const intersects = raycaster.intersectObjects(hoverTargets.current, true);

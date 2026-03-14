@@ -43,38 +43,41 @@ const getOriginalPosition = (obj: THREE.Object3D) =>
 // --- الـ Hook ---
 export const useIntroAnimation = (groupRef: RefObject<THREE.Group | null>) => {
   const started = useGameStore((s) => s.started);
+  const setIntroDone = useGameStore((s) => s.setIntroDone);
   useGSAP(
     () => {
       const scene = groupRef.current;
       if (!scene) return;
 
-      const targets: Record<string, THREE.Object3D[]> = {};
+      const defs = objectsWithIntroAnimations.map((name) => ({
+        name,
+        tokens: resolveSearchTokens(name),
+      }));
 
-      // 1. منطق البحث
-      const findAllMatchingMeshes = (shortName: string) => {
-        const tokens = resolveSearchTokens(shortName);
-        const matches: THREE.Object3D[] = [];
-        scene.traverse((child) => {
-          if (!isMeshLike(child)) return;
-          for (const token of tokens) {
-            if (child.name.includes(token)) {
-              matches.push(child);
-              break;
-            }
+      const targets: Record<string, THREE.Object3D[]> = {};
+      defs.forEach((d) => {
+        targets[d.name] = [];
+      });
+
+      // 1. Traverse once and collect matches for all definitions.
+      scene.traverse((child) => {
+        if (!isMeshLike(child)) return;
+
+        for (const def of defs) {
+          for (const token of def.tokens) {
+            if (!child.name.includes(token)) continue;
+            targets[def.name].push(child);
+            break;
           }
-        });
-        return matches.filter(
-          (v, i, a) => a.findIndex((t) => t.uuid === v.uuid) === i,
-        );
-      };
+        }
+      });
 
       const getTargetObjects = (name: string) => targets[name] ?? [];
 
       // 2. التجهيز والحفظ
       objectsWithIntroAnimations.forEach((name) => {
-        const objs = findAllMatchingMeshes(name);
+        const objs = getTargetObjects(name);
         if (objs.length === 0) return;
-        targets[name] = objs;
 
         objs.forEach((obj) => {
           if (!obj.userData[INTRO_SCALE_KEY])
@@ -93,7 +96,12 @@ export const useIntroAnimation = (groupRef: RefObject<THREE.Group | null>) => {
         });
       });
 
-      if (!started) return;
+      if (!started) {
+        setIntroDone(false);
+        return;
+      }
+
+      setIntroDone(false);
 
       // =========================================================
       // 3. بناء التايم لاين الرئيسي (The Master Timeline) 🎬
@@ -104,6 +112,7 @@ export const useIntroAnimation = (groupRef: RefObject<THREE.Group | null>) => {
         defaults: { ease: "back.out(1.8)", duration: POP_DURATION },
       });
       masterTl.timeScale(GLOBAL_SPEED); // التحكم بالسرعة الكلية من هنا
+      masterTl.eventCallback("onComplete", () => setIntroDone(true));
 
       // دالة مساعدة لإضافة عناصر لتايم لاين محدد
       const addToTl = (
