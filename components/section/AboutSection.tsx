@@ -4,7 +4,7 @@ export default function AboutSection() {
   return (
     <div className=" text-base-brwan">
       <div className="flex flex-col items-center gap-4">
-        <div className="relative w-90 h-80 rounded-xl overflow-hidden border-4 border-base-blue dark:border-base-blue-dark">
+        <div className="relative w-76 h-64 md:w-90 md:h-80 rounded-2xl overflow-hidden border-4 border-base-blue dark:border-base-blue-dark shadow-md shrink-0">
           <Image
             src="https://res.cloudinary.com/dsgajdqm0/image/upload/q_auto,f_auto/v1772971236/Profile_lfmhs0.png"
             alt="Profile"
