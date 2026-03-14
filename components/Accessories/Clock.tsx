@@ -1,8 +1,7 @@
 "use client";
 
 import * as THREE from "three";
-import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import type { GLTFResult } from "@/types/room.types";
 
 interface RoomAccessoriesProps {
@@ -13,27 +12,35 @@ export function Clock({ nodes }: RoomAccessoriesProps) {
   const hourHandRef = useRef<THREE.Mesh>(null);
   const minuteHandRef = useRef<THREE.Mesh>(null);
 
-  useFrame(() => {
-    const date = new Date();
+  useEffect(() => {
+    const updateClock = () => {
+      const date = new Date();
 
-    const hours = date.getHours() % 12;
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
+      const hours = date.getHours() % 12;
+      const minutes = date.getMinutes();
+      const seconds = date.getSeconds();
 
-    const totalMinutes = minutes + seconds / 60;
-    const minuteAngle = (-totalMinutes * (Math.PI * 2)) / 60;
+      const totalMinutes = minutes + seconds / 60;
+      const minuteAngle = (-totalMinutes * (Math.PI * 2)) / 60;
 
-    const totalHours = hours + minutes / 60;
-    const hourAngle = (-totalHours * (Math.PI * 2)) / 12;
+      const totalHours = hours + minutes / 60;
+      const hourAngle = (-totalHours * (Math.PI * 2)) / 12;
 
-    if (minuteHandRef.current) {
-      minuteHandRef.current.rotation.x = minuteAngle;
-    }
+      if (minuteHandRef.current) {
+        minuteHandRef.current.rotation.x = minuteAngle;
+      }
 
-    if (hourHandRef.current) {
-      hourHandRef.current.rotation.x = hourAngle;
-    }
-  });
+      if (hourHandRef.current) {
+        hourHandRef.current.rotation.x = hourAngle;
+      }
+    };
+
+    updateClock();
+
+    const interval = setInterval(updateClock, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <group>
