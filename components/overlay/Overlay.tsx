@@ -7,24 +7,23 @@ import { useEffect, useRef } from "react";
 import AboutSection from "../section/AboutSection";
 import ContactSection from "../section/ContactSection";
 import WorksSection from "../section/WorksSection";
-import ModalLayout from "./ModalLayout"; // استيراد المكون الجديد
+import ModalLayout from "./ModalLayout";
 
-// إعدادات الأحجام حسب نوع القسم (مطابقة للـ CSS الأصلي)
 const sectionConfig = {
   about: {
-    classes: "w-[90%] max-w-[800px] h-auto ",
+    classes: "w-full max-w-[450px] h-auto",
     title: "About Me",
   },
   works: {
-    classes: "w-[90%] max-w-[1200px] h-[85vh] md:h-[700px]",
+    classes: "w-full max-w-[1200px] h-[80vh] md:h-[700px]",
     title: "My Work",
   },
   contact: {
-    classes: "w-[90%] max-w-[650px] h-auto min-h-[300px]",
+    classes: "w-full max-w-[650px] h-auto min-h-[300px]",
     title: "Say Hello!",
   },
   articles: {
-    classes: "w-[90%] max-w-[800px] h-[80vh]",
+    classes: "w-full max-w-[800px] h-[80vh]",
     title: "Articles",
   },
 };
@@ -50,12 +49,10 @@ export default function Overlay() {
 
   useGSAP(() => {
     if (isOpen) {
-      // 1. Overlay Fade In
       gsap.to(containerRef.current, {
         autoAlpha: 1,
         duration: 0.4,
       });
-      // 2. Modal Pop In (Scale + Opacity) - نفس تأثير back.out(2)
       gsap.fromTo(
         contentRef.current,
         { scale: 0, opacity: 0 },
@@ -67,7 +64,6 @@ export default function Overlay() {
         },
       );
     } else {
-      // Exit Animation
       gsap.to(containerRef.current, {
         autoAlpha: 0,
         duration: 0.3,
@@ -99,10 +95,9 @@ export default function Overlay() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 invisible"
+      className="fixed inset-0 z-100 flex items-center justify-center p-6 pb-32 md:p-12 bg-black/40 backdrop-blur-sm opacity-0 invisible"
       tabIndex={0}
       onClick={(e) => {
-        // إغلاق عند الضغط على الخلفية فقط
         if (e.target === e.currentTarget) closeOverlay();
       }}
       onKeyDown={(e) => {
@@ -111,8 +106,10 @@ export default function Overlay() {
         }
       }}
     >
-      {/* Wrapper للأنيميشن */}
-      <div ref={contentRef}>
+      <div
+        ref={contentRef}
+        className="w-full max-w-full max-h-full flex justify-center"
+      >
         <ModalLayout title={config.title} className={config.classes}>
           {renderContent()}
         </ModalLayout>
