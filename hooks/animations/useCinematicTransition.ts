@@ -16,7 +16,7 @@ export function useCinematicTransition(
     Object.values(materials.materials).forEach((mat) => {
       gsap.to(mat.uniforms.uMixRatio, {
         value: targetRatio,
-        duration: 1.5,
+        duration: 1.8,
         ease: "power2.inOut",
       });
     });
