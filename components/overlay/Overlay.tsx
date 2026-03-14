@@ -4,9 +4,9 @@ import { useOverlayStore } from "@/store/useOverlayStore";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
-import AboutSection from "../Section/AboutSection";
-import ContactSection from "../Section/ContactSection";
-import WorksSection from "../Section/WorksSection";
+import AboutSection from "../section/AboutSection";
+import ContactSection from "../section/ContactSection";
+import WorksSection from "../section/WorksSection";
 import ModalLayout from "./ModalLayout"; // استيراد المكون الجديد
 
 // إعدادات الأحجام حسب نوع القسم (مطابقة للـ CSS الأصلي)

@@ -11,29 +11,17 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { Model } from "./Room";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
-import { LoadingScreen } from "../LoadingScreen";
-import { ThemeToggle } from "@/components/Toggle/ThemeToggle";
 import { useGameStore } from "@/store/useGameStore";
-import { useSoundStore } from "@/store/useSoundStore";
-import { SoundToggle } from "../Toggle/SoundToggle";
 
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 export default function Experience() {
-  const setStarted = useGameStore((s) => s.setStarted);
-  const setMuted = useSoundStore((s) => s.setMuted);
-  const isScreenZoomed = useGameStore((s) => s.isScreenZoomed);
   const isCameraUnlocked = useGameStore((s) => s.isCameraUnlocked);
   const [dpr, setDpr] = useState(1.5);
 
   const isMobile = useIsMobile();
 
   const controlsRef = useRef<OrbitControlsImpl>(null);
-
-  const handleStarted = (withSound: boolean) => {
-    setMuted(!withSound);
-    setStarted(true);
-  };
 
   useEffect(() => {
     if (controlsRef.current) {
@@ -44,19 +32,6 @@ export default function Experience() {
 
   return (
     <div className="w-full h-screen bg-[#111111]">
-      <LoadingScreen onStarted={handleStarted} />
-
-      <div
-        className={`fixed top-4 right-4 z-99 flex gap-4 transition-all duration-700 ease-in-out ${
-          isScreenZoomed
-            ? "opacity-0 pointer-events-none -translate-y-2.5"
-            : "opacity-100 pointer-events-auto translate-y-0"
-        }`}
-      >
-        <SoundToggle />
-        <ThemeToggle />
-      </div>
-
       <Canvas
         camera={{
           position: isMobile ? [9, 6, 9] : [6, 4, 6],

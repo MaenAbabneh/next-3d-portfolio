@@ -11,22 +11,22 @@ import { useRoomMaterials } from "@/hooks/useRoomMaterials";
 import { useCinematicTransition } from "@/hooks/animations/useCinematicTransition";
 import { useIntroAnimation } from "@/hooks/animations/useIntroAnimation";
 import { useHoverAnimation } from "@/hooks/animations/useHoverAnimation";
-import { RoomAccessories } from "../Accessories/RoomAccessories";
-import { Clock } from "../Accessories/Clock";
-import { Pino } from "../Accessories/Pino";
-import { PictureFrame } from "../Accessories/PictureFrame";
-import { Menu } from "../Accessories/Menu";
-import { ComputerFan } from "../Accessories/ComputerFan";
-import { SocialButtons } from "../Accessories/SocailButton.";
-import { Chair } from "../Accessories/Chair";
-import { Fish } from "../Accessories/Fish";
-import { CoffeCup } from "../Accessories/CoffeCup";
+import { RoomAccessories } from "../accessories/RoomAccessories";
+import { Clock } from "../accessories/Clock";
+import { Pino } from "../accessories/Pino";
+import { PictureFrame } from "../accessories/PictureFrame";
+import { Menu } from "../accessories/Menu";
+import { ComputerFan } from "../accessories/ComputerFan";
+import { SocialButtons } from "../accessories/SocailButton.";
+import { Chair } from "../accessories/Chair";
+import { Fish } from "../accessories/Fish";
+import { CoffeCup } from "../accessories/CoffeCup";
 
 type ModelProps = JSX.IntrinsicElements["group"];
 
 export function Model(props: ModelProps) {
   const { scene } = useGLTF(
-    "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb",
+    "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb"
   );
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone) as unknown as GLTFResult;
@@ -750,5 +750,5 @@ export function Model(props: ModelProps) {
 }
 
 useGLTF.preload(
-  "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb",
+  "https://res.cloudinary.com/dsgajdqm0/image/upload/v1772701871/my-room-3d_ggiewf.glb"
 );

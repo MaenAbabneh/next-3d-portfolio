@@ -1,7 +1,7 @@
 import { GLTFResult } from "@/types/room.types";
 import { useRef } from "react";
 import * as THREE from "three";
-import { Steam } from "@/Effects/Steam";
+import { Steam } from "@/effects/Steam";
 
 interface CoffeCupProps {
   nodes: GLTFResult["nodes"];
