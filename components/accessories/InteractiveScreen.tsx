@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useEffect } from "react";
 import { Html } from "@react-three/drei";
 import { useThree, type ThreeEvent } from "@react-three/fiber";
 import gsap from "gsap";
@@ -24,8 +24,9 @@ export function InteractiveScreen({
   url,
 }: InteractiveScreenProps) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const [isZoomed, setIsZoomed] = useState(false);
+
   const started = useGameStore((s) => s.started);
+  const isScreenZoomed = useGameStore((s) => s.isScreenZoomed);
   const setIsScreenZoomed = useGameStore((s) => s.setIsScreenZoomed);
   const setIsCameraUnlocked = useGameStore((s) => s.setIsCameraUnlocked);
 
@@ -37,6 +38,8 @@ export function InteractiveScreen({
   const originalCameraPosRef = useRef<THREE.Vector3 | null>(null);
   const originalTargetRef = useRef<THREE.Vector3 | null>(null);
 
+  const previousZoomState = useRef(false);
+
   const isMobile = useIsMobile();
 
   const screenX = -0.9;
@@ -44,17 +47,48 @@ export function InteractiveScreen({
   const screenZ = isMobile ? -0.2546 : -0.2546;
   const roomOffsetY = -1.5;
 
-  const isMobileView = isMobile && isZoomed;
+  const isMobileView = isMobile && isScreenZoomed;
 
   const iframeWidth = isMobileView ? 530 : 2340;
   const iframeHeight = isMobileView ? 800 : 1080;
   const defaultScale = 0.0108;
 
+  useEffect(() => {
+    if (previousZoomState.current && !isScreenZoomed) {
+      const originalCameraPos =
+        originalCameraPosRef.current ?? new THREE.Vector3(5, 3, 5);
+      const originalTarget =
+        originalTargetRef.current ?? new THREE.Vector3(0, 1, 0);
+
+      gsap.to(camera.position, {
+        x: originalCameraPos.x,
+        y: originalCameraPos.y,
+        z: originalCameraPos.z,
+        duration: 1.5,
+        ease: "power3.inOut",
+        onComplete: () => {
+          setIsCameraUnlocked(false);
+        },
+      });
+
+      if (controls) {
+        gsap.to(controls.target, {
+          x: originalTarget.x,
+          y: originalTarget.y,
+          z: originalTarget.z,
+          duration: 1.5,
+          ease: "power3.inOut",
+        });
+      }
+    }
+
+    previousZoomState.current = isScreenZoomed;
+  }, [isScreenZoomed, camera, controls, setIsCameraUnlocked]);
+
   const handleZoomIn = (e: ZoomClickEvent) => {
     e.stopPropagation();
-    if (isZoomed || !started) return;
+    if (isScreenZoomed || !started) return;
 
-    setIsZoomed(true);
     setIsScreenZoomed(true);
     setIsCameraUnlocked(true);
 
@@ -66,8 +100,19 @@ export function InteractiveScreen({
         controls?.target?.clone() ?? new THREE.Vector3(0, 1, 0);
     }
 
+    const aspect = window.innerWidth / window.innerHeight;
+
+    let distanceX = 0.42;
+    if (aspect < 0.6) {
+      distanceX = 1.1;
+    } else if (aspect < 1) {
+      distanceX = 0.85;
+    } else if (aspect < 1.4) {
+      distanceX = 0.6;
+    }
+
     gsap.to(camera.position, {
-      x: screenX + 0.42,
+      x: screenX + distanceX,
       y: screenY - 0.36 + roomOffsetY,
       z: screenZ - (isMobile ? 0.036 : 0.033),
       duration: 1.5,
@@ -79,36 +124,6 @@ export function InteractiveScreen({
         x: screenX,
         y: screenY - 0.36 + roomOffsetY,
         z: screenZ - (isMobile ? 0.036 : 0.033),
-        duration: 1.5,
-        ease: "power3.inOut",
-      });
-    }
-  };
-
-  const handleZoomOut = () => {
-    setIsZoomed(false);
-    setIsScreenZoomed(false);
-    const originalCameraPos =
-      originalCameraPosRef.current ?? new THREE.Vector3(5, 3, 5);
-    const originalTarget =
-      originalTargetRef.current ?? new THREE.Vector3(0, 1, 0);
-
-    gsap.to(camera.position, {
-      x: originalCameraPos.x,
-      y: originalCameraPos.y,
-      z: originalCameraPos.z,
-      duration: 1.5,
-      ease: "power3.inOut",
-      onComplete: () => {
-        setIsCameraUnlocked(false);
-      },
-    });
-
-    if (controls) {
-      gsap.to(controls.target, {
-        x: originalTarget.x,
-        y: originalTarget.y,
-        z: originalTarget.z,
         duration: 1.5,
         ease: "power3.inOut",
       });
@@ -130,7 +145,7 @@ export function InteractiveScreen({
         title="DESKTOP"
         position={[-0.88, 2.02, -0.25]}
         rotation={[0, 1.57, 0]}
-        visible={started && !isZoomed}
+        visible={started && !isScreenZoomed}
         onClick={handleZoomIn}
       />
 
@@ -156,38 +171,15 @@ export function InteractiveScreen({
               transform: isMobileView ? "scale(1.35)" : "scale(1)",
             }}
           >
-            {isZoomed && (
-              <>
-                <iframe
-                  src={url}
-                  title="Interactive Portfolio"
-                  style={{ width: "100%", height: "100%", border: "none" }}
-                />
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleZoomOut();
-                  }}
-                  style={{
-                    position: "absolute",
-                    bottom: "20px",
-                    right: "20px",
-                    padding: "15px 30px",
-                    fontSize: "24px",
-                    backgroundColor: "rgba(255,50,50,0.9)",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "8px",
-                    cursor: "pointer",
-                    pointerEvents: "auto",
-                  }}
-                >
-                  Exit
-                </button>
-              </>
+            {isScreenZoomed && (
+              <iframe
+                src={url}
+                title="Interactive Portfolio"
+                style={{ width: "100%", height: "100%", border: "none" }}
+              />
             )}
 
-            {!isZoomed && (
+            {!isScreenZoomed && (
               <button
                 type="button"
                 aria-label="Zoom into screen"
