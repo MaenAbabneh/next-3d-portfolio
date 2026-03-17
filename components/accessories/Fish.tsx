@@ -1,3 +1,4 @@
+import { useUISound } from "@/hooks/audio/useUISound";
 import { GLTFResult } from "@/types/room.types";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -11,6 +12,8 @@ interface FishProps {
 export function Fish({ nodes }: FishProps) {
   const fishRef = useRef<THREE.Mesh>(null);
   const hoverTweenRef = useRef<gsap.core.Tween | null>(null);
+
+  const { playHover } = useUISound();
 
   useGSAP(() => {
     if (!fishRef.current) return;
@@ -63,7 +66,10 @@ export function Fish({ nodes }: FishProps) {
         material={nodes.Fish_Second_Hover_Raycaster.material}
         position={[0.248, 0.853, 1.039]}
         rotation={[-Math.PI, 0.019, -Math.PI]}
-        onPointerEnter={handlePointerEnter}
+        onPointerEnter={() => {
+          playHover();
+          handlePointerEnter();
+        }}
         onPointerLeave={handlePointerLeave}
       />
     </group>
