@@ -8,6 +8,7 @@ import { FloatingMenu } from "@/components/toggle/FloatingMenu";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { useSoundStore } from "@/store/useSoundStore";
 import { useGameStore } from "@/store/useGameStore";
+import { useBackgroundMusic } from "@/hooks/audio/BackgroundMusic";
 
 const Experience = dynamic(() => import("@/components/room/Experience"), {
   ssr: false,
@@ -20,10 +21,14 @@ const Experience = dynamic(() => import("@/components/room/Experience"), {
 
 export default function Home() {
   const setStarted = useGameStore((s) => s.setStarted);
-  const setMuted = useSoundStore((s) => s.setMuted);
+  const setBgmMuted = useSoundStore((s) => s.setBgmMuted);
+  const setSfxMuted = useSoundStore((s) => s.setSfxMuted);
+
+  useBackgroundMusic();
 
   const handleStarted = (withSound: boolean) => {
-    setMuted(!withSound);
+    setBgmMuted(!withSound);
+    setSfxMuted(!withSound);
     setStarted(true);
   };
 
