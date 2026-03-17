@@ -5,8 +5,8 @@ import { useState, useRef } from "react";
 import type { KeyboardEvent, MouseEvent } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-// 🌟 1. استيراد أيقونة Enter من مكتبة react-icons
 import { BsArrowReturnLeft } from "react-icons/bs";
+import { useUISound } from "@/hooks/audio/useUISound";
 
 interface InteractiveMarkerProps {
   position: [number, number, number];
@@ -24,22 +24,41 @@ export function InteractiveMarker({
   onClick,
 }: InteractiveMarkerProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [prevVisible, setPrevVisible] = useState(visible);
   const rectRef = useRef<HTMLDivElement>(null);
 
+  const { playHover, playClick } = useUISound();
+
+  if (visible !== prevVisible) {
+    setPrevVisible(visible);
+    if (!visible && isHovered) {
+      setIsHovered(false);
+    }
+  }
+
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (!visible) return;
     if (e.key !== "Enter" && e.key !== " ") return;
     e.preventDefault();
     e.stopPropagation();
     e.currentTarget.click();
+    playClick();
   };
 
-  const handleEnter = () => setIsHovered(true);
-  const handleLeave = () => setIsHovered(false);
+  const handleEnter = () => {
+    if (!visible) return;
+    setIsHovered(true);
+    playHover();
+  };
+
+  const handleLeave = () => {
+    setIsHovered(false);
+  };
 
   useGSAP(() => {
     if (!rectRef.current) return;
 
-    if (isHovered) {
+    if (isHovered && visible) {
       gsap.to(rectRef.current, {
         scaleX: 1,
         opacity: 1,
@@ -54,7 +73,7 @@ export function InteractiveMarker({
         ease: "power2.inOut",
       });
     }
-  }, [isHovered]);
+  }, [isHovered, visible]); // 🌟 أضفنا visible للمراقبة
 
   return (
     <Html
@@ -65,13 +84,13 @@ export function InteractiveMarker({
       distanceFactor={1.5}
       zIndexRange={[10, 0]}
       style={{
-        pointerEvents: "auto",
+        pointerEvents: visible ? "auto" : "none",
         display: "flex",
         alignItems: "center",
         background: "transparent",
         opacity: visible ? 1 : 0,
         transition: "opacity 0.4s ease-in-out",
-        cursor: "pointer",
+        cursor: visible ? "pointer" : "default",
       }}
     >
       <div
@@ -79,21 +98,23 @@ export function InteractiveMarker({
           position: "relative",
           display: "flex",
           alignItems: "center",
-          pointerEvents: "auto",
+          pointerEvents: visible ? "auto" : "none",
           background: "transparent",
         }}
         role="button"
-        tabIndex={0}
+        tabIndex={visible ? 0 : -1}
         aria-label={title}
+        aria-hidden={!visible}
         onPointerEnter={handleEnter}
         onPointerLeave={handleLeave}
         onKeyDown={handleKeyDown}
         onClick={(e) => {
+          if (!visible) return;
           e.stopPropagation();
           if (onClick) onClick(e);
+          playClick();
         }}
       >
-        {/* شكل المعين */}
         <div
           style={{
             width: isHovered ? "28px" : "20px",
@@ -108,22 +129,17 @@ export function InteractiveMarker({
             alignItems: "center",
           }}
         >
-          {/* 🌟 2. استخدام مكون الأيقونة الجاهز */}
           <BsArrowReturnLeft
-            size={14} // حجم الأيقونة
-            color="white" // لون الأيقونة
+            size={14}
+            color="white"
             style={{
-              // الدوران العكسي (-45) لتبقى مستقيمة داخل المعين المائل
               transform: "rotate(-45deg)",
               opacity: isHovered ? 1 : 0,
-              transition: "opacity 0.3s ease 0.1s", // تأخير بسيط لظهور سلس
-              // لمسة إضافية: جعل الأيقونة أعرض قليلاً لتبدو أوضح
+              transition: "opacity 0.3s ease 0.1s",
               strokeWidth: "1",
             }}
           />
         </div>
-
-        {/* حاوية التموضع للمستطيل */}
         <div
           style={{
             position: "absolute",
@@ -134,7 +150,6 @@ export function InteractiveMarker({
             pointerEvents: "none",
           }}
         >
-          {/* المستطيل المنبثق */}
           <div
             ref={rectRef}
             style={{
