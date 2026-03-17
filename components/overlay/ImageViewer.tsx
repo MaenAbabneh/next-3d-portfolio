@@ -6,12 +6,15 @@ import { useImageViewerStore } from "@/store/useImageViewerStore";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useUISound } from "@/hooks/audio/useUISound";
 
 export default function ImageViewer() {
   const { isOpen, activeImage, closeImage } = useImageViewerStore();
 
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
+
+  const { playExit, playHover } = useUISound();
 
   useGSAP(
     () => {
@@ -81,7 +84,6 @@ export default function ImageViewer() {
       aria-hidden={!isOpen}
       tabIndex={0}
       onClick={(e) => {
-        // إغلاق عند الضغط على الخلفية فقط
         if (e.target === e.currentTarget) closeImage();
       }}
       onKeyDown={(e) => {
@@ -92,8 +94,10 @@ export default function ImageViewer() {
     >
       {/* زر الإغلاق */}
       <button
+        onMouseEnter={playHover}
         onClick={(e) => {
           e.stopPropagation();
+          playExit();
           closeImage();
         }}
         className="absolute top-6 right-6 z-50 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-all hover:scale-110"
