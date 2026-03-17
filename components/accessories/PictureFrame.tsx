@@ -6,6 +6,7 @@ import * as THREE from "three";
 import { useTexture } from "@react-three/drei";
 import { GLTFResult } from "@/types/room.types";
 import { useImageViewerStore } from "@/store/useImageViewerStore";
+import { useUISound } from "@/hooks/audio/useUISound";
 
 interface PictureFrameProps {
   nodes: GLTFResult["nodes"];
@@ -31,7 +32,7 @@ export function PictureFrame({ nodes }: PictureFrameProps) {
   const allTextures = [...Object.values(imageTexture)];
 
   allTextures.forEach((texture) => {
-    texture.flipY = false; // منع انعكاس الصورة رأسياً
+    texture.flipY = false;
     texture.minFilter = THREE.LinearFilter;
     texture.magFilter = THREE.LinearFilter;
   });
@@ -49,6 +50,8 @@ export function PictureFrame({ nodes }: PictureFrameProps) {
     });
   };
 
+  const { playClick, playHover } = useUISound();
+
   return (
     <>
       <group
@@ -56,6 +59,7 @@ export function PictureFrame({ nodes }: PictureFrameProps) {
         position={[-0.99, 2.417, 0.781]}
         onPointerOver={(e) => {
           e.stopPropagation();
+          playHover();
           animateFrameScale(framOneRef.current, true);
         }}
         onPointerOut={(e) => {
@@ -64,6 +68,7 @@ export function PictureFrame({ nodes }: PictureFrameProps) {
         }}
         onClick={(e) => {
           e.stopPropagation();
+          playClick();
           openImage(frameImages.Frame_1);
         }}
       >
@@ -90,6 +95,7 @@ export function PictureFrame({ nodes }: PictureFrameProps) {
         position={[-0.993, 2.451, 1.251]}
         onPointerOver={(e) => {
           e.stopPropagation();
+          playHover();
           animateFrameScale(framTwoRef.current, true);
         }}
         onPointerOut={(e) => {
@@ -98,6 +104,7 @@ export function PictureFrame({ nodes }: PictureFrameProps) {
         }}
         onClick={(e) => {
           e.stopPropagation();
+          playClick();
           openImage(frameImages.Frame_2);
         }}
       >
@@ -124,6 +131,7 @@ export function PictureFrame({ nodes }: PictureFrameProps) {
         position={[-0.99, 2.032, 0.745]}
         onPointerOver={(e) => {
           e.stopPropagation();
+          playHover();
           animateFrameScale(framThreeRef.current, true);
         }}
         onPointerOut={(e) => {
@@ -132,6 +140,7 @@ export function PictureFrame({ nodes }: PictureFrameProps) {
         }}
         onClick={(e) => {
           e.stopPropagation();
+          playClick();
           openImage(frameImages.Frame_3);
         }}
       >
