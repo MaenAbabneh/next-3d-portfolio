@@ -7,6 +7,7 @@ import { useEffect, useState, useRef } from "react";
 import { BsMoonStarsFill } from "react-icons/bs";
 import { TbSunset2Filled } from "react-icons/tb";
 import { useRipple } from "@/hooks/animations/useRipple";
+import { useUISound } from "@/hooks/audio/useUISound";
 
 export function ThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -18,6 +19,8 @@ export function ThemeToggle() {
   const moonRef = useRef<HTMLDivElement>(null);
 
   const hasInitialized = useRef(false);
+
+  const { playHover, playClick } = useUISound();
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true));
@@ -40,6 +43,7 @@ export function ThemeToggle() {
   });
 
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    playClick();
     registerClick(e);
     setTheme(isDark ? "light" : "dark");
   };
@@ -98,6 +102,7 @@ export function ThemeToggle() {
     <button
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       ref={containerRef}
+      onMouseEnter={playHover}
       onClick={handleToggle}
       className="relative box-border w-16 h-16 rounded-2xl border-4 flex items-center justify-center cursor-pointer shadow-lg bg-base-cream border-base-blue dark:bg-base-blue-light dark:border-base-blue-dark"
     >
