@@ -1,3 +1,6 @@
+"use Client";
+
+import { useUISound } from "@/hooks/audio/useUISound";
 import { ThreeEvent } from "@react-three/fiber";
 import gsap from "gsap";
 import { useRef, useState, useEffect } from "react";
@@ -23,6 +26,8 @@ export const SocialItem = ({
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
+  const { playHover, playClick } = useUISound();
+
   useEffect(() => {
     document.body.style.cursor = hovered ? "pointer" : "auto";
     return () => {
@@ -31,21 +36,20 @@ export const SocialItem = ({
   }, [hovered]);
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
-    e.stopPropagation(); // منع النقر من اختراق المجسم والوصول للخلفية
+    e.stopPropagation();
 
     if (!meshRef.current) return;
+    playClick();
 
-    // تشغيل أنيميشن الضغط
     gsap.to(meshRef.current.scale, {
-      x: 0.8, // تصغير الحجم
+      x: 0.8,
       y: 0.8,
       z: 0.8,
       duration: 0.1,
-      yoyo: true, // العودة للحجم الأصلي
+      yoyo: true,
       repeat: 1,
       ease: "power1.inOut",
       onComplete: () => {
-        // فتح الرابط بعد انتهاء الحركة
         window.open(url, "_blank");
       },
     });
@@ -62,9 +66,9 @@ export const SocialItem = ({
       onClick={handleClick}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
-      // تحسين بسيط: تكبير العنصر قليلاً عند الهوفر
       onPointerEnter={(e) => {
         e.stopPropagation();
+        playHover();
         if (meshRef.current)
           gsap.to(meshRef.current.scale, {
             x: 1.1,
