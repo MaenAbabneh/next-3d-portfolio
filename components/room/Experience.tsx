@@ -12,15 +12,19 @@ import { Model } from "./Room";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 import { useGameStore } from "@/store/useGameStore";
+import { useSettingsStore } from "@/store/useSettingsStore";
 
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { ResponsiveInitialCamera } from "../ResponsiveInitialCamera";
 
 export default function Experience() {
   const isCameraUnlocked = useGameStore((s) => s.isCameraUnlocked);
-  const [dpr, setDpr] = useState(1.5);
-
   const isMobile = useIsMobile();
+
+  const quality = useSettingsStore((s) => s.quality);
+  const isHighQuality = quality === "high";
+
+  const [autoDpr, setAutoDpr] = useState(1.5);
 
   const controlsRef = useRef<OrbitControlsImpl>(null);
 
@@ -31,25 +35,36 @@ export default function Experience() {
     }
   }, []);
 
+  const currentDpr = isHighQuality ? autoDpr : 0.8;
+
   return (
     <div className="w-full h-screen bg-[#111111]">
       <Canvas
         camera={{
           position: isMobile ? [9, 6, 9] : [6, 4, 6],
         }}
-        dpr={dpr}
+        dpr={currentDpr}
+        shadows={isHighQuality}
         gl={{
-          antialias: true,
+          antialias: isHighQuality,
           powerPreference: "high-performance",
         }}
       >
         <ResponsiveInitialCamera />
-        <PerformanceMonitor
-          onDecline={() => setDpr(1)}
-          onIncline={() => setDpr(1.5)}
+
+        {isHighQuality && (
+          <PerformanceMonitor
+            onDecline={() => setAutoDpr(1)}
+            onIncline={() => setAutoDpr(1.5)}
+          />
+        )}
+
+        <Environment
+          preset="city"
+          resolution={isHighQuality ? 256 : 64}
+          frames={1}
         />
 
-        <Environment preset="city" resolution={256} frames={1} />
         <OrbitControls
           ref={controlsRef}
           makeDefault
