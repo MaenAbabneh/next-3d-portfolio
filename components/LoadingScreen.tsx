@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGameStore } from "@/store/useGameStore";
+import { useUISound } from "@/hooks/audio/useUISound";
 
 interface LoadingScreenProps {
   onStarted: (withSound: boolean) => void;
@@ -20,6 +21,8 @@ export const LoadingScreen = ({ onStarted }: LoadingScreenProps) => {
 
   const { contextSafe } = useGSAP();
 
+  const { playHover } = useUISound();
+
   const handleEnter = (withSound: boolean) => {
     if (!containerRef.current || !buttonRef.current) return;
 
@@ -32,11 +35,12 @@ export const LoadingScreen = ({ onStarted }: LoadingScreenProps) => {
 
     buttonRef.current.classList.add(
       "bg-var(--color-base-cream)",
-      "dark:bg-var(--color-base-blue-light)", // الخلفية
+      "dark:bg-var(--color-base-blue-light)",
       "text-var(--color-base-brwan)",
       "border-var(--color-base-blue)",
-      "dark:border-var(--color-base-blue-dark)", // الإطار
-      "border-8",
+      "dark:border-var(--color-base-blue-dark)",
+      "border-4",
+      "md:border-8",
       "cursor-default",
     );
 
@@ -74,41 +78,59 @@ export const LoadingScreen = ({ onStarted }: LoadingScreenProps) => {
   return (
     <div
       ref={containerRef}
-      className="-inset-5 fixed z-999999 flex flex-col items-center justify-center overflow-hidden bg-base-cream dark:bg-base-blue-light border-10 border-base-blue dark:border-base-blue-dark rounded-4xl origin-center"
+      className="-inset-5 fixed z-999999 flex flex-col items-center justify-center overflow-hidden bg-base-cream dark:bg-base-blue-light border-8 md:border-16 border-base-blue dark:border-base-blue-dark rounded-4xl origin-center"
     >
-      <button
-        ref={buttonRef}
-        onClick={() => isLoaded && handleEnter(true)}
-        disabled={!isLoaded}
-        className={`
-          relative px-16 py-6 text-4xl md:text-6xl rounded-3xl outline-none
-          transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]
-          font-bold font-serif border-12 text-base-brwan border-solid border-base-blue dark:border-base-blue-dark bg-base-cream dark:bg-base-blue-light
-          shadow-[0px_3px_8px_rgba(0,0,0,0.24)]
-          ${!isLoaded ? "cursor-wait " : "cursor-pointer hover:scale-[1.1]"}
-        `}
-      >
-        {isLoaded ? "Enter!" : `Loading...`}
-      </button>
-
-      {isLoaded && (
+      {/* 🌟 حاوية الزر الرئيسي في المنتصف */}
+      <div className="flex flex-col items-center justify-center z-10 w-full px-4">
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            handleEnter(false);
+          ref={buttonRef}
+          onClick={() => isLoaded && handleEnter(true)}
+          disabled={!isLoaded}
+          onMouseEnter={() => {
+            if (isLoaded) playHover();
           }}
-          className="absolute bottom-[18%] left-1/2 -translate-x-1/2 bg-transparent border-none text-base-brwan  text-xl hover:text-base-brwan/80 cursor-pointer font-serif transition-colors"
-          aria-label="Enter without Sound"
+          aria-label={isLoaded ? "Enter the portfolio" : "Loading"}
+          className={`
+            relative px-8 py-4 md:px-16 md:py-6 
+            text-3xl sm:text-4xl md:text-6xl rounded-2xl md:rounded-3xl outline-none
+            transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]
+            font-bold font-serif text-base-brwan border-solid 
+            border-[6px] md:border-12 border-base-blue dark:border-base-blue-dark 
+            bg-base-cream dark:bg-base-blue-light
+            shadow-[0px_3px_8px_rgba(0,0,0,0.24)] w-auto max-w-full truncate
+            ${!isLoaded ? "cursor-wait opacity-80" : "cursor-pointer hover:scale-[1.1]"}
+          `}
         >
-          Enter without Sound :(
+          {isLoaded ? "Enter!" : `Loading...`}
         </button>
-      )}
+      </div>
 
-      <div className="absolute bottom-25 text-center text-base-brwan opacity-90 font-mono text-xl px-4">
-        <p className="hidden md:block">
-          use left/right click and mouse wheel to navigate!
-        </p>
-        <p className="block md:hidden">use one or two fingers to navigate!</p>
+      {/* 🌟 الحاوية السفلية الجديدة التي تجمع الزر الثانوي والتعليمات */}
+      <div className="absolute bottom-6 md:bottom-12 flex flex-col items-center gap-2 w-full px-6 z-20">
+        {/* زر الدخول بدون صوت */}
+        {isLoaded && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleEnter(false);
+            }}
+            // 🌟 أضفنا pointer-events-auto لضمان قابليته للنقر
+            className="bg-transparent border-none text-base-brwan text-sm md:text-lg hover:text-base-brwan/60 cursor-pointer font-serif transition-colors pointer-events-auto mb-10"
+            aria-label="Enter without Sound"
+          >
+            Enter without Sound :(
+          </button>
+        )}
+
+        {/* نصوص التعليمات */}
+        <div className="text-center text-base-brwan opacity-90 font-mono text-xs sm:text-sm md:text-xl pointer-events-none w-full">
+          <p className="hidden md:block m-0">
+            use left/right click and mouse wheel to navigate!
+          </p>
+          <p className="block md:hidden m-0">
+            use one or two fingers to navigate!
+          </p>
+        </div>
       </div>
     </div>
   );
