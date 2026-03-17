@@ -1,7 +1,7 @@
 "use client";
 
 import { GLTFResult } from "@/types/room.types";
-import MenuButton from "../MenuButton";
+import MenuButton from "../toggle/MenuButton";
 
 interface MenuProps {
   nodes: GLTFResult["nodes"];
