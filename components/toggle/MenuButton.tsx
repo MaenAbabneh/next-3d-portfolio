@@ -7,6 +7,7 @@ import gsap from "gsap";
 import * as THREE from "three";
 import { useOverlayStore } from "@/store/useOverlayStore";
 import { MenuButtonProps } from "@/types/globle.types";
+import { useUISound } from "@/hooks/audio/useUISound";
 
 const SCALE_KEY = "__menuButtonOriginalScale";
 const ROT_KEY = "__menuButtonOriginalRotation";
@@ -25,6 +26,8 @@ export default function MenuButton({
 
   useCursor(isHovered, "pointer", "auto");
 
+  const { playHover, playClick } = useUISound();
+
   useEffect(() => {
     const mesh = meshRef.current;
     return () => {
@@ -37,6 +40,7 @@ export default function MenuButton({
 
   const handleHover = (isHovering: boolean) => {
     if (!meshRef.current) return;
+    playHover();
 
     if (!meshRef.current.userData[SCALE_KEY]) {
       meshRef.current.userData[SCALE_KEY] = meshRef.current.scale.clone();
@@ -80,6 +84,7 @@ export default function MenuButton({
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
+    playClick();
 
     if (meshRef.current) {
       gsap.to(meshRef.current.scale, {

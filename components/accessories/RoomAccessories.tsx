@@ -30,7 +30,7 @@ export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
       playsInline: true,
       crossOrigin: "anonymous",
       start: true,
-    }
+    },
   );
 
   const { Poster: posterTexture } = useTexture({
@@ -70,7 +70,7 @@ export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
     });
     gsap.set(
       screens.map((m) => m.color),
-      { r: 0, g: 0, b: 0 }
+      { r: 0, g: 0, b: 0 },
     );
 
     if (!started) return;
@@ -92,7 +92,7 @@ export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
           b: 1,
           ease: "power2.in",
         },
-        "<"
+        "<",
       )
       .to(screens, {
         duration: 0.4,
