@@ -29,7 +29,9 @@ export function ThemeSetting() {
         aria-labelledby={themeLabelId}
         suppressHydrationWarning
         className={`w-14 h-8 rounded-full p-1 flex items-center transition-all duration-300 active:scale-95 ${
-          isDark ? "bg-base-blue dark:bg-base-blue-dark" : "bg-gray-400"
+          isDark
+            ? "bg-base-blue dark:bg-base-blue-dark"
+            : "dark:bg-base-blue bg-base-blue-dark"
         }`}
       >
         <div

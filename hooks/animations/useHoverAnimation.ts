@@ -7,6 +7,7 @@ import { SUFFIX } from "@/constant/utils";
 import { HoverSettings } from "@/types/room.types";
 import { HOVER_CONFIG } from "@/constant/utils";
 import { useGameStore } from "@/store/useGameStore";
+import { useUISound } from "../audio/useUISound";
 
 const SCALE_KEY = "__introOriginalScale";
 const ROT_KEY = "__introOriginalRotation";
@@ -103,6 +104,8 @@ export const useHoverAnimation = (
     hoverTargets.current = foundObjects;
   }, [groupRef]);
 
+  const { playHover } = useUISound();
+
   // 2️⃣ دالة الأنيميشن العامة
   const animateHover = (object: THREE.Object3D, isHovering: boolean) => {
     gsap.killTweensOf(object.scale);
@@ -119,6 +122,7 @@ export const useHoverAnimation = (
 
     if (isHovering) {
       // ✅ Hover In
+      playHover();
       gsap.to(object.scale, {
         x: initScale.x * settings.scale,
         y: initScale.y * settings.scale,
