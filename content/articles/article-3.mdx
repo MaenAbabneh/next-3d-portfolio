@@ -1,0 +1,20 @@
+لما يكبر المشروع، أكثر شيء ينهكك هو “المسارات” غير الواضحة وملفات تتضخم.
+
+## Principles that scale
+
+- افصل **UI** عن **feature logic**
+- خفّف الـ props drilling: استخدم store أو context حسب الحاجة
+- خلي البيانات (data) قريبة من المكان اللي تُعرض فيه
+
+## Folder approach (one simple option)
+
+- `components/` لقطع UI العامة
+- `hooks/` للـ hooks المشتركة
+- `store/` للحالة العالمية
+- `constant/` للبيانات الثابتة
+
+## Don’t over-engineer
+
+> التنظيم مهم… لكن لا تبني إطار داخلي قبل ما تحتاجه.
+
+ابدأ بسيط، وبعدها لما تلاحظ التكرار، اعمل abstraction صغيرة وواضحة.

@@ -1,0 +1,24 @@
+GSAP ممتاز عندما تبغى تحكم “دقيق” بالتوقيت، السلاسة، والتسلسل (timelines) بدون صداع.
+
+## What I like about it
+
+- Timeline واضح: تبني قصة للحركة بدل سطر-سطر
+- Ease طبيعي: الحركة تحسّها بشرية
+- أداء ممتاز حتى مع مشاهد ثقيلة
+
+## A simple timeline idea
+
+```ts
+// pseudo-code
+const tl = gsap.timeline();
+
+tl.to(".card", { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" })
+  .to(".title", { x: 0, duration: 0.3 }, "-=0.2")
+  .to(".shine", { opacity: 1, duration: 0.2 }, "-=0.1");
+```
+
+## Practical advice
+
+- لا تحاول تعوّض UI كامل بـ animations
+- خلي الحركة تخدم المعنى: دخول، تأكيد، انتقال…
+- جرّب تبقي durations قصيرة (0.2–0.6) غالبًا أفضل
