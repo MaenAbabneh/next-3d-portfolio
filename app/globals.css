@@ -23,6 +23,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-digital: var(--font-digital);
 
   --color-base-blue-dark: var(--bg-color-dark-blue);
   --color-base-blue-light: var(--bg-color-blue-light);
@@ -41,5 +42,52 @@ body {
   .contact-logo {
     @apply block w-10 h-10 md:w-14 md:h-14 ;
     @apply transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)];
+  }
+}
+/* Custom Scrollbar */
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--bg-color-blue);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--bg-color-dark-blue);
+  }
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg-color-blue) transparent;
+  }
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--bg-color-blue-light);
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--bg-color-blue);
+}
+.dark .custom-scrollbar {
+  scrollbar-color: var(--bg-color-blue-light) transparent;
+}
+
+@layer utilities {
+  .animate-flicker {
+    animation: flicker 4s linear infinite;
+  }
+}
+
+@keyframes flicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 1;
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.4;
+    text-shadow: none; /* إخفاء التوهج أثناء الوميض لواقعية أكثر */
   }
 }
