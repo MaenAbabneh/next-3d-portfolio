@@ -7,7 +7,7 @@ import { MdFullscreen, MdFullscreenExit } from "react-icons/md";
 
 export function FullscreenSetting() {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const { playClick, playHover } = useUISound();
+  const { playHover, playSwitchOn, playSwitchOff } = useUISound();
   const labelId = useId();
 
   useEffect(() => {
@@ -19,7 +19,11 @@ export function FullscreenSetting() {
   }, []);
 
   const toggleFullscreen = () => {
-    playClick();
+    if (isFullscreen) {
+      playSwitchOff();
+    } else {
+      playSwitchOn();
+    }
     if (!document.fullscreenElement) {
       document.documentElement
         .requestFullscreen()

@@ -10,7 +10,7 @@ import { MdMusicNote, MdMusicOff } from "react-icons/md";
 export function PianoSetting() {
   const { pianoMuted, togglePiano, pianoVolume, setPianoVolume } =
     useSoundStore();
-  const { playClick, playHover } = useUISound();
+  const { playClick, playHover, playDisabled } = useUISound();
 
   const volumeRatio = pianoVolume / 1;
   const thumbSize = 10 + volumeRatio * 14;
@@ -22,7 +22,11 @@ export function PianoSetting() {
         <Switch.Root
           checked={!pianoMuted}
           onCheckedChange={() => {
-            playClick();
+            if (pianoMuted) {
+              playClick();
+            } else {
+              playDisabled();
+            }
             togglePiano();
           }}
           onMouseEnter={playHover}

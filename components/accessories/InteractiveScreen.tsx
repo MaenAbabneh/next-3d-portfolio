@@ -104,7 +104,7 @@ export function InteractiveScreen({
 
     let distanceX = 0.42;
     if (aspect < 0.6) {
-      distanceX = 1.1;
+      distanceX = 0.35;
     } else if (aspect < 1) {
       distanceX = 0.85;
     } else if (aspect < 1.4) {

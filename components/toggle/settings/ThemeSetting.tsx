@@ -7,7 +7,7 @@ import { MdDarkMode, MdLightMode } from "react-icons/md";
 
 export function ThemeSetting() {
   const { theme, resolvedTheme, setTheme } = useTheme();
-  const { playClick, playHover } = useUISound();
+  const { playHover, playSwitchOn, playSwitchOff } = useUISound();
   const themeLabelId = useId();
 
   const isDark = (resolvedTheme ?? theme) === "dark";
@@ -15,13 +15,17 @@ export function ThemeSetting() {
   return (
     <div className="flex items-center justify-between w-full px-2">
       <span id={themeLabelId} className="text-xl font-bold text-base-brwan">
-        Dark Mode
+        {isDark ? "Dark Mode" : "Light Mode"}
       </span>
       <button
         type="button"
         onMouseEnter={playHover}
         onClick={() => {
-          playClick();
+          if (isDark) {
+            playSwitchOff();
+          } else {
+            playSwitchOn();
+          }
           setTheme(isDark ? "light" : "dark");
         }}
         role="switch"

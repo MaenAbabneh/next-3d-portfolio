@@ -7,7 +7,7 @@ import { MdVolumeUp, MdVolumeOff } from "react-icons/md";
 
 export function SfxSetting() {
   const { sfxMuted, toggleSfx } = useSoundStore();
-  const { playClick, playHover } = useUISound();
+  const { playClick, playHover, playDisabled } = useUISound();
   const sfxLabelId = useId();
 
   return (
@@ -19,7 +19,11 @@ export function SfxSetting() {
         type="button"
         onMouseEnter={playHover}
         onClick={() => {
-          playClick();
+          if (sfxMuted) {
+            playClick();
+          } else {
+            playDisabled();
+          }
           toggleSfx();
         }}
         role="switch"

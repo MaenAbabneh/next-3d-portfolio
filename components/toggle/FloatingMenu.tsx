@@ -4,6 +4,7 @@ import { useGameStore } from "@/store/useGameStore";
 import { ThemeToggle } from "./ThemeToggle";
 import { useUISound } from "@/hooks/audio/useUISound";
 import { SettingsMenu } from "./SettingsMenu";
+import { ArticlesButton } from "./ArticlesButton";
 
 export function FloatingMenu() {
   const isScreenZoomed = useGameStore((s) => s.isScreenZoomed);
@@ -23,6 +24,7 @@ export function FloatingMenu() {
             : "opacity-100 pointer-events-auto translate-y-0"
         }`}
       >
+        <ArticlesButton />
         <ThemeToggle />
         <SettingsMenu />
       </div>

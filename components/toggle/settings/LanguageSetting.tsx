@@ -6,7 +6,7 @@ import { useUISound } from "@/hooks/audio/useUISound";
 
 export function LanguageSetting() {
   const { language, toggleLanguage } = useSettingsStore();
-  const { playClick, playHover } = useUISound();
+  const { playHover, playSwitchOn, playSwitchOff } = useUISound();
   const labelId = useId();
 
   const isEn = language === "en";
@@ -20,7 +20,11 @@ export function LanguageSetting() {
         type="button"
         onMouseEnter={playHover}
         onClick={() => {
-          playClick();
+          if (isEn) {
+            playSwitchOff();
+          } else {
+            playSwitchOn();
+          }
           toggleLanguage();
         }}
         role="switch"

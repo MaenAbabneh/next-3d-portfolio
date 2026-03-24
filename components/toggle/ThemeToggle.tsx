@@ -20,7 +20,7 @@ export function ThemeToggle() {
 
   const hasInitialized = useRef(false);
 
-  const { playHover, playClick } = useUISound();
+  const { playHover, playSwitchOn, playSwitchOff } = useUISound();
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true));
@@ -43,7 +43,11 @@ export function ThemeToggle() {
   });
 
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
-    playClick();
+    if (isDark) {
+      playSwitchOff();
+    } else {
+      playSwitchOn();
+    }
     registerClick(e);
     setTheme(isDark ? "light" : "dark");
   };

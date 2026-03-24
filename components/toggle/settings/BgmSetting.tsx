@@ -11,7 +11,7 @@ import { TbMusicOff, TbMusic } from "react-icons/tb";
 export function BgmSetting() {
   const { bgmMuted, toggleBgm, bgmVolume, setBgmVolume, nextTrack } =
     useSoundStore();
-  const { playClick, playHover } = useUISound();
+  const { playClick, playHover, playDisabled } = useUISound();
 
   const volumeRatio = bgmVolume / 0.3;
   const thumbSize = 10 + volumeRatio * 14;
@@ -25,7 +25,11 @@ export function BgmSetting() {
           <Switch.Root
             checked={!bgmMuted}
             onCheckedChange={() => {
-              playClick();
+              if (bgmMuted) {
+                playClick();
+              } else {
+                playDisabled();
+              }
               toggleBgm();
             }}
             onMouseEnter={playHover}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useOverlayStore } from "@/store/useOverlayStore";
+import { useArticleStore } from "@/store/useArticleStore";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
@@ -8,6 +9,8 @@ import AboutSection from "../section/AboutSection";
 import ContactSection from "../section/ContactSection";
 import WorksSection from "../section/WorksSection";
 import ModalLayout from "./ModalLayout";
+import ArticlesSection from "../section/ArticlesSection";
+import ArticlesSidebarOverlay from "./ArticlesSidebarOverlay";
 
 const sectionConfig = {
   about: {
@@ -32,9 +35,20 @@ type SectionKey = keyof typeof sectionConfig;
 
 export default function Overlay() {
   const { isOpen, section, closeOverlay } = useOverlayStore();
+  const { activeArticleId, isSidebarOpen, closeArticle } = useArticleStore();
+
+  const prevIsOpenRef = useRef(isOpen);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const activeSection: SectionKey = section ?? "about";
+
+  const showArticlesSidebar =
+    isOpen &&
+    activeSection === "articles" &&
+    activeArticleId != null &&
+    isSidebarOpen;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -47,32 +61,65 @@ export default function Overlay() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, closeOverlay]);
 
+  useEffect(() => {
+    const wasOpen = prevIsOpenRef.current;
+    prevIsOpenRef.current = isOpen;
+
+    if (wasOpen && !isOpen) {
+      closeArticle();
+    }
+  }, [closeArticle, isOpen]);
+
+  useGSAP(() => {
+    const el = panelRef.current;
+    if (!el) return;
+
+    if (!showArticlesSidebar) {
+      gsap.killTweensOf(el);
+      gsap.to(el, {
+        x: 0, // العودة للمركز
+        duration: 0.7,
+        ease: "power2.inOut",
+        clearProps: "transform",
+      });
+      return;
+    }
+
+    gsap.killTweensOf(el);
+    gsap.to(el, {
+      x: -180,
+      duration: 0.75,
+      ease: "power2.inOut",
+      overwrite: "auto",
+    });
+  }, [showArticlesSidebar]);
+
   useGSAP(() => {
     if (isOpen) {
       gsap.to(containerRef.current, {
         autoAlpha: 1,
-        duration: 0.4,
+        duration: 0.55,
       });
       gsap.fromTo(
         contentRef.current,
-        { scale: 0, opacity: 0 },
+        { scale: 0.92, opacity: 0 },
         {
           scale: 1,
           opacity: 1,
-          duration: 0.5,
-          ease: "back.out(1.7)",
+          duration: 0.55,
+          ease: "back.out(1.2)",
         },
       );
     } else {
       gsap.to(containerRef.current, {
         autoAlpha: 0,
-        duration: 0.3,
+        duration: 0.45,
       });
       gsap.to(contentRef.current, {
         scale: 0,
         opacity: 0,
-        duration: 0.3,
-        ease: "back.in(1.7)",
+        duration: 0.45,
+        ease: "back.in(1.2)",
       });
     }
   }, [isOpen]);
@@ -85,6 +132,8 @@ export default function Overlay() {
         return <WorksSection />;
       case "contact":
         return <ContactSection />;
+      case "articles":
+        return <ArticlesSection />;
       default:
         return null;
     }
@@ -110,9 +159,12 @@ export default function Overlay() {
         ref={contentRef}
         className="w-full max-w-full max-h-full flex justify-center"
       >
-        <ModalLayout title={config.title} className={config.classes}>
-          {renderContent()}
-        </ModalLayout>
+        {activeSection === "articles" && <ArticlesSidebarOverlay />}
+        <div ref={panelRef} className="relative z-120">
+          <ModalLayout title={config.title} className={config.classes}>
+            {renderContent()}
+          </ModalLayout>
+        </div>
       </div>
     </div>
   );

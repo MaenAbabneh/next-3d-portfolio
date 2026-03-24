@@ -7,7 +7,7 @@ import { MdAutoAwesome, MdSpeed } from "react-icons/md";
 
 export function GraphicsSetting() {
   const { quality, toggleQuality } = useSettingsStore();
-  const { playClick, playHover } = useUISound();
+  const { playHover, playSwitchOn, playSwitchOff } = useUISound();
   const labelId = useId();
 
   const isHigh = quality === "high";
@@ -26,7 +26,12 @@ export function GraphicsSetting() {
         type="button"
         onMouseEnter={playHover}
         onClick={() => {
-          playClick();
+          if (isHigh) {
+            playSwitchOff();
+          } else {
+            playSwitchOn();
+          }
+
           toggleQuality();
         }}
         role="switch"
