@@ -1,5 +1,10 @@
 Three.js يسهّل استخدام WebGL بشكل عملي داخل الويب. الفكرة الأساسية: **مشهد (Scene)** يحتوي عناصر، **كاميرا (Camera)** تحدد منظورك، و**Renderer** يرسم النتيجة.
 
+<Note title="ملاحظة مهمة">
+  كل عنصر في المشهد (Scene) له دور محدد. لا تخلط بين الكاميرا (Camera) والمجسمات
+  (Mesh) — الكاميرا فقط تحدد منظور الرؤية.
+</Note>
+
 ## Minimal mental model
 
 - Scene: صندوق يجمع كل شيء
@@ -7,30 +12,55 @@ Three.js يسهّل استخدام WebGL بشكل عملي داخل الويب. 
 - Mesh: شكل + خامة
 - Light: يغير الشكل والإحساس
 
-## A tiny example
+tick();
 
-```ts
-// pseudo-code (concept only)
-const scene = new Scene();
-const camera = new PerspectiveCamera();
-const renderer = new WebGLRenderer();
+<Example title="مثال عملي">
+  ```ts
+  // pseudo-code (concept only)
+  const scene = new Scene();
+  const camera = new PerspectiveCamera();
+  const renderer = new WebGLRenderer();
 
 const cube = new Mesh(geometry, material);
 scene.add(cube);
 
 function tick() {
-  cube.rotation.y += 0.01;
-  renderer.render(scene, camera);
-  requestAnimationFrame(tick);
+cube.rotation.y += 0.01;
+renderer.render(scene, camera);
+requestAnimationFrame(tick);
 }
 
 tick();
+
 ```
+
+---
+
+## Components Demo
+
+<QuizCard question="ما هو دور الكاميرا في مشهد Three.js؟" answer="الكاميرا تحدد منظور الرؤية ولا تُعتبر مجسمًا في المشهد." />
+
+<PullQuote author="مطور WebGL">التجربة خير برهان على فهمك للمفاهيم.</PullQuote>
+
+<ResourceLink href="https://threejs.org/docs/" title="Three.js Documentation" description="المصدر الرسمي لكل ما يتعلق بـ Three.js" />
+
+<StatsTable
+  title="Scene Stats"
+  stats={[{ label: 'Meshes', value: 3 }, { label: 'Lights', value: 2 }, { label: 'Textures', value: 1 }, { label: 'FPS', value: '60+' }]}
+/>
+
+<Tip title="جرب بنفسك">قم بتغيير موضع الكاميرا ولاحظ كيف يتغير منظور المشهد.</Tip>
+
+<Note title="ملاحظة تقنية">استخدم دائمًا <code>requestAnimationFrame</code> في حلقة التحديث لتحصل على أداء أفضل.</Note>
+</Example>
 
 ## Tips
 
-> ابدأ بشيء بسيط (Cube + Light) ثم زد التفاصيل تدريجيًا.
+<Tip title="ابدأ ببساطة">
+ابدأ بشيء بسيط (Cube + Light) ثم زد التفاصيل تدريجيًا.
+</Tip>
 
 - ثبّت الوحدات (meters) وقياس الإضاءة
 - راقب الأداء: عدد المضلعات، الظلال، وحجم الخامات
 - اجعل الكاميرا “مريحة” قبل أي تجميل
+```

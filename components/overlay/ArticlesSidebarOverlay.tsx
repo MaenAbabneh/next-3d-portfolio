@@ -29,6 +29,11 @@ export default function ArticlesSidebarOverlay({
   const shouldRender = isSidebarOpen && activeArticleId != null;
   const shouldBeOpen = shouldRender;
 
+  const tocItemsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const retroRowRef = useRef<HTMLDivElement | null>(null);
+  const retroHeartRef = useRef<HTMLDivElement | null>(null);
+  const retroScoreRef = useRef<HTMLDivElement | null>(null);
+
   const [cachedArticleId, setCachedArticleId] = useState<number | null>(() => {
     const initial = useArticleStore.getState();
     return initial.activeArticleId;
@@ -118,6 +123,54 @@ export default function ArticlesSidebarOverlay({
     return activeArticle.toc || [];
   }, [activeArticle]);
 
+  // GSAP animation for TOC items (slide in from right)
+  useGSAP(() => {
+    if (!shouldBeOpen || !tocItemsRef.current.length) return;
+    gsap.killTweensOf(tocItemsRef.current);
+    gsap.set(tocItemsRef.current, { opacity: 0, x: 40 });
+    gsap.to(tocItemsRef.current, {
+      opacity: 1,
+      x: 0,
+      duration: 0.5,
+      stagger: 0.07,
+      delay: 0.75,
+      ease: "power2.out",
+      overwrite: true,
+    });
+  }, [shouldBeOpen, tocItems.length, effectiveArticleId]);
+
+  // GSAP animation for Retro Scoreboard row (slide in from right)
+  useGSAP(() => {
+    if (!shouldBeOpen || !retroRowRef.current) return;
+    // Animate the row container
+    gsap.killTweensOf(retroRowRef.current);
+    gsap.set(retroRowRef.current, { opacity: 0, x: 40 });
+    gsap.to(retroRowRef.current, {
+      opacity: 1,
+      x: 0,
+      duration: 0.5,
+      delay: 0.75,
+      ease: "power2.out",
+      overwrite: true,
+    });
+    // Animate heart and score separately for a nice stagger
+    if (retroHeartRef.current && retroScoreRef.current) {
+      gsap.set([retroHeartRef.current, retroScoreRef.current], {
+        opacity: 0,
+        x: 40,
+      });
+      gsap.to([retroHeartRef.current, retroScoreRef.current], {
+        opacity: 1,
+        x: 0,
+        duration: 0.5,
+        delay: 0.85,
+        stagger: 0.08,
+        ease: "power2.out",
+        overwrite: true,
+      });
+    }
+  }, [shouldBeOpen, effectiveArticleId]);
+
   const scrollToHeading = (headingId: string) => {
     if (!shouldRender) return;
 
@@ -185,10 +238,13 @@ export default function ArticlesSidebarOverlay({
         <div className="flex flex-col gap-6">
           {tocItems.length ? (
             <div className="flex flex-col gap-2">
-              {tocItems.map((item) => (
+              {tocItems.map((item, idx) => (
                 <button
                   key={item.id}
                   type="button"
+                  ref={(el) => {
+                    tocItemsRef.current[idx] = el;
+                  }}
                   onClick={() => scrollToHeading(item.id)}
                   className="text-left p-1 hover:scale-102 transition-transform cursor-pointer"
                   // style={{
@@ -208,13 +264,22 @@ export default function ArticlesSidebarOverlay({
           )}
 
           {/* التعديل هنا: قسم العملة والعداد الـ Retro */}
-          <div className="pt-6 mt-auto border-t-4 border-dashed border-base-blue/20 flex flex-row items-center justify-start gap-2 px-0 w-full">
-            <div className="shrink-0 flex items-center justify-center">
+          <div
+            ref={retroRowRef}
+            className="pt-6 mt-auto border-t-4 border-dashed border-base-blue/20 flex flex-row items-center justify-start gap-2 px-0 w-full"
+          >
+            <div
+              ref={retroHeartRef}
+              className="shrink-0 flex items-center justify-center"
+            >
               <WackyHeart size={120} onClicksChange={handleLikesChange} />
             </div>
 
             {/* تصميم العداد (Retro Scoreboard) */}
-            <div className="flex flex-col items-center shrink-0">
+            <div
+              ref={retroScoreRef}
+              className="flex flex-col items-center shrink-0"
+            >
               <div className="bg-black/85 border-4 border-base-blue dark:border-base-blue-dark rounded-md px-3 py-1 shadow-inner flex items-center justify-center w-auto">
                 <p className="font-digital animate-flicker text-3xl font-black text-base-blue dark:text-base-blue-dark tracking-widest leading-none translate-x-1 drop-shadow-[0_0_8px_rgba(41,82,155,0.6)]">
                   {retroDigits.map(({ ch, isDimmed }, idx) => (
