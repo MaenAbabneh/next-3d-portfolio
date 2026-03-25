@@ -17,6 +17,7 @@
   --bg-color-cream: #e8e2db;
   --bg-color-brwan: #554d4d;
   --bg-color-mist: #e6dede;
+  --bg-color-dark-BG: #2a2a2a;
 }
 @theme inline {
   --color-background: var(--background);
@@ -30,6 +31,7 @@
   --color-base-blue: var(--bg-color-blue);
   --color-base-cream: var(--bg-color-cream);
   --color-base-brwan: var(--bg-color-brwan);
+  --color-base-dark-BG: var(--bg-color-dark-BG);
 }
 
 body {
