@@ -64,7 +64,6 @@ export default function ArticlesSection() {
     closeArticle();
   };
 
-  // تشغيل الأنيميشن بعد التبديل
   useGSAP(
     () => {
       if (!flipStateRef.current) return;
@@ -82,8 +81,8 @@ export default function ArticlesSection() {
         targets,
         duration: 0.5,
         ease: "power2.inOut",
-        scale: true, // مهم جداً لتكبير/تصغير الصورة بسلاسة
-        // simple: true,
+        scale: true,
+        // simple: true
         absolute: false,
         // nested: true,
         onComplete: () => {
