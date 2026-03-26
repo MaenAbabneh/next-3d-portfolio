@@ -1,3 +1,12 @@
+"use client";
+
+import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
 export default function StatsTable({
   title,
   stats,
@@ -5,9 +14,42 @@ export default function StatsTable({
   title: string;
   stats: { label: string; value: string | number }[];
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      if (!containerRef.current) return;
+
+      const scrollContainer = containerRef.current.closest(
+        '[data-articles-scroll-container="1"]',
+      );
+
+      const items = gsap.utils.toArray(".stat-item");
+      gsap.fromTo(
+        items as HTMLElement[],
+        { opacity: 0, y: 15 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.4,
+          stagger: 0.15,
+          ease: "power1.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 85%",
+            scroller: scrollContainer,
+          },
+        },
+      );
+    },
+    { scope: containerRef },
+  );
+
   return (
-    <div className="my-8 rounded-xl border-4 border-base-blue bg-black p-6 shadow-inner relative overflow-hidden">
-      {/* تأثير خطوط الشاشة (Scanlines) */}
+    <div
+      ref={containerRef}
+      className="my-8 rounded-xl border-4 border-base-blue bg-black p-6 shadow-inner relative overflow-hidden"
+    >
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px)] bg-size-[100%_4px] pointer-events-none"></div>
 
       <div className="relative z-10">
@@ -17,7 +59,7 @@ export default function StatsTable({
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, idx) => (
-            <div key={idx} className="flex flex-col">
+            <div key={idx} className="stat-item flex flex-col">
               <span className="font-mono text-[10px] text-base-cream/50 uppercase tracking-widest mb-1">
                 {stat.label}
               </span>

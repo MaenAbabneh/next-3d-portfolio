@@ -4,6 +4,9 @@ import { useState, useRef } from "react";
 import { IoHardwareChipOutline, IoKeyOutline } from "react-icons/io5";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function QuizCard({
   question,
@@ -13,9 +16,32 @@ export default function QuizCard({
   answer: string;
 }) {
   const [isRevealed, setIsRevealed] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const answerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    if (!containerRef.current) return;
+
+    const scrollContainer = containerRef.current.closest(
+      '[data-articles-scroll-container="1"]',
+    );
+    gsap.fromTo(
+      containerRef.current,
+      { opacity: 0, x: 30 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 85%",
+          scroller: scrollContainer,
+        },
+      },
+    );
+
+    // انميشن الإجابة عند الكشف
     if (isRevealed && answerRef.current) {
       gsap.fromTo(
         answerRef.current,
@@ -32,7 +58,10 @@ export default function QuizCard({
   }, [isRevealed]);
 
   return (
-    <div className="my-8 rounded-xl border-4 border-dashed border-base-blue bg-black/5 dark:bg-white/5 p-1">
+    <div
+      ref={containerRef}
+      className="my-8 rounded-xl border-4 border-dashed border-base-blue bg-black/5 dark:bg-white/5 p-1"
+    >
       <div className="bg-base-blue/10 p-5 rounded-lg">
         <div className="flex items-center gap-3 mb-4 text-base-blue-dark dark:text-base-blue">
           <IoHardwareChipOutline size={26} className="animate-pulse" />
