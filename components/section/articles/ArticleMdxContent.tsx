@@ -15,6 +15,8 @@ import QuizCard from "@/components/mdx/QuizCard";
 import PullQuote from "@/components/mdx/PullQuote";
 import ResourceLink from "@/components/mdx/ResourceLink";
 import StatsTable from "@/components/mdx/StatsTable";
+import RetroImage from "@/components/mdx/RetroImage";
+import RetroVideo from "@/components/mdx/RetroVideo";
 
 type CalloutKind = "tip" | "note" | "warning" | "info";
 
@@ -226,6 +228,8 @@ export default function ArticleMdxContent({
       PullQuote,
       ResourceLink,
       StatsTable,
+      RetroImage,
+      RetroVideo,
     }),
     [articleId],
   );
