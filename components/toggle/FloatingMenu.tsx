@@ -1,10 +1,15 @@
 "use client";
 
+import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { useGameStore } from "@/store/useGameStore";
 import { ThemeToggle } from "./ThemeToggle";
 import { useUISound } from "@/hooks/audio/useUISound";
 import { SettingsMenu } from "./SettingsMenu";
 import { ArticlesButton } from "./ArticlesButton";
+
+gsap.registerPlugin(useGSAP);
 
 export function FloatingMenu() {
   const isScreenZoomed = useGameStore((s) => s.isScreenZoomed);
@@ -13,20 +18,51 @@ export function FloatingMenu() {
   const isPianoZoomed = useGameStore((s) => s.isPianoZoomed);
   const setIsPianoZoomed = useGameStore((s) => s.setIsPianoZoomed);
 
+  const started = useGameStore((s) => s.started);
   const { playHover, playClick } = useUISound();
+
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      if (started) {
+        gsap.to(".gsap-menu-item", {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "back.out(1.5)",
+        });
+      } else {
+        gsap.set(".gsap-menu-item", { y: -60, opacity: 0 });
+      }
+    },
+    {
+      scope: menuRef,
+      dependencies: [started],
+    },
+  );
 
   return (
     <>
       <div
+        ref={menuRef}
         className={`fixed top-4 right-4 z-99 flex gap-4 transition-all duration-700 ease-in-out ${
           isScreenZoomed || isPianoZoomed
             ? "opacity-0 pointer-events-none -translate-y-2.5"
             : "opacity-100 pointer-events-auto translate-y-0"
         }`}
       >
-        <ArticlesButton />
-        <ThemeToggle />
-        <SettingsMenu />
+        {/* تغليف الأزرار بكلاس GSAP */}
+        <div className="gsap-menu-item">
+          <ArticlesButton />
+        </div>
+        <div className="gsap-menu-item">
+          <ThemeToggle />
+        </div>
+        <div className="gsap-menu-item">
+          <SettingsMenu />
+        </div>
       </div>
 
       {(isScreenZoomed || isPianoZoomed) && (

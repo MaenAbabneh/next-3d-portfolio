@@ -49,7 +49,7 @@ export default function Home() {
         </Suspense>
       )}
 
-      {started && <FloatingMenu />}
+      <FloatingMenu />
       {started && <ImageViewer />}
     </main>
   );
