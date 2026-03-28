@@ -18,7 +18,7 @@ const sectionConfig = {
     title: "About Me",
   },
   works: {
-    classes: "w-full max-w-[1200px] h-[80vh] md:h-[700px]",
+    classes: "w-full max-w-[1200px] h-[75vh] md:h-[700px]",
     title: "My Work",
   },
   contact: {
