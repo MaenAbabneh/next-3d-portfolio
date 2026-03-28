@@ -2,95 +2,101 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FiGithub, FiExternalLink } from "react-icons/fi";
-
-const projects = [
-  {
-    title: "GTA VI Clone",
-    description: "Immersive 3D experience with high-fidelity graphics.",
-    tags: ["Next.js", "Three.js", "WebGL"],
-    image:
-      "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop",
-    demo: "#",
-    repo: "https://github.com/MaenAbabneh",
-  },
-  {
-    title: "Amazon Scraper",
-    description: "Scalable API for parsing product data & proxies.",
-    tags: ["Node.js", "Puppeteer", "Redis"],
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-    demo: "#",
-    repo: "https://github.com/MaenAbabneh",
-  },
-  {
-    title: "Creative Overflow",
-    description: "Dev Q&A platform with real-time reputation system.",
-    tags: ["React", "Prisma", "Socket.io"],
-    image:
-      "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=2070&auto=format&fit=crop",
-    demo: "#",
-    repo: "https://github.com/MaenAbabneh",
-  },
-];
+import { FiExternalLink } from "react-icons/fi";
+import { PiGithubLogoFill } from "react-icons/pi";
+import { projects } from "@/constant/projects";
 
 export default function WorksSection() {
   return (
     <div className="flex flex-col h-full w-full">
-      <div className="flex flex-col items-start space-y-1 mb-6 shrink-0">
-        <h2 className="text-2xl md:text-3xl font-bold font-serif text-base-blue-dark dark:text-base-cream">
+      {/* هيدر القسم - flex vertical */}
+      <div className="flex flex-col items-start space-y-1 mb-5 md:mb-6 shrink-0 pl-1">
+        <h2 className="text-xl md:text-3xl font-bold font-serif text-base-blue dark:text-base-blue-dark">
           Selected Works
         </h2>
-        <p className="text-base-brwan dark:text-base-cream/80 opacity-90 text-sm">
+        <p className="text-base-brwan opacity-90 text-[13px] md:text-sm">
           Technical depth from 3D worlds to backend architectures.
         </p>
       </div>
 
-      {/* 🌟 التعديل هنا: h-max للموبايل لكي تأخذ البطاقات راحتها في الطول وتسمح بالتمرير، و h-full للديسكتوب */}
-      <div className="flex-1 flex flex-col md:flex-row gap-6 md:gap-4 w-full h-max md:h-full pb-4">
+      {/* حاوية المشاريع: flex vertical على الهاتف، grid على الديسكتوب */}
+      <div className="flex flex-col md:grid md:grid-cols-3 gap-x-4 gap-y-5 md:gap-y-0 w-full pb-4">
         {projects.map((project, index) => (
           <div
             key={index}
-            // 🌟 التعديل هنا: min-h-[350px] يمنع البطاقة من الانضغاط على الموبايل
-            className="group relative flex flex-col flex-1 min-h-87.5 md:min-h-0 rounded-2xl overflow-hidden bg-white dark:bg-base-blue-light/50 shadow-lg hover:shadow-2xl transition-all duration-300"
+            /* البطاقة: flex-col على الهاتف لترتيب الصورة فوق النصوص، subgrid على الديسكتوب */
+            className="group relative rounded-xl md:rounded-2xl overflow-hidden bg-white dark:bg-base-blue-light/50 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col md:grid md:grid-rows-subgrid md:row-span-4 min-h-0 md:mb-8"
           >
-            <div className="relative h-[55%] min-h-50 md:min-h-0 w-full overflow-hidden bg-gray-200 shrink-0">
+            {/* Image Section */}
+            <div
+              className="relative overflow-hidden bg-gray-200 shrink-0
+                            w-full h-40 md:h-60"
+            >
               <Image
                 src={project.image}
                 alt={project.title}
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                className="object-cover transition-transform duration-700 md:group-hover:scale-110" // disable hover scaling on mobile
               />
-              <div className="absolute inset-0 bg-base-blue-dark/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3 backdrop-blur-[2px]">
+              {/* 🌟 تعديل: إخفاء أزرار الجوانب (hover) على الهاتف، وتصغير حجمها على الديسكتوب */}
+              <div className="absolute inset-0 bg-base-blue-dark/40 opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 hidden md:flex items-center justify-center gap-2 backdrop-blur-[2px]">
                 <Link
                   href={project.repo}
                   target="_blank"
-                  className="p-3 bg-base-cream rounded-full text-base-blue-dark hover:scale-110 transition-transform shadow-md"
+                  className="p-2 bg-base-cream rounded-full text-base-blue dark:text-base-blue-dark hover:scale-110 transition-transform shadow-md"
                 >
-                  <FiGithub size={22} />
+                  <PiGithubLogoFill className="w-5 h-5" />
                 </Link>
                 <Link
                   href={project.demo}
                   target="_blank"
-                  className="p-3 bg-base-yellow rounded-full text-base-blue-dark hover:scale-110 transition-transform shadow-md"
+                  className="p-2 bg-base-yellow rounded-full text-base-cream hover:scale-110 transition-transform shadow-md"
                 >
-                  <FiExternalLink size={22} />
+                  <FiExternalLink className="w-5 h-5" />
                 </Link>
               </div>
             </div>
 
-            <div className="flex flex-col flex-1 p-4 md:p-5 gap-2 bg-white/50 dark:bg-transparent">
-              <h3 className="text-lg md:text-xl font-bold text-base-blue-dark dark:text-base-cream font-serif">
+            {/* Container for Texts - flex vertical للهاتف، md:contents للديسكتوب */}
+            <div className="flex flex-col flex-1 px-3 pt-3 pb-3 md:contents">
+              {/* العنوان: flex child 1 للهاتف */}
+              <h3 className="text-[15px] md:text-xl font-bold text-base-blue dark:text-base-blue-dark font-serif self-start md:px-5 md:pt-5 md:pb-1 mb-1 md:mb-0">
                 {project.title}
               </h3>
-              <p className="text-sm text-base-brwan dark:text-base-cream/80 leading-relaxed line-clamp-3 md:line-clamp-none">
+
+              {/* 🌟 تعديل: إزالة line-clamp-3 للهاتف ليظهر الوصف كاملاً */}
+              {/* الوصف: flex child 2 للهاتف */}
+              <p className="text-[12px] md:text-sm text-base-brwan leading-relaxed self-start md:px-5 md:pb-4 mb-2 md:mb-0">
                 {project.description}
               </p>
-              <div className="mt-auto pt-3 flex flex-wrap gap-1.5">
+
+              {/* 🌟 إضافة: مصفوفة أزرار مخصصة تظهر فقط على الهاتف */}
+              {/* حاوية الأزرار: flex item للهاتف، hidden على الديسكتوب */}
+              <div className="flex md:hidden flex-row gap-2 mt-2 mb-2 w-full text-base-blue dark:text-base-blue-dark">
+                <Link
+                  href={project.repo}
+                  target="_blank"
+                  className="flex flex-row items-center gap-1.5 px-3 py-1 rounded-md text-[10px] shadow-sm"
+                >
+                  <PiGithubLogoFill className="w-4 h-4" />
+                  GitHub
+                </Link>
+                <Link
+                  href={project.demo}
+                  target="_blank"
+                  className="flex flex-row items-center gap-1.5 px-3 py-1 rounded-md text-[10px] shadow-sm"
+                >
+                  <FiExternalLink className="w-4 h-4" />
+                  Live Demo
+                </Link>
+              </div>
+
+              {/* التاجز: flex vertical item 3, mt-auto للهاتف */}
+              <div className="self-end flex flex-wrap gap-1 md:gap-1.5 md:px-5 md:pb-5 mt-auto md:mt-0 pt-2 md:pt-0 border-t border-dashed border-base-brwan/20 md:border-none w-full md:w-auto">
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2 py-1 text-[11px] font-semibold rounded-md bg-base-blue/10 dark:bg-base-yellow/10 text-base-blue-dark dark:text-base-yellow"
+                    className="px-1.5 py-0.5 text-[9px] md:text-[11px] font-semibold rounded-sm md:rounded-md bg-base-blue/10 dark:bg-base-blue-dark/10 text-base-blue dark:text-base-blue-dark"
                   >
                     {tag}
                   </span>
