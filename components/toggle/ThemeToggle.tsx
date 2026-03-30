@@ -33,7 +33,7 @@ export function ThemeToggle() {
     containerRef,
     rippleRef,
     isDark,
-    borderWidth: 4, // يجب أن يطابق البوردر في CSS
+    borderWidth: 4,
     colors: {
       darkBg: "var(--color-base-blue-light)",
       lightBg: "var(--color-base-cream)",
@@ -60,7 +60,6 @@ export function ThemeToggle() {
 
     if (!sun || !moon) return;
 
-    // الإعداد الأولي للأيقونات
     if (!hasInitialized.current) {
       gsap.set(sun, {
         y: isDark ? 40 : 0,
@@ -76,7 +75,6 @@ export function ThemeToggle() {
       return;
     }
 
-    // الأنيميشن عند التبديل
     const tl = gsap.timeline();
 
     tl.to(sun, {
@@ -115,7 +113,7 @@ export function ThemeToggle() {
         className="absolute -inset-1 rounded-2xl border-4 z-0 pointer-events-none hidden"
       />
 
-      {/* ☀️ حاوية الشمس */}
+      {/* ☀️ Sun Container */}
       <div
         ref={sunRef}
         className="absolute inset-0 flex items-center justify-center z-10"
@@ -123,7 +121,7 @@ export function ThemeToggle() {
         <TbSunset2Filled className="w-9 h-9 text-base-blue dark:text-base-blue-dark" />
       </div>
 
-      {/* 🌙 حاوية القمر */}
+      {/* 🌙 Moon Container */}
       <div
         ref={moonRef}
         className="absolute inset-0 flex items-center justify-center z-10"
