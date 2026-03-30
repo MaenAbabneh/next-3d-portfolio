@@ -40,22 +40,25 @@ export default function Experience() {
   return (
     <div className="w-full h-screen bg-[#111111]">
       <Canvas
+        flat
         camera={{
           position: isMobile ? [9, 6, 9] : [6, 4, 6],
         }}
         dpr={currentDpr}
-        shadows={isHighQuality}
         gl={{
-          antialias: isHighQuality,
           powerPreference: "high-performance",
+          antialias: isHighQuality,
+          stencil: false,
+          depth: true,
+          alpha: false,
         }}
       >
         <ResponsiveInitialCamera />
 
         {isHighQuality && (
           <PerformanceMonitor
-            onDecline={() => setAutoDpr(1)}
-            onIncline={() => setAutoDpr(1.5)}
+            onDecline={() => setAutoDpr(0.8)}
+            onIncline={() => setAutoDpr(1)}
           />
         )}
 
