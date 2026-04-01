@@ -9,7 +9,6 @@ import {
   FILL_GEOMETRY,
   HOVER_LEAVE_RETURN_DELAY_MS,
   LIQUID_GEOMETRY,
-  MAX_CLICKS,
   MouthState,
 } from "@/constant/coinConstants";
 
@@ -19,10 +18,26 @@ import { useFullParticles } from "../../hooks/animations/wackyCoin/useFullPartic
 import { useFullBounce } from "../../hooks/animations/wackyCoin/useFullBounce";
 import { useWackyCoinTilt } from "../../hooks/animations/wackyCoin/useWackyCoinTilt";
 import { useMouthMorph } from "../../hooks/animations/wackyCoin/useMouthMorph";
+import { useUISound } from "@/hooks/audio/useUISound";
 
 type WackyCoinProps = {
   size?: number;
   onClicksChange?: (clicks: number) => void;
+};
+
+const COIN_MAX_CLICKS = 15;
+const FIRST_CLICK_FILL_RATIO = 0.3;
+
+const fillRatioForClicks = (clicks: number) => {
+  const safeClicks = Math.max(0, Math.min(COIN_MAX_CLICKS, Math.trunc(clicks)));
+  if (safeClicks <= 0) return 0;
+  if (safeClicks >= COIN_MAX_CLICKS) return 1;
+  if (safeClicks === 1) return FIRST_CLICK_FILL_RATIO;
+
+  const remainingClicks = COIN_MAX_CLICKS - 1;
+  const remainingFill = 1 - FIRST_CLICK_FILL_RATIO;
+  const step = remainingFill / remainingClicks;
+  return FIRST_CLICK_FILL_RATIO + (safeClicks - 1) * step;
 };
 
 export default function WackyCoin({
@@ -30,7 +45,7 @@ export default function WackyCoin({
   onClicksChange,
 }: WackyCoinProps) {
   const [clicks, setClicks] = useState(0);
-  const [mouthState, setMouthState] = useState<MouthState>("sad");
+  const [mouthState, setMouthState] = useState<MouthState>("happy");
   const [deltaText, setDeltaText] = useState<"+1" | "-1" | null>(null);
   const [deltaSeq, setDeltaSeq] = useState(0);
   const [isCelebrating, setIsCelebrating] = useState(false);
@@ -52,8 +67,9 @@ export default function WackyCoin({
   const deltaLabelRef = useRef<HTMLDivElement>(null);
 
   const svgIds = useCoinSvgIds();
+  const { playGlug, playFanfare } = useUISound();
 
-  const isFull = clicks === MAX_CLICKS;
+  const isFull = clicks === COIN_MAX_CLICKS;
 
   useDeltaLabelAnimation({ deltaText, deltaSeq, deltaLabelRef });
   useFullParticles({ isFull, particlesContainerRef, yOffsetPx: -16 });
@@ -207,12 +223,13 @@ export default function WackyCoin({
   const handleAction = (increment: boolean) => {
     if (isCelebrating) return;
     hoverInteractedRef.current = true;
+    playGlug();
     const currentClicks = clicksRef.current;
 
-    if (increment && currentClicks >= MAX_CLICKS) return;
+    if (increment && currentClicks >= COIN_MAX_CLICKS) return;
 
     const newClicks = increment
-      ? Math.min(currentClicks + 1, MAX_CLICKS)
+      ? Math.min(currentClicks + 1, COIN_MAX_CLICKS)
       : Math.max(currentClicks - 1, 0);
 
     clicksRef.current = newClicks;
@@ -220,7 +237,10 @@ export default function WackyCoin({
     setMouthState(increment ? "happy" : "sad");
 
     // اقفل التفاعل فورًا عند الوصول للحد الأقصى حتى لا تُقطع حركة الاحتفال.
-    if (increment && newClicks === MAX_CLICKS) setIsCelebrating(true);
+    if (increment && newClicks === COIN_MAX_CLICKS) {
+      setIsCelebrating(true);
+      playFanfare();
+    }
 
     // إشعار +1 / -1 (ثابت في الزاوية اليمنى)
     if (newClicks > currentClicks) {
@@ -241,7 +261,7 @@ export default function WackyCoin({
     // عند الإنقاص (right-click) اعرض الحزن مؤقتًا ثم ارجع للابتسامة
     if (!increment) {
       sadTimerRef.current = setTimeout(() => {
-        if (clicksRef.current < MAX_CLICKS) setMouthState("happy");
+        if (clicksRef.current < COIN_MAX_CLICKS) setMouthState("happy");
       }, DECREMENT_RETURN_DELAY_MS);
     }
 
@@ -253,7 +273,7 @@ export default function WackyCoin({
             FILL_GEOMETRY.BOTTOM_Y +
             LIQUID_GEOMETRY.FILL_EPSILON -
             (FILL_GEOMETRY.TOTAL_HEIGHT + LIQUID_GEOMETRY.FILL_EPSILON) *
-              (newClicks / MAX_CLICKS),
+              fillRatioForClicks(newClicks),
         },
         duration: 0.6,
         ease: "back.out(1.2)",
@@ -293,26 +313,28 @@ export default function WackyCoin({
         if (isCelebrating) return;
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          handleAction(true);
+          handleAction(false);
         }
       }}
       onMouseEnter={() => {
         hoverInteractedRef.current = false;
         if (sadTimerRef.current) clearTimeout(sadTimerRef.current);
-
-        // وهو فارغ (0) يبتسم عند التحويم
-        if (clicksRef.current === 0) setMouthState("happy");
+        if (clicksRef.current < COIN_MAX_CLICKS) setMouthState("happy");
       }}
       onMouseLeave={() => {
         handleMouseLeaveVisual();
         // عند الخروج بدون ضغط: يحزن ثم يعود للابتسام بنفس المؤقت
         if (hoverInteractedRef.current) return;
-        if (clicksRef.current !== 0) return;
+        if (clicksRef.current >= COIN_MAX_CLICKS) return;
 
         setMouthState("sad");
         if (sadTimerRef.current) clearTimeout(sadTimerRef.current);
         sadTimerRef.current = setTimeout(() => {
-          if (clicksRef.current === 0 && clicksRef.current < MAX_CLICKS) {
+          if (
+            !hoverInteractedRef.current &&
+            !isCelebrating &&
+            clicksRef.current < COIN_MAX_CLICKS
+          ) {
             setMouthState("happy");
           }
         }, HOVER_LEAVE_RETURN_DELAY_MS);
@@ -326,11 +348,12 @@ export default function WackyCoin({
         if (isCelebrating) return;
         handleAction(false);
       }}
-      className="relative shrink-0 cursor-pointer select-none overflow-hidden"
+      className="relative shrink-0 cursor-pointer select-none"
       style={{
         width: `${size}px`,
         height: `${size}px`,
         contain: "layout paint",
+        background: "transparent",
       }}
     >
       {canUseDOM
@@ -345,7 +368,7 @@ export default function WackyCoin({
                 width: 0,
                 height: 0,
                 overflow: "visible",
-                zIndex: 200,
+                zIndex: 2100,
               }}
             />,
             document.body,
@@ -419,6 +442,7 @@ export default function WackyCoin({
                 liquidGroupRef={liquidGroupRef}
                 mouthRef={mouthRef}
                 setEyesGroupRef={setEyesGroupRef}
+                scale={1}
               />
             </div>
           </div>
