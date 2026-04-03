@@ -10,6 +10,15 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   cacheComponents: true,
+  async redirects() {
+    return [
+      {
+        source: "/article/:id",
+        destination: "/articles/:id",
+        permanent: true,
+      },
+    ];
+  },
   pageExtensions: ["ts", "tsx", "mdx"],
   images: {
     remotePatterns: [
