@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useGameStore } from "@/store/useGameStore";
 import { useOverlayStore } from "@/store/useOverlayStore";
 import { useArticleStore } from "@/store/useArticleStore";
+import { resolveArticleIdFromParam } from "@/constant/articlesData";
 
 export default function DeepLinkArticle() {
   const started = useGameStore((s) => s.started);
@@ -22,8 +23,8 @@ export default function DeepLinkArticle() {
     const raw = searchParams.get("article");
     if (!raw) return;
 
-    const id = Number(raw);
-    if (!Number.isFinite(id)) return;
+    const id = resolveArticleIdFromParam(raw);
+    if (id == null) return;
 
     didRunRef.current = true;
     openOverlay("articles");
