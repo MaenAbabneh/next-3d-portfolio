@@ -17,6 +17,9 @@ import ResourceLink from "@/components/mdx/ResourceLink";
 import StatsTable from "@/components/mdx/StatsTable";
 import RetroImage from "@/components/mdx/RetroImage";
 import RetroVideo from "@/components/mdx/RetroVideo";
+import ArticleLink from "@/components/mdx/ArticleLink";
+import ArticleFooter from "@/components/mdx/SupportOverlay";
+import ArticleEndTrigger from "@/components/mdx/ArticleEndTrigger";
 
 type CalloutKind = "tip" | "note" | "warning" | "info";
 
@@ -210,12 +213,14 @@ export default function ArticleMdxContent({
           );
         })(),
       a: (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
-        <a
-          {...props}
-          className="font-black underline text-base-blue hover:text-base-blue/80 transition-colors"
-          rel={props.rel ?? "noreferrer"}
-          target={props.target ?? "_blank"}
-        />
+        <ArticleLink
+          href={props.href ?? "#"}
+          className={props.className}
+          target={props.target}
+          rel={props.rel}
+        >
+          {props.children}
+        </ArticleLink>
       ),
       pre: (props: HTMLAttributes<HTMLPreElement>) => <pre {...props} />,
       code: (props: { className?: string; children: string | string[] }) => (
@@ -230,6 +235,8 @@ export default function ArticleMdxContent({
       StatsTable,
       RetroImage,
       RetroVideo,
+      ArticleLink,
+      ArticleFooter,
     }),
     [articleId],
   );
@@ -238,6 +245,7 @@ export default function ArticleMdxContent({
     <MDXProvider components={mdxComponents}>
       <div className="space-y-5">
         <Content />
+        <ArticleEndTrigger />
       </div>
     </MDXProvider>
   );
