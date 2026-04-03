@@ -1,56 +1,89 @@
-"use client";
+import Link from "next/link";
 
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
-
-import ImageViewer from "@/components/overlay/ImageViewer";
-import Overlay from "@/components/overlay/Overlay";
-import { FloatingMenu } from "@/components/toggle/FloatingMenu";
-import { LoadingScreen } from "@/components/LoadingScreen";
-import { useSoundStore } from "@/store/useSoundStore";
-import { useGameStore } from "@/store/useGameStore";
-import { useBackgroundMusic } from "@/hooks/audio/BackgroundMusic";
-import DeepLinkArticle from "@/components/DeepLinkArticle";
-
-const Experience = dynamic(() => import("@/components/room/Experience"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-screen bg-base-cream dark:bg-base-blue-light text-base-brwan flex items-center justify-center">
-      Loading 3D...
-    </div>
-  ),
-});
+import HomeClient from "@/components/home/HomeClient";
+import { ARTICLES_CONTENT } from "@/constant/articlesContent";
+import { projects } from "@/constant/projects";
+import { getArticleSlug } from "@/utils/articleSlug";
 
 export default function Home() {
-  const setStarted = useGameStore((s) => s.setStarted);
-  const started = useGameStore((s) => s.started);
-  const setBgmMuted = useSoundStore((s) => s.setBgmMuted);
-  const setSfxMuted = useSoundStore((s) => s.setSfxMuted);
-
-  useBackgroundMusic();
-
-  const handleStarted = (withSound: boolean) => {
-    setBgmMuted(!withSound);
-    setSfxMuted(!withSound);
-    setStarted(true);
-  };
-
   return (
     <main>
-      <LoadingScreen onStarted={handleStarted} />
-      <Experience />
-      <Suspense fallback={null}>
-        <DeepLinkArticle />
-      </Suspense>
+      <section className="sr-only" aria-label="Portfolio indexable content">
+        <h1>Maen Ababneh - Interactive 3D Portfolio</h1>
+        <p>
+          Full-stack developer portfolio featuring Next.js projects, GSAP motion
+          work, and interactive web experiences.
+        </p>
+        <p>
+          بورتفوليو تفاعلي ثلاثي الأبعاد لمعن عبابنة، مطور ويب متكامل يقدم
+          مشاريع حديثة باستخدام Next.js وReact وGSAP.
+        </p>
 
-      {started && (
-        <Suspense fallback={null}>
-          <Overlay />
-        </Suspense>
-      )}
+        <h2>About Me</h2>
+        <p>
+          I am a software engineer who blends technical depth with creative
+          design to build fast, interactive web products.
+        </p>
+        <p>
+          أنا معن عبابنة، مهندس برمجيات أدمج بين العمق التقني والتصميم الإبداعي
+          لبناء منتجات ويب سريعة وتفاعلية.
+        </p>
 
-      <FloatingMenu />
-      {started && <ImageViewer />}
+        <h2>Selected Works</h2>
+        <ul>
+          {projects.map((project) => (
+            <li key={project.title}>
+              <h3>{project.title}</h3>
+              <p>{project.description}</p>
+              <p>
+                Repository: <Link href={project.repo}>{project.repo}</Link>
+              </p>
+              <p>
+                Live Demo: <Link href={project.demo}>{project.demo}</Link>
+              </p>
+            </li>
+          ))}
+        </ul>
+
+        <h2>Contact</h2>
+        <ul>
+          <li>
+            Email:{" "}
+            <Link href="mailto:maenababneh@outlook.com">
+              maenababneh@outlook.com
+            </Link>
+          </li>
+          <li>
+            GitHub:{" "}
+            <Link href="https://github.com/MaenAbabneh">MaenAbabneh</Link>
+          </li>
+          <li>
+            LinkedIn:{" "}
+            <Link href="https://www.linkedin.com/in/maenababneh/">
+              linkedin.com/in/maenababneh
+            </Link>
+          </li>
+          <li>
+            Instagram:{" "}
+            <Link href="https://www.instagram.com/maenababneh/">
+              instagram.com/maenababneh
+            </Link>
+          </li>
+        </ul>
+
+        <h2>Featured Articles</h2>
+        <ul>
+          {ARTICLES_CONTENT.map((article) => (
+            <li key={article.id}>
+              <Link href={`/articles/${getArticleSlug(article)}`}>
+                {article.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <HomeClient />
     </main>
   );
 }
