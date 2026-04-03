@@ -13,6 +13,8 @@ interface RetroImageProps {
   alt: string;
   width?: number;
   height?: number;
+  frameWidth?: number | string;
+  frameHeight?: number | string;
   layout?: "responsive" | "intrinsic" | "fixed" | "fill";
   objectFit?: "cover" | "contain" | "fill" | "none" | "scale-down";
   className?: string;
@@ -24,6 +26,8 @@ export default function RetroImage({
   alt,
   width = 800,
   height = 600,
+  frameWidth = "100%",
+  frameHeight,
   layout = "responsive",
   objectFit = "cover",
   className = "",
@@ -61,7 +65,15 @@ export default function RetroImage({
 
   return (
     <div ref={containerRef} className={`my-8 ${className}`}>
-      <div className="overflow-hidden rounded-lg shadow-xl border-2 border-base-blue/20 dark:border-base-blue-dark/30">
+      <div
+        className="overflow-hidden rounded-lg shadow-xl border-2 border-base-blue/20 dark:border-base-blue-dark/30"
+        style={{
+          width: frameWidth,
+          height: frameHeight,
+          maxWidth: "100%",
+          marginInline: "auto",
+        }}
+      >
         <Image
           src={src}
           alt={alt}
@@ -70,6 +82,7 @@ export default function RetroImage({
           layout={layout}
           objectFit={objectFit}
           className="rounded-lg"
+          style={{ width: "100%", height: "100%", objectFit }}
         />
       </div>
       {caption && (
