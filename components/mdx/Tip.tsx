@@ -50,9 +50,9 @@ export default function Tip({
   return (
     <div
       ref={containerRef}
-      className="my-6 rounded-2xl border-4 border-emerald-500/30 bg-emerald-500/10 p-5 shadow-[4px_4px_0px_0px_rgba(16,185,129,0.3)]"
+      className="my-6 rounded-2xl border-4 border-emerald-500 bg-emerald-500/10 p-5 shadow-[4px_4px_0px_0px_rgba(16,185,129,0.6)]"
     >
-      <div className="flex items-center gap-2 mb-2 text-emerald-600 dark:text-emerald-400">
+      <div className="flex items-center gap-2 mb-2 text-emerald-600">
         <IoBulb size={24} className="animate-pulse" />
         <span className="font-black font-serif text-lg">{title}</span>
       </div>
