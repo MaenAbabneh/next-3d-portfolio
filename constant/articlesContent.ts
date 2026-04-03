@@ -11,46 +11,32 @@ export type ArticleBase = {
   views: number;
   excerpt: string;
   image?: string;
+  imageObjectPosition?: string;
   contentSource: string;
   toc: ArticleTocItem[];
 };
 
-const ARTICLE_1_SOURCE = `Three.js يسهّل استخدام WebGL بشكل عملي داخل الويب. الفكرة الأساسية: **مشهد (Scene)** يحتوي عناصر، **كاميرا (Camera)** تحدد منظورك، و**Renderer** يرسم النتيجة.
+const ARTICLE_1_SOURCE = `I’m Maen Ababneh, a Full-Stack Web Developer and Computer Science student from Jordan on a mission to end the era of boring web experiences. My journey started with an obsessive question: *How can a few lines of code make a pixel dance on a screen?*
 
-## Minimal mental model
+## From 'Does it work?' to 'Does it feel right?'
 
-- Scene: صندوق يجمع كل شيء
-- Camera: العين
-- Mesh: شكل + خامة
-- Light: يغير الشكل والإحساس
+Today, I don't just build websites that "work"—I build experiences that feel alive. I specialize in bridging the gap between solid, high-performance systems and the magical world of **GSAP** and **3D** animations.
 
-## A tiny example
+## The Tech Stack: Choosing Tools That Scale
 
-\`\`\`ts
-// pseudo-code (concept only)
-const scene = new Scene();
-const camera = new PerspectiveCamera();
-const renderer = new WebGLRenderer();
+Performance shouldn't come at the cost of delight. My tech stack is a carefully curated toolbox:
 
-const cube = new Mesh(geometry, material);
-scene.add(cube);
+- **Next.js & React:** My foundation for lightning-fast Server Actions and SEO.
+- **GSAP (GreenSock):** Where the magic happens. I use it to make digital interactions feel natural and tactile.
+- **Three.js & WebGL:** For when 2D isn't enough. I love pushing the boundaries of the browser.
+- **Tailwind CSS:** For clean, responsive, and maintainable styling.
 
-function tick() {
-  cube.rotation.y += 0.01;
-  renderer.render(scene, camera);
-  requestAnimationFrame(tick);
-}
+## Beyond the Code
 
-tick();
-\`\`\`
+When I'm not pushing pixels or optimizing database queries for projects like **CreativeFlow**, you'll probably find me defending towers in *Kingdom Rush* or trying to recreate the *GTA VI* landing page just for the challenge.
 
-## Tips
-
-> ابدأ بشيء بسيط (Cube + Light) ثم زد التفاصيل تدريجيًا.
-
-- ثبّت الوحدات (meters) وقياس الإضاءة
-- راقب الأداء: عدد المضلعات، الظلال، وحجم الخامات
-- اجعل الكاميرا “مريحة” قبل أي تجميل`;
+---
+`;
 
 const ARTICLE_2_SOURCE = `GSAP ممتاز عندما تبغى تحكم “دقيق” بالتوقيت، السلاسة، والتسلسل (timelines) بدون صداع.
 
@@ -121,17 +107,22 @@ function buildArticleToc(
   return items;
 }
 
+const END_MARKER = `\n\n---\n\n<div id="article-end-marker" className="h-1 w-full" />`;
+
 export const ARTICLES_CONTENT: ArticleBase[] = [
   {
     id: 1,
-    title: "Understanding 3D rendering with Three.js",
-    category: "Three.js",
-    date: "Oct 24, 2025",
-    updatedAt: "Mar 22, 2026",
-    views: 128,
-    excerpt: "A beginner's guide to creating immersive 3D web experiences...",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe",
-    contentSource: ARTICLE_1_SOURCE,
+    title: "Who is Maen Ababneh? | A Full-Stack Dev on a Mission",
+    category: "Personal",
+    date: "May 15, 2024",
+    updatedAt: "May 15, 2024",
+    views: 0,
+    excerpt:
+      "Meet Maen Ababneh, a Full-Stack Web Developer specializing in high-performance, interactive experiences with Next.js and GSAP.",
+    image:
+      "https://res.cloudinary.com/dsgajdqm0/image/upload/q_auto,f_auto/v1775045145/wmremove-transformed_qbfbum.png",
+    imageObjectPosition: "50% 30%",
+    contentSource: ARTICLE_1_SOURCE + END_MARKER,
     toc: buildArticleToc(1, ARTICLE_1_SOURCE),
   },
   {
@@ -140,11 +131,11 @@ export const ARTICLES_CONTENT: ArticleBase[] = [
     category: "Animation",
     date: "Nov 02, 2025",
     updatedAt: "Mar 10, 2026",
-    views: 74,
+    views: 0,
     excerpt:
       "Exploring the power of GSAP for buttery smooth animations in React.",
     image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f",
-    contentSource: ARTICLE_2_SOURCE,
+    contentSource: ARTICLE_2_SOURCE + END_MARKER,
     toc: buildArticleToc(2, ARTICLE_2_SOURCE),
   },
   {
@@ -153,10 +144,10 @@ export const ARTICLES_CONTENT: ArticleBase[] = [
     category: "Next.js",
     date: "Dec 15, 2025",
     updatedAt: "Feb 28, 2026",
-    views: 205,
+    views: 0,
     excerpt: "Best practices for folder structure and state management.",
     image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
-    contentSource: ARTICLE_3_SOURCE,
+    contentSource: ARTICLE_3_SOURCE + END_MARKER,
     toc: buildArticleToc(3, ARTICLE_3_SOURCE),
   },
 ];
