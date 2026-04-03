@@ -1,6 +1,7 @@
 "use client";
 
 import type { ComponentType } from "react";
+import { getArticleSlug } from "@/utils/articleSlug";
 
 import Article1 from "@/content/articles/article-1.mdx";
 import Article2 from "@/content/articles/article-2.mdx";
@@ -17,6 +18,13 @@ export type Article = ArticleBase & {
 };
 
 export type { ArticleTocItem };
+
+export function resolveArticleIdFromParam(param: string): number | null {
+  const foundBySlug = ARTICLES_DATA.find(
+    (article) => getArticleSlug(article) === param,
+  );
+  return foundBySlug?.id ?? null;
+}
 
 const CONTENT_BY_ID = new Map<number, ArticleBase>(
   ARTICLES_CONTENT.map((a) => [a.id, a]),
