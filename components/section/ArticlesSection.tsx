@@ -2,6 +2,7 @@
 
 import { ARTICLES_DATA, type Article } from "@/constant/articlesData";
 import { useArticleStore } from "@/store/useArticleStore";
+import { getArticleSlug } from "@/utils/articleSlug";
 import { useEffect, useRef } from "react";
 import ArticleDetailView from "./articles/ArticleDetailView";
 import ArticleListView from "./articles/ArticleListView";
@@ -120,7 +121,7 @@ export default function ArticlesSection() {
     void incrementViews(activeArticle.id);
 
     const params = new URLSearchParams(window.location.search);
-    const next = String(activeArticle.id);
+    const next = getArticleSlug(activeArticle);
     if (params.get("article") !== next) {
       params.set("article", next);
       const url = `${window.location.pathname}?${params.toString()}`;
