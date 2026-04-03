@@ -51,7 +51,7 @@ export const useWackyCoinTilt = (params: {
           duration: 0.22,
           ease: "power3.out",
           svgOrigin,
-        }
+        },
       );
     }
 
@@ -96,7 +96,7 @@ export const useWackyCoinTilt = (params: {
       // ابقِ السائل ثابتًا (بدون دوران)
       setLiquidRotateRef.current?.(-rotation);
     },
-    [isFull]
+    [isFull],
   );
 
   const handleMouseLeaveVisual = useCallback(() => {

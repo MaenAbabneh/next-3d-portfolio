@@ -76,6 +76,6 @@ export const useFullBounce = (params: {
         }
       };
     },
-    { dependencies: [isFull] }
+    { dependencies: [isFull] },
   );
 };
