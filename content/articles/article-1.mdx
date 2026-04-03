@@ -1,66 +1,45 @@
-Three.js يسهّل استخدام WebGL بشكل عملي داخل الويب. الفكرة الأساسية: **مشهد (Scene)** يحتوي عناصر، **كاميرا (Camera)** تحدد منظورك، و**Renderer** يرسم النتيجة.
+# Who is Maen Ababneh?
 
-<Note title="ملاحظة مهمة">
-  كل عنصر في المشهد (Scene) له دور محدد. لا تخلط بين الكاميرا (Camera) والمجسمات
-  (Mesh) — الكاميرا فقط تحدد منظور الرؤية.
+**"Have you ever visited a website and felt like it was... just a static digital flyer?"**
+
+I’m Maen Ababneh, a Full-Stack Web Developer and Computer Science student from Jordan[cite: 1, 2]. I'm on a mission to end the era of boring web experiences. My journey didn't start with just writing code; it started with an obsessive question: *How can a few lines of code make a pixel dance on a screen?*
+
+## From 'Does it work?' to 'Does it feel right?'
+
+Today, I don't just build websites that "work"—I build experiences that feel alive. As a developer, I specialize in bridging the gap between solid, high-performance systems and the magical world of **GSAP** and **3D** animations.
+
+### The Tech Stack: Choosing Tools That Scale (and Dance)
+
+I’m often asked why I don’t just stick to "standard" layouts. Performance shouldn't come at the cost of delight. My tech stack is a carefully curated toolbox:
+
+- **Next.js & React:** My foundation for lightning-fast Server Actions and SEO.
+- **GSAP (GreenSock):** Where the magic happens. I use it to make digital interactions feel natural and tactile.
+- **Three.js & WebGL:** For when 2D isn't enough. I love pushing the boundaries of the browser with interactive 3D environments.
+- **Tailwind CSS:** For clean, responsive, and maintainable styling.
+
+<Note title="My Philosophy">
+  A beautiful animation is useless if it makes your laptop sound like a jet engine. Optimization is not an afterthought; it's a feature.
 </Note>
 
-## Minimal mental model
+## Beyond the Code
 
-- Scene: صندوق يجمع كل شيء
-- Camera: العين
-- Mesh: شكل + خامة
-- Light: يغير الشكل والإحساس
+When I'm not pushing pixels or optimizing database queries for projects like **CreativeOverFlow**, you'll probably find me defending towers in *Kingdom Rush* or trying to recreate the *GTA VI* landing page just for the challenge.
 
-tick();
+I believe the best websites are the ones where the technology becomes invisible, leaving the user with a smooth and memorable journey.
 
-<Example title="مثال عملي">
-  ```ts
-  // pseudo-code (concept only)
-  const scene = new Scene();
-  const camera = new PerspectiveCamera();
-  const renderer = new WebGLRenderer();
-
-const cube = new Mesh(geometry, material);
-scene.add(cube);
-
-function tick() {
-cube.rotation.y += 0.01;
-renderer.render(scene, camera);
-requestAnimationFrame(tick);
-}
-
-tick();
-
-```
-
----
-
-## Components Demo
-
-<QuizCard question="ما هو دور الكاميرا في مشهد Three.js؟" answer="الكاميرا تحدد منظور الرؤية ولا تُعتبر مجسمًا في المشهد." />
-
-<PullQuote author="مطور WebGL">التجربة خير برهان على فهمك للمفاهيم.</PullQuote>
-
-<ResourceLink href="https://threejs.org/docs/" title="Three.js Documentation" description="المصدر الرسمي لكل ما يتعلق بـ Three.js" />
-
-<StatsTable
-  title="Scene Stats"
-  stats={[{ label: 'Meshes', value: 3 }, { label: 'Lights', value: 2 }, { label: 'Textures', value: 1 }, { label: 'FPS', value: '60+' }]}
-/>
-
-<Tip title="جرب بنفسك">قم بتغيير موضع الكاميرا ولاحظ كيف يتغير منظور المشهد.</Tip>
-
-<Note title="ملاحظة تقنية">استخدم دائمًا <code>requestAnimationFrame</code> في حلقة التحديث لتحصل على أداء أفضل.</Note>
-</Example>
-
-## Tips
-
-<Tip title="ابدأ ببساطة">
-ابدأ بشيء بسيط (Cube + Light) ثم زد التفاصيل تدريجيًا.
+<Tip title="Let's Build Something">
+  <div className="font-semibold">
+    Are you looking to build something that isn't just a static flyer?
+  </div>
+  <div className="mt-3">
+    Whether it's a high-performance web app, a mind-bending 3D interface,
+    or you just want to debate the best GSAP easing functions, I'm currently
+    open to freelance opportunities and exciting collaborations.
+  </div>
+  <div className="mt-3">
+    Let's connect on <ArticleLink href="https://linkedin.com/in/maenababneh" className="font-bold text-base-blue dark:text-base-blue-dark underline decoration-2 underline-offset-2 hover:text-base-blue/70 dark:hover:text-base-blue-dark/70">LinkedIn</ArticleLink> or check out my latest
+    experiments on <ArticleLink href="https://github.com/MaenAbabneh" className="font-bold text-base-blue dark:text-base-blue-dark underline decoration-2 underline-offset-2 hover:text-base-blue/70 dark:hover:text-base-blue-dark/70">GitHub</ArticleLink>.
+  </div>
 </Tip>
 
-- ثبّت الوحدات (meters) وقياس الإضاءة
-- راقب الأداء: عدد المضلعات، الظلال، وحجم الخامات
-- اجعل الكاميرا “مريحة” قبل أي تجميل
-```
+<div id="article-end-marker" className="h-1 w-full" />
