@@ -3,6 +3,7 @@
 import Image from "next/image";
 import type { Article } from "@/constant/articlesData";
 import { ARTICLES_DATA } from "@/constant/articlesData";
+import { getArticleSlug } from "@/utils/articleSlug";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
@@ -206,7 +207,7 @@ export default function ArticleDetailView({
 
   const handleCopyLink = async () => {
     if (typeof window === "undefined") return;
-    const url = `${window.location.origin}/articles/${article.id}`;
+    const url = `${window.location.origin}/articles/${getArticleSlug(article)}`;
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url);
@@ -515,6 +516,9 @@ export default function ArticleDetailView({
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover"
+                style={{
+                  objectPosition: article.imageObjectPosition ?? "center",
+                }}
               />
             </div>
           )}
