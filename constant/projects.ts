@@ -6,7 +6,7 @@ export const projects = [
     tags: ["Next.js", "MongoDB", "TypeScript", "Tailwind"],
     image:
       "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=2070&auto=format&fit=crop",
-    demo: "#",
+    demo: "https://creative-overflow.maenababneh.dev/",
     repo: "https://github.com/MaenAbabneh/creativeflow",
   },
   {
@@ -16,7 +16,7 @@ export const projects = [
     tags: ["Next.js", "GSAP", "Tailwind", "Animations"],
     image:
       "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop",
-    demo: "#",
+    demo: "https://gta.maenababneh.dev/",
     repo: "https://github.com/MaenAbabneh/gta-landingPage",
   },
   {
