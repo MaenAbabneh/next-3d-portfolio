@@ -5,6 +5,7 @@ import { MDXProvider } from "@mdx-js/react";
 import React, {
   useMemo,
   type AnchorHTMLAttributes,
+  type ImgHTMLAttributes,
   type HTMLAttributes,
 } from "react";
 import Tip from "@/components/mdx/Tip";
@@ -164,6 +165,14 @@ export default function ArticleMdxContent({
             data-article-heading={id}
             className="text-xl font-black mt-6 mb-2 text-base-brwan"
           />
+        );
+      },
+      img: ({ src, alt, title }: ImgHTMLAttributes<HTMLImageElement>) => {
+        const resolvedAlt = alt ?? title ?? "";
+        const resolvedSrc = typeof src === "string" ? src : "";
+
+        return (
+          <RetroImage src={resolvedSrc} alt={resolvedAlt} caption={title} />
         );
       },
       p: (props: HTMLAttributes<HTMLParagraphElement>) => (
