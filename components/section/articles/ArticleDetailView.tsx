@@ -512,7 +512,7 @@ export default function ArticleDetailView({
             >
               <Image
                 src={article.image}
-                alt={article.title}
+                alt={article.imageAlt}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover"
