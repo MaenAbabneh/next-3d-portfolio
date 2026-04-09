@@ -26,7 +26,7 @@ const digital = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://maenababneh.com"),
+  metadataBase: new URL("https://maenababneh.dev"),
   title: {
     default: "Maen Ababneh | معن عبابنة | Interactive 3D Portfolio",
     template: "%s | Maen Ababneh | معن عبابنة",

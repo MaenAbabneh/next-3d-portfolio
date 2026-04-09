@@ -1,6 +1,6 @@
 import type { ArticleBase } from "@/constant/articlesContent";
 
-export const SITE_URL = "https://maenababneh.com";
+export const SITE_URL = "https://maenababneh.dev";
 export const SITE_NAME = "Maen Ababneh Portfolio";
 export const AUTHOR_NAME = "Maen Ababneh";
 export const AUTHOR_NAME_AR = "معن عبابنة";

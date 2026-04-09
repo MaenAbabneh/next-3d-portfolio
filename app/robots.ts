@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://maenababneh.com/sitemap.xml",
-    host: "https://maenababneh.com",
+    sitemap: "https://maenababneh.dev/sitemap.xml",
+    host: "https://maenababneh.dev",
   };
 }

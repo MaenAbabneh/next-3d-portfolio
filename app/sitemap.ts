@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 import { ARTICLES_CONTENT } from "@/constant/articlesContent";
 import { getArticleSlug } from "@/utils/articleSlug";
 
-const SITE_URL = "https://maenababneh.com";
+const SITE_URL = "https://maenababneh.dev";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const articleEntries: MetadataRoute.Sitemap = ARTICLES_CONTENT.map(
