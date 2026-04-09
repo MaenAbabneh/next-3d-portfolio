@@ -19,7 +19,7 @@ export default function ContactSection() {
       <div className="flex flex-wrap gap-6 sm:gap-10 md:gap-16 items-center justify-center text-base-blue dark:text-base-blue-dark">
         {/* Email */}
         <Link
-          href="mailto:maenababneh@outlook.com"
+          href="mailto:hi@maenababneh.dev"
           className="group inline-flex items-center justify-center hover:text-base-yellow transition-colors duration-300"
         >
           <PiMailboxFill className="contact-logo group-hover:-rotate-12 transition-transform duration-300" />

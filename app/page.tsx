@@ -49,9 +49,7 @@ export default function Home() {
         <ul>
           <li>
             Email:{" "}
-            <Link href="mailto:maenababneh@outlook.com">
-              maenababneh@outlook.com
-            </Link>
+            <Link href="mailto:hi@maenababneh.dev">hi@maenababneh.dev</Link>
           </li>
           <li>
             GitHub:{" "}
