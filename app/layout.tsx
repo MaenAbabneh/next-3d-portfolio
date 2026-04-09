@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import localFont from "next/font/local";
 import { Geist, Geist_Mono } from "next/font/google";
+
+import DocumentLocaleSync from "@/components/DocumentLocaleSync";
 import SupportOverlay from "@/components/mdx/SupportOverlay";
+import { buildSiteJsonLd, toJsonLdScript } from "@/lib/seoJsonLd";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -82,11 +85,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" dir="ltr" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${digital.variable} antialiased`}
       >
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: toJsonLdScript(buildSiteJsonLd()),
+          }}
+        />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <DocumentLocaleSync />
           <noscript>
             <div className="p-4 text-sm bg-base-cream text-base-brwan dark:bg-base-blue-light dark:text-base-blue-dark">
               JavaScript is disabled. You can still browse key content and
