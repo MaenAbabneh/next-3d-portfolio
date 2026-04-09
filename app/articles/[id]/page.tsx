@@ -5,6 +5,12 @@ import { notFound } from "next/navigation";
 import ArticleMarkdownContent from "@/components/section/articles/ArticleMarkdownContent";
 import { ARTICLES_CONTENT } from "@/constant/articlesContent";
 import { getArticleSlug } from "@/utils/articleSlug";
+import {
+  AUTHOR_NAME,
+  SITE_URL,
+  buildArticleJsonLd,
+  toJsonLdScript,
+} from "@/lib/seoJsonLd";
 
 type Params = Promise<{ id: string }>;
 
@@ -48,24 +54,27 @@ export async function generateMetadata({
   const englishDescription = `${article.excerpt} Read this article by Maen Ababneh about ${article.title} and modern web development.`;
   const arabicDescription = `اقرأ هذا المقال من معن عبابنة حول ${article.title} وتطوير الويب الحديث باستخدام Next.js وReact وGSAP.`;
   const bilingualDescription = `${englishDescription} | ${arabicDescription}`;
+  const canonicalUrl = `${SITE_URL}/articles/${slug}`;
 
   return {
     title: `${article.title} | Maen Ababneh | معن عبابنة`,
     description: bilingualDescription,
-    authors: [{ name: "Maen Ababneh" }, { name: "معن عبابنة" }],
+    authors: [{ name: AUTHOR_NAME }, { name: "معن عبابنة" }],
     creator: "Maen Ababneh | معن عبابنة",
     alternates: {
-      canonical: `/articles/${slug}`,
+      canonical: canonicalUrl,
     },
     openGraph: {
       title: article.title,
       description: bilingualDescription,
       type: "article",
-      url: `/articles/${slug}`,
-      authors: ["Maen Ababneh", "معن عبابنة"],
+      url: canonicalUrl,
+      authors: [AUTHOR_NAME, "معن عبابنة"],
       publishedTime: article.date,
       modifiedTime: article.updatedAt,
-      images: article.image ? [{ url: article.image }] : undefined,
+      images: article.image
+        ? [{ url: article.image, alt: article.imageAlt }]
+        : undefined,
     },
     twitter: {
       card: "summary_large_image",
@@ -84,8 +93,18 @@ export default async function ArticlePage({ params }: { params: Params }) {
     notFound();
   }
 
+  const slug = getArticleSlug(article);
+  const canonicalUrl = `${SITE_URL}/articles/${slug}`;
+
   return (
     <main className="min-h-screen bg-base-cream dark:bg-base-blue-light text-base-brwan">
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: toJsonLdScript(buildArticleJsonLd(article, canonicalUrl)),
+        }}
+      />
       <article className="mx-auto w-full max-w-4xl px-5 py-12 md:px-8 md:py-16">
         <header className="mb-10 border-b-4 border-base-blue/20 pb-6 dark:border-base-blue-dark/20">
           <p className="font-mono text-xs uppercase tracking-wide opacity-70 mb-2">
