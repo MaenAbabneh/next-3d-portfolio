@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import localFont from "next/font/local";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 
 import DocumentLocaleSync from "@/components/DocumentLocaleSync";
 import SupportOverlay from "@/components/mdx/SupportOverlay";
@@ -106,6 +107,7 @@ export default function RootLayout({
           </noscript>
           <SupportOverlay />
           {children}
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
