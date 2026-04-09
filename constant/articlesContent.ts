@@ -11,6 +11,7 @@ export type ArticleBase = {
   views: number;
   excerpt: string;
   image?: string;
+  imageAlt: string;
   imageObjectPosition?: string;
   contentSource: string;
   toc: ArticleTocItem[];
@@ -121,6 +122,8 @@ export const ARTICLES_CONTENT: ArticleBase[] = [
       "Meet Maen Ababneh, a Full-Stack Web Developer specializing in high-performance, interactive experiences with Next.js and GSAP.",
     image:
       "https://res.cloudinary.com/dsgajdqm0/image/upload/q_auto,f_auto/v1775045145/wmremove-transformed_qbfbum.png",
+    imageAlt:
+      "Portrait of Maen Ababneh, a full-stack web developer focused on interactive Next.js and GSAP experiences.",
     imageObjectPosition: "50% 30%",
     contentSource: ARTICLE_1_SOURCE + END_MARKER,
     toc: buildArticleToc(1, ARTICLE_1_SOURCE),
@@ -135,6 +138,8 @@ export const ARTICLES_CONTENT: ArticleBase[] = [
     excerpt:
       "Exploring the power of GSAP for buttery smooth animations in React.",
     image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f",
+    imageAlt:
+      "Abstract motion design scene representing GSAP animation workflows in a modern React project.",
     contentSource: ARTICLE_2_SOURCE + END_MARKER,
     toc: buildArticleToc(2, ARTICLE_2_SOURCE),
   },
@@ -147,6 +152,8 @@ export const ARTICLES_CONTENT: ArticleBase[] = [
     views: 0,
     excerpt: "Best practices for folder structure and state management.",
     image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
+    imageAlt:
+      "Clean workspace and code layout illustrating scalable Next.js application structure and state management.",
     contentSource: ARTICLE_3_SOURCE + END_MARKER,
     toc: buildArticleToc(3, ARTICLE_3_SOURCE),
   },
