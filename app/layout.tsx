@@ -71,12 +71,23 @@ export const metadata: Metadata = {
     locale: "en_US",
     alternateLocale: ["ar_AR"],
     type: "website",
+    images: [
+      {
+        url: "https://res.cloudinary.com/djy5oyivn/image/upload/q_auto/f_auto/v1775844757/room-banner_mdfips.png",
+        width: 1200,
+        height: 630,
+        alt: "Maen Ababneh | معن عبابنة | Interactive 3D Portfolio",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Maen Ababneh | معن عبابنة | Interactive 3D Portfolio",
     description:
       "Explore projects, articles, and interactive web experiments by Maen Ababneh, built with Next.js, React, and GSAP. | استكشف مشاريع ومقالات وتجارب ويب تفاعلية من معن عبابنة مبنية باستخدام Next.js وReact وGSAP.",
+    images: [
+      "https://res.cloudinary.com/djy5oyivn/image/upload/q_auto/f_auto/v1775844757/room-banner_mdfips.png",
+    ],
   },
 };
 
