@@ -22,8 +22,19 @@ export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
   const screen2Ref = useRef<THREE.MeshStandardMaterial>(null);
   const screen3Ref = useRef<THREE.MeshStandardMaterial>(null);
 
-  const videoTexture = useVideoTexture(
-    "https://res.cloudinary.com/dsgajdqm0/video/upload/v1772888225/screen-loop_w3slvn.mp4",
+  const videoTexture_1 = useVideoTexture(
+    "https://res.cloudinary.com/djy5oyivn/video/upload/q_auto/f_auto/v1775919706/pixel_zeg11b.mp4",
+    {
+      loop: true,
+      muted: true,
+      playsInline: true,
+      crossOrigin: "anonymous",
+      start: true,
+    },
+  );
+
+  const videoTexture_2 = useVideoTexture(
+    "https://res.cloudinary.com/djy5oyivn/video/upload/q_auto/f_auto/v1775919707/power_tzbesf.mp4",
     {
       loop: true,
       muted: true,
@@ -39,10 +50,15 @@ export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
   });
 
   useEffect(() => {
-    const textures: THREE.Texture[] = [posterTexture, videoTexture];
+    const textures: THREE.Texture[] = [
+      posterTexture,
+      videoTexture_1,
+      videoTexture_2,
+    ];
 
     textures.forEach((texture) => {
-      texture.flipY = texture === videoTexture ? false : true;
+      texture.flipY =
+        texture === videoTexture_1 || texture === videoTexture_2 ? false : true;
 
       if (texture === posterTexture) {
         texture.wrapT = THREE.RepeatWrapping;
@@ -54,7 +70,7 @@ export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
       texture.magFilter = THREE.LinearFilter;
       texture.needsUpdate = true;
     });
-  }, [posterTexture, videoTexture]);
+  }, [posterTexture, videoTexture_1, videoTexture_2]);
 
   useGSAP(() => {
     const screens = [
@@ -107,7 +123,7 @@ export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
       <InteractiveScreen
         geometry={nodes.Screen_1.geometry}
         position={[0.019, -0.367, -0.036]}
-        url="https://www.danielprior.dk/"
+        url="https://macos.maenababneh.dev/"
       />
 
       <mesh
@@ -117,9 +133,9 @@ export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
       >
         <meshStandardMaterial
           ref={screen2Ref}
-          map={videoTexture}
-          emissiveMap={videoTexture}
-          emissive={new THREE.Color("white")}
+          map={videoTexture_1}
+          emissiveMap={videoTexture_1}
+          emissive={new THREE.Color("black")}
           toneMapped={false}
         />
       </mesh>
@@ -131,9 +147,9 @@ export function RoomAccessories({ nodes }: RoomAccessoriesProps) {
       >
         <meshStandardMaterial
           ref={screen3Ref}
-          map={videoTexture}
-          emissiveMap={videoTexture}
-          emissive={new THREE.Color("white")}
+          map={videoTexture_2}
+          emissiveMap={videoTexture_2}
+          emissive={new THREE.Color("black")}
           toneMapped={false}
         />
       </mesh>

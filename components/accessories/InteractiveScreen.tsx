@@ -102,13 +102,13 @@ export function InteractiveScreen({
 
     const aspect = window.innerWidth / window.innerHeight;
 
-    let distanceX = 0.42;
+    let distanceX = 0.47;
     if (aspect < 0.6) {
       distanceX = 0.35;
     } else if (aspect < 1) {
       distanceX = 0.85;
     } else if (aspect < 1.4) {
-      distanceX = 0.6;
+      distanceX = 0.65;
     }
 
     gsap.to(camera.position, {
