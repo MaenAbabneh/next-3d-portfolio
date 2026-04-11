@@ -13,6 +13,10 @@ type ArticlesSidebarOverlayProps = {
   onLayoutChange?: () => void;
 };
 
+// Tune these values to control where the sidebar opens on desktop.
+const SIDEBAR_RIGHT_GUTTER_PX = 25;
+const SIDEBAR_OPEN_ALIGNMENT = 0.66;
+
 export default function ArticlesSidebarOverlay({
   panelRef,
   onLayoutChange,
@@ -75,6 +79,37 @@ export default function ArticlesSidebarOverlay({
 
   const localPanelRef = useRef<HTMLDivElement | null>(null);
 
+  const getOpenX = useCallback((el: HTMLDivElement) => {
+    if (typeof window === "undefined") return 0;
+
+    // Keep a stable right gutter instead of hard-coded x values.
+    const gutter = SIDEBAR_RIGHT_GUTTER_PX;
+    const baseLeft = 24;
+    const panelWidth = el.getBoundingClientRect().width;
+    const rightAlignedLeft = Math.max(
+      baseLeft,
+      window.innerWidth - panelWidth - gutter,
+    );
+    const centeredLeft = Math.max(
+      baseLeft,
+      (window.innerWidth - panelWidth) / 2,
+    );
+    const desiredLeft =
+      centeredLeft + (rightAlignedLeft - centeredLeft) * SIDEBAR_OPEN_ALIGNMENT;
+
+    return desiredLeft - baseLeft;
+  }, []);
+
+  const getMidX = useCallback((el: HTMLDivElement) => {
+    if (typeof window === "undefined") return 0;
+
+    const baseLeft = 24;
+    const panelWidth = el.getBoundingClientRect().width;
+    const centeredLeft = (window.innerWidth - panelWidth) / 2;
+
+    return Math.max(0, centeredLeft - baseLeft);
+  }, []);
+
   const setPanelNodeRef = (node: HTMLDivElement | null) => {
     localPanelRef.current = node;
     if (panelRef) panelRef.current = node;
@@ -86,10 +121,13 @@ export default function ArticlesSidebarOverlay({
 
     gsap.killTweensOf(el);
 
+    const openX = getOpenX(el);
+    const middleX = getMidX(el);
+
     if (shouldBeOpen) {
-      gsap.set(el, { opacity: 0, x: 900, rotation: 0 });
+      gsap.set(el, { opacity: 0, x: middleX, rotation: 0 });
       gsap.to(el, {
-        x: 1150,
+        x: openX,
         opacity: 1,
         duration: 0.75,
         ease: "power2.inOut",
@@ -97,7 +135,7 @@ export default function ArticlesSidebarOverlay({
       });
     } else {
       gsap.to(el, {
-        x: 900,
+        x: middleX,
         opacity: 0,
         duration: 0.75,
         ease: "power3.inOut",
@@ -110,7 +148,26 @@ export default function ArticlesSidebarOverlay({
         },
       });
     }
-  }, [cachedArticleId, shouldBeOpen, onLayoutChange]);
+  }, [cachedArticleId, shouldBeOpen, onLayoutChange, getOpenX, getMidX]);
+
+  useEffect(() => {
+    if (!shouldBeOpen) return;
+
+    const syncOpenPosition = () => {
+      const el = localPanelRef.current;
+      if (!el) return;
+
+      gsap.set(el, { x: getOpenX(el) });
+      if (onLayoutChange) onLayoutChange();
+    };
+
+    syncOpenPosition();
+    window.addEventListener("resize", syncOpenPosition);
+
+    return () => {
+      window.removeEventListener("resize", syncOpenPosition);
+    };
+  }, [shouldBeOpen, getOpenX, onLayoutChange]);
 
   const effectiveArticleId = activeArticleId ?? cachedArticleId;
   const activeArticle =
@@ -228,7 +285,7 @@ export default function ArticlesSidebarOverlay({
   return (
     <div
       ref={setPanelNodeRef}
-      className="fixed left-6 top-24 md:top-1/2 md:-translate-y-1/2 z-90 w-full max-w-105 max-h-[80vh]"
+      className="hidden lg:block fixed left-6 top-1/2 -translate-y-1/2 z-90 w-full max-w-105 max-h-[80vh]"
     >
       <ModalLayout
         title="Table of Contents"
@@ -259,7 +316,7 @@ export default function ArticlesSidebarOverlay({
             </div>
           ) : (
             <p className="text-sm font-bold opacity-70">
-              لا يوجد عناوين بعد لهذا المقال.
+              No table of contents available for this article.
             </p>
           )}
 
