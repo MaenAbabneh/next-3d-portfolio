@@ -45,3 +45,6 @@ next-env.d.ts
 
 # vs code
 .vscode/*
+
+# FrameRef cache directory
+/.frameref
