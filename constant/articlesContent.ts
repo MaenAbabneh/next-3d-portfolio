@@ -263,7 +263,8 @@ export const ARTICLES_CONTENT: ArticleBase[] = [
     views: 0,
     excerpt:
       "A personal guide to scalable Next.js architecture with three practical rules for clean structure, clearer boundaries, and faster feature delivery. Stop fighting your folder structure and start building features.",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
+    image:
+      "https://res.cloudinary.com/djy5oyivn/image/upload/q_auto/f_auto/v1775898974/article-3_1_dn0kbm.png",
     imageAlt:
       "Clean workspace and code layout illustrating scalable Next.js application structure and state management.",
     contentSource: ARTICLE_3_SOURCE + END_MARKER,
