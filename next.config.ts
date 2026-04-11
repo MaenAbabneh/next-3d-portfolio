@@ -43,6 +43,7 @@ const nextConfig: NextConfig = {
       "react-icons",
       "three",
     ],
+    webpackBuildWorker: true,
   },
 };
 
