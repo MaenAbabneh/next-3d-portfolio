@@ -56,9 +56,11 @@ export default function PullQuote({
         className="absolute -top-4 -left-2 text-base-blue/20 dark:text-base-blue-dark/30 -z-10 rotate-12"
       />
       <blockquote className="border-l-8 border-base-blue dark:border-base-blue-dark pl-6 py-2">
-        <p className="font-serif font-black text-2xl md:text-3xl leading-tight text-base-brwan tracking-tighter">
-          &quot;{children}&quot;
-        </p>
+        <div className="font-serif font-black text-2xl md:text-3xl leading-tight text-base-brwan tracking-tighter [&_p]:m-0 [&_p]:font-inherit [&_p]:text-inherit [&_p]:leading-inherit [&_p]:tracking-inherit">
+          <span aria-hidden="true">&quot;</span>
+          {children}
+          <span aria-hidden="true">&quot;</span>
+        </div>
         {author && (
           <footer className="mt-4 font-mono text-xs uppercase tracking-[0.2em] text-base-blue">
             — {author}
