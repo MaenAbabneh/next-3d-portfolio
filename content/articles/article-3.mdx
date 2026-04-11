@@ -1,20 +1,78 @@
-لما يكبر المشروع، أكثر شيء ينهكك هو “المسارات” غير الواضحة وملفات تتضخم.
+Growth is a double-edged sword. In Next.js, it often starts with a single file and ends with a spaghetti of state and props. The real fatigue is not the code itself, it is the friction of not knowing where logic belongs.
 
-## Principles that scale
+## Why this matters in real projects
 
-- افصل **UI** عن **feature logic**
-- خفّف الـ props drilling: استخدم store أو context حسب الحاجة
-- خلي البيانات (data) قريبة من المكان اللي تُعرض فيه
+If you care about **Next.js App Router Architecture**, **Clean Code in React**, and long-term maintainability, you need one thing first: clear boundaries.
 
-## Folder approach (one simple option)
+<Note title="Practical rule">
+  I do not build a new abstraction unless I see real repetition or a clear
+  change point.
+</Note>
 
-- `components/` لقطع UI العامة
-- `hooks/` للـ hooks المشتركة
-- `store/` للحالة العالمية
-- `constant/` للبيانات الثابتة
+## Three rules that scale
 
-## Don’t over-engineer
+- I enforce **Separation of Concerns**: UI and feature logic should not grow into each other.
+- I reduce props drilling by using context or a store only when it truly helps.
+- I keep data close to where it is rendered, unless multiple features depend on it.
 
-> التنظيم مهم… لكن لا تبني إطار داخلي قبل ما تحتاجه.
+## Folder approach (functional view)
 
-ابدأ بسيط، وبعدها لما تلاحظ التكرار، اعمل abstraction صغيرة وواضحة.
+This is the **Scalable Folder Structure** I keep coming back to in medium and large Next.js projects:
+
+- `components/`: The visual primitives. Keep them dumb and fast.
+- `hooks/`: The brain of the UI. Where state meets behavior.
+- `lib/`: The silent workers. Pure functions and external clients.
+- `store/`: Shared state for cross-screen workflows.
+- `constant/`: Static data and config-like values.
+
+<StatsTable
+  title="Folder Map"
+  stats={[
+    { label: "UI", value: "components/" },
+    { label: "State", value: "store/" },
+    { label: "Shared Logic", value: "hooks/" },
+    { label: "Data", value: "constant/" },
+  ]}
+/>
+
+## The anti-pattern
+
+The fastest way to lose control is mixing API calls, view state, and domain logic directly inside UI components. It works in week one, then slows everything down in month three.
+
+<PullQuote author="Hard-earned lesson">
+  If every component talks directly to APIs, your UI becomes your backend
+  contract.
+</PullQuote>
+
+## The Rule of Three
+
+<Tip title="The Rule of Three">
+
+If the same pattern repeats three times, that is my signal to create a small, explicit abstraction.
+
+Before that, I keep things simple and local.
+
+</Tip>
+
+## Context vs store (Zustand)
+
+Use React Context for low-frequency shared values like theme, locale, or auth metadata.
+
+Use Zustand when state updates are frequent, multi-screen, or interaction-heavy. It usually gives cleaner selectors and helps avoid broad re-renders in complex interfaces.
+
+## Example checklist
+
+- Is this logic specific to one feature? I keep it close to that feature.
+- Is this code used in more than one place? I move it to `lib/` or `hooks/`.
+- Does this state affect more than one screen? I put it in `store/`.
+- If I replace this UI library tomorrow, how much logic will I have to rewrite?
+
+<ResourceLink
+  href="https://nextjs.org/docs/app"
+  title="Next.js App Router Documentation"
+  description="A practical reference for structuring pages, layouts, and server components cleanly."
+/>
+
+Stop fighting your folder structure and start building features.
+
+If you want help reviewing your architecture or planning a scalable Next.js setup, feel free to reach out at [hi@maenababneh.dev](mailto:hi@maenababneh.dev).
