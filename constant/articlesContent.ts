@@ -39,15 +39,41 @@ When I'm not pushing pixels or optimizing database queries for projects like **C
 ---
 `;
 
-const ARTICLE_2_SOURCE = `GSAP ممتاز عندما تبغى تحكم “دقيق” بالتوقيت، السلاسة، والتسلسل (timelines) بدون صداع.
+const ARTICLE_2_SOURCE = `<RetroImage 
+  src="https://res.cloudinary.com/djy5oyivn/image/upload/q_auto/f_auto/v1775888098/article-2_n4bq2e.png" 
+  alt="3D Wireframe and full geometry of an interactive menu side-by-side"
+  caption="From wireframe to final render: building an immersive 3D universe."
+/>
 
-## What I like about it
+# Case Study: Interactive 3D Portfolio Universe
 
-- Timeline واضح: تبني قصة للحركة بدل سطر-سطر
-- Ease طبيعي: الحركة تحسّها بشرية
-- أداء ممتاز حتى مع مشاهد ثقيلة
+## Overview
 
-## A simple timeline idea
+This project is an immersive, high-performance 3D portfolio designed to showcase full-stack development and creative motion design skills. Moving away from traditional "flat" websites, this experience utilizes a fully interactive 3D room where users can explore projects and content in a gamified environment.
+
+## The Challenge
+
+The primary goal was to build a visually complex 3D interface that remains highly performant across all devices. The technical challenges involved:
+- **Performance Optimization:** Maintaining a "locked 60fps" while rendering complex WebGL scenes.
+- **Seamless Interactivity:** Integrating traditional web elements (like articles and links) within a 3D space.
+- **Visual Storytelling:** Using motion to guide the user's attention without overwhelming the interface.
+
+## Technical Solution
+
+### 1. 3D Engine & Rendering
+- **Framework:** Built with Next.js 16 and React 19 for robust server-side capabilities and modern rendering.
+- **Scene Management:** Utilized \`@react-three/fiber\` and \`@react-three/drei\` to manage the 3D environment.
+- **Optimization:** Implemented \`PerformanceMonitor\` to scale resolution dynamically and \`Bvh\` (Bounding Volume Hierarchy) to optimize raycasting and interaction speed.
+
+### 2. Motion Design (GSAP Integration)
+To ensure the movements felt "human" and fluid, GSAP was used to create precise timelines. GSAP is excellent when you need exact control over timing and sequences without the headache.
+
+**Why I rely on GSAP for 3D UI:**
+- **Clear Timelines:** You build a story for the motion rather than coding it line-by-line.
+- **Natural Easing:** The movement feels human and tactile.
+- **High Performance:** Excellent execution even with heavy 3D scenes.
+
+Here is a simple timeline idea demonstrating this approach:
 
 \`\`\`ts
 // pseudo-code
@@ -58,11 +84,30 @@ tl.to(".card", { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" })
   .to(".shine", { opacity: 1, duration: 0.2 }, "-=0.1");
 \`\`\`
 
-## Practical advice
+<Tip title="Practical Animation Advice">
+  - Don't try to compensate for a bad UI with heavy animations.
+  - Let the movement serve a clear purpose: entry, confirmation, or transition.
+  - Try to keep durations short (0.2–0.6s) for the best feel.
+</Tip>
 
-- لا تحاول تعوّض UI كامل بـ animations
-- خلي الحركة تخدم المعنى: دخول، تأكيد، انتقال…
-- جرّب تبقي durations قصيرة (0.2–0.6) غالبًا أفضل`;
+### 3. State & Audio
+- **Global State:** Managed via \`Zustand\` to track user progress, game settings (SFX/BGM), and UI overlays.
+- **Spatial Audio:** Integrated \`howler\` to provide immersive UI sounds and background music that enhances the 3D atmosphere.
+
+## Results
+
+- **High Performance:** Achieved stable frame rates through aggressive optimization and modern WebGL power-preference settings.
+- **Engagement:** An interactive "Selected Works" section featuring projects like CreativeFlow and the GTA VI Landing Page.
+- **Cross-Platform:** A fully responsive 3D camera system that adapts the viewing angle and controls for mobile vs. desktop users.
+
+## Key Takeaways
+
+GSAP is excellent for precise control over timing and sequences without the headache. The key is making movement serve a meaning—entry, confirmation, or transition.
+
+---
+
+**Want to build an immersive web experience?**
+Check out the live demo at [macos.maenababneh.dev](https://macos.maenababneh.dev) or explore the code on [GitHub](https://github.com/MaenAbabneh). If you're interested in collaborating, feel free to reach out at [hi@maenababneh.dev](mailto:hi@maenababneh.dev).`;
 
 const ARTICLE_3_SOURCE = `لما يكبر المشروع، أكثر شيء ينهكك هو “المسارات” غير الواضحة وملفات تتضخم.
 
@@ -130,14 +175,15 @@ export const ARTICLES_CONTENT: ArticleBase[] = [
   },
   {
     id: 2,
-    title: "Why GSAP is my favorite animation library",
-    category: "Animation",
+    title: "Case Study: Interactive 3D Portfolio Universe", // 🌟 العنوان الجديد
+    category: "Case Study", // 🌟 الفئة الجديدة
     date: "Nov 02, 2025",
     updatedAt: "Mar 10, 2026",
     views: 0,
     excerpt:
-      "Exploring the power of GSAP for buttery smooth animations in React.",
-    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f",
+      "An in-depth look at building a high-performance, interactive 3D portfolio using Next.js, Three.js, and GSAP.",
+    image:
+      "https://res.cloudinary.com/djy5oyivn/image/upload/q_auto/f_auto/v1775888512/article-2-content_mccdfu.png",
     imageAlt:
       "Abstract motion design scene representing GSAP animation workflows in a modern React project.",
     contentSource: ARTICLE_2_SOURCE + END_MARKER,
