@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 
 import DocumentLocaleSync from "@/components/DocumentLocaleSync";
+import WebMcpProvider from "@/components/WebMcpProvider";
 import SupportOverlay from "@/components/mdx/SupportOverlay";
 import { buildSiteJsonLd, toJsonLdScript } from "@/lib/seoJsonLd";
 import "./globals.css";
@@ -110,6 +111,7 @@ export default function RootLayout({
         />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <DocumentLocaleSync />
+          <WebMcpProvider />
           <noscript>
             <div className="p-4 text-sm bg-base-cream text-base-brwan dark:bg-base-blue-light dark:text-base-blue-dark">
               JavaScript is disabled. You can still browse key content and

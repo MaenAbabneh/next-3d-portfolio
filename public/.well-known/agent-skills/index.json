@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "get-featured-projects",
+      "type": "skill-md",
+      "description": "Return featured projects with repository and demo links.",
+      "url": "https://maenababneh.dev/.well-known/agent-skills/get-featured-projects-SKILL.md",
+      "digest": "sha256:8b2aa49b39a0408e2d48bafeb8d9921cc3768e565de6f588d7ddd0e036dca365"
+    },
+    {
+      "name": "list-articles",
+      "type": "skill-md",
+      "description": "List published articles with canonical links.",
+      "url": "https://maenababneh.dev/.well-known/agent-skills/list-articles-SKILL.md",
+      "digest": "sha256:d816951678fc7aec1c90e44ab9feda0f6f9ad0ac0bc195ea7278c8b8ab888b2c"
+    },
+    {
+      "name": "get-contact-links",
+      "type": "skill-md",
+      "description": "Return primary contact channels for the portfolio owner.",
+      "url": "https://maenababneh.dev/.well-known/agent-skills/get-contact-links-SKILL.md",
+      "digest": "sha256:deb0fd038bff139ec972257fc5e9c8f29453d55f7c6aadfd706d1bce04423df0"
+    }
+  ]
+}
