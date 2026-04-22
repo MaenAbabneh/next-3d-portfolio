@@ -1,0 +1,101 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Maen Ababneh Portfolio API",
+    "version": "1.0.0",
+    "description": "Public endpoints for article likes, article views, and health checks."
+  },
+  "servers": [
+    {
+      "url": "https://maenababneh.dev"
+    }
+  ],
+  "paths": {
+    "/api/articles/{id}/likes": {
+      "get": {
+        "summary": "Read likes count for an article",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Likes retrieved"
+          }
+        }
+      },
+      "post": {
+        "summary": "Increment likes count for an article",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Likes updated"
+          }
+        }
+      }
+    },
+    "/api/articles/{id}/views": {
+      "get": {
+        "summary": "Read view count for an article",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Views retrieved"
+          }
+        }
+      },
+      "post": {
+        "summary": "Increment view count for an article",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Views updated"
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "Service health status",
+        "responses": {
+          "200": {
+            "description": "Service healthy"
+          }
+        }
+      }
+    }
+  }
+}
