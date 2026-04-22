@@ -10,6 +10,20 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   cacheComponents: true,
+  async headers() {
+    return [
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Link",
+            value:
+              '</.well-known/api-catalog>; rel="api-catalog", </openapi.json>; rel="service-desc", </docs/api>; rel="service-doc", </.well-known/openid-configuration>; rel="describedby", </.well-known/oauth-protected-resource>; rel="describedby", </.well-known/mcp/server-card.json>; rel="describedby", </.well-known/agent-skills/index.json>; rel="describedby"',
+          },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       {
