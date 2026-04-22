@@ -5,7 +5,7 @@ function wantsMarkdown(request: NextRequest): boolean {
   return accept.includes("text/markdown");
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   if (request.nextUrl.pathname !== "/") {
     return NextResponse.next();
   }
