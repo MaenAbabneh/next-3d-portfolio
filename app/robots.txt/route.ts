@@ -9,8 +9,6 @@ const ROBOTS_TXT = [
   "",
 ].join("\n");
 
-export const dynamic = "force-static";
-
 export async function GET() {
   return new Response(ROBOTS_TXT, {
     headers: {
