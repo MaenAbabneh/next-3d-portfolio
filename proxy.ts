@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import {
+  buildHomeMarkdown,
+  estimateMarkdownTokens,
+} from "@/lib/agentHomeMarkdown";
+
 function wantsMarkdown(request: NextRequest): boolean {
   const accept = request.headers.get("accept")?.toLowerCase() ?? "";
   return accept.includes("text/markdown");
@@ -18,13 +23,15 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const rewriteUrl = request.nextUrl.clone();
-  rewriteUrl.pathname = "/_agent/home";
+  const markdown = buildHomeMarkdown();
 
-  const response = NextResponse.rewrite(rewriteUrl);
-  response.headers.set("Vary", "Accept");
-
-  return response;
+  return new Response(markdown, {
+    headers: {
+      "Content-Type": "text/markdown",
+      "x-markdown-tokens": String(estimateMarkdownTokens(markdown)),
+      Vary: "Accept",
+    },
+  });
 }
 
 export const config = {
