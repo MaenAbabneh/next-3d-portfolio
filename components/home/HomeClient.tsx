@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import ImageViewer from "@/components/overlay/ImageViewer";
 import Overlay from "@/components/overlay/Overlay";
 import { FloatingMenu } from "@/components/toggle/FloatingMenu";
+import GooeyContactSidebar from "@/components/GooeyContactSidebar/index";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { useSoundStore } from "@/store/useSoundStore";
 import { useGameStore } from "@/store/useGameStore";
@@ -50,6 +51,7 @@ export default function HomeClient() {
       )}
 
       <FloatingMenu />
+      <GooeyContactSidebar />
       {started && <ImageViewer />}
     </>
   );

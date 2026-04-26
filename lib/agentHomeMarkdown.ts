@@ -8,13 +8,13 @@ export function buildHomeMarkdown(): string {
   const projectLines = projects
     .map(
       (project) =>
-        `- ${project.title}: ${project.description}\n  - Repo: ${project.repo}\n  - Demo: ${project.demo}`
+        `- ${project.title}: ${project.description}\n  - Repo: ${project.repo}\n  - Demo: ${project.demo}`,
     )
     .join("\n");
 
   const articleLines = ARTICLES_CONTENT.map(
     (article) =>
-      `- [${article.title}](${SITE_URL}/articles/${getArticleSlug(article)})`
+      `- [${article.title}](${SITE_URL}/articles/${getArticleSlug(article)})`,
   ).join("\n");
 
   return [
